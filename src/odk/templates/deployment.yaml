@@ -166,10 +166,6 @@ spec:
           name: static-assets-volume
         - name: {{ .Chart.Name }}
           mountPath: {{ .Values.application.data_mount }}
-        {{ if .Values.liveEdit.enabled }}
-        - name: code
-          mountPath: /code
-        {{ end }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -196,9 +192,4 @@ spec:
         configMap:
           name: odk-init
           defaultMode: 0744
-      {{ if .Values.liveEdit.enabled }}
-      - name: code
-        hostPath:
-          path: /aether/aether-odk-module
-      {{ end }}
       restartPolicy: Always
