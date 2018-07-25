@@ -1,0 +1,10 @@
+debug: true
+# {{ .Release.Name }}.dev.ehealthafrica.org
+domain: dev.ehealthafrica.org
+ingress:
+  annotations:
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:eu-west-1:387526361725:certificate/f48659b7-16fe-4088-b06a-a91d05651a42"
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/security-groups: "alb-ingress-controller.dev.k8s.eha.im"
