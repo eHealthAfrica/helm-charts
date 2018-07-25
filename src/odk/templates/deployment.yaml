@@ -39,30 +39,30 @@ spec:
         - name: DB_USERNAME
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-database-user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-database-password
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-database-name
         volumeMounts:
         - mountPath: /scripts
           name: odk-init
         - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.application.data_mount }}
+          mountPath: {{ .Values.app.data_mount }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.odk.repository }}:{{ .Values.release }}"
         ports:
         - containerPort: 8000
         args:
-        - {{ .Values.application.command }}
+        - {{ .Values.app.command }}
         livenessProbe:
           initialDelaySeconds: 5
           periodSeconds: 10
@@ -94,7 +94,7 @@ spec:
         {{- end -}}
         {{ end }}
         - name: MEDIA_ROOT
-          value: {{ .Values.application.data_mount }}
+          value: {{ .Values.app.data_mount }}
         - name: CAS_SERVER_URL
           value: "https://{{ .Values.ums_url }}.ehealthafrica.org"
         - name: CSRF_COOKIE_DOMAIN
@@ -106,24 +106,24 @@ spec:
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-django-secret-key
         - name: ADMIN_USERNAME
-          value: {{ .Values.application.admin_user }}
+          value: {{ .Values.app.admin_user }}
         - name: ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-admin-password
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-token
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: kernel-token
         - name: AETHER_KERNEL_URL
           value: {{ .Values.kernel_url }}
@@ -136,7 +136,7 @@ spec:
         - name: PGUSER
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-database-user
         - name: PGPORT
           value: "5432"
@@ -148,12 +148,12 @@ spec:
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-database-password
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: odk-database-name
         # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
         # which are using different ports in different environments. Once all
@@ -165,7 +165,7 @@ spec:
         - mountPath: /var/www/static
           name: static-assets-volume
         - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.application.data_mount }}
+          mountPath: {{ .Values.app.data_mount }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -176,7 +176,7 @@ spec:
         - mountPath: /etc/nginx/conf.d
           name: odk-nginx-config
         - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.application.data_mount }}
+          mountPath: {{ .Values.app.data_mount }}
       imagePullSecrets:
       - name: regsecret
       volumes:

@@ -27,7 +27,7 @@ testing: false
 webserverPort: 8000
 namespace:
   create: false
-application:
+app:
   command: start
   secret: odk-secrets
   data_mount: /media
