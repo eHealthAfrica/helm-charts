@@ -58,7 +58,7 @@ spec:
           mountPath: {{ .Values.app.data_mount }}
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.odk.repository }}:{{ .Values.release }}"
+        image: "{{ .Values.odk.repository }}:{{ .Values.odk.tag | default .Chart.AppVersion }}"
         ports:
         - containerPort: 8000
         args:

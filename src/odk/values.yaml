@@ -8,9 +8,10 @@ image:
   pullPolicy: IfNotPresent
 odk:
   repository: "ehealthafrica/aether-odk"
+  # Use `--set image.tag` in the command line to overwrite the version
+  # tag: {{ .Chart.AppVersion }}
 name: odk
 project: aether
-release: 0.6.0
 service:
   name: nginx
   type: NodePort
