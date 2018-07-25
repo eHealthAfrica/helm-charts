@@ -2,10 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 3
-image:
-  repository: nginx
-  tag: stable-alpine
-  pullPolicy: IfNotPresent
+pullPolicy: IfNotPresent
 odk:
   repository: "ehealthafrica/aether-odk"
   # Use `--set image.tag` in the command line to overwrite the version
