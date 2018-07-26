@@ -18,9 +18,10 @@ app:
   port: 8000
   command: start
   secrets: ui-secrets
-  rdsDbName: aether_ui
-  rdsDbUser: aether_ui
-  rdsDbPort: 5432
-  rdsDbHost: dev-k8s-eha-im.cpqsfknb8sgc.eu-west-1.rds.amazonaws.com
   kernelUrl: "http://kernel"
   adminUser: admin
+  db:
+    name: aether_ui
+    user: aether_ui
+    port: 5432
+    host: dev-k8s-eha-im.cpqsfknb8sgc.eu-west-1.rds.amazonaws.com
