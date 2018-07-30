@@ -28,17 +28,17 @@ spec:
         - name: PGHOST
           valueFrom :
             secretKeyRef:
-              name: database-credentials
+              name: {{ .Values.app.db.secret }}
               key: host
         - name: PGUSER
           valueFrom:
             secretKeyRef:
-              name: database-credentials
+              name: {{ .Values.app.db.secret }}
               key: user
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
-              name: database-credentials
+              name: {{ .Values.app.db.secret }}
               key: password
         - name: DB_PASSWORD
           valueFrom:
@@ -58,7 +58,7 @@ spec:
       - name: nginx
         image: nginx:stable-alpine
         ports:
-        - containerPort: {{ .Values.service.externalPort }}
+        - containerPort: 80
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
@@ -67,8 +67,8 @@ spec:
         - mountPath: /media
           name: {{ .Release.Name }}-pvc
       - name: kernel
-        image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
         args:
         - {{ .Values.app.command }}
         ports:
@@ -132,13 +132,13 @@ spec:
               name: {{ .Values.app.secret }}
               key: kernel-database-password
         - name: PGUSER
-          value: {{ .Values.database.user }}
+          value: {{ .Values.app.db.user }}
         - name: PGPORT
-          value: {{ quote .Values.database.port }}
+          value: {{ quote .Values.app.db.port }}
         - name: PGHOST
-          value: {{ .Values.database.host }}
+          value: {{ .Values.app.db.host }}
         - name: DB_NAME
-          value: {{ .Values.database.name }}
+          value: {{ .Values.app.db.name }}
         - name: KERNEL_READONLY_DB_USERNAME
           value: {{ .Values.app.readonly_user }}
         - name: KERNEL_READONLY_DB_PASSWORD
@@ -158,7 +158,7 @@ spec:
         - mountPath: /var/www/static
           name: static-assets-volume
         - name: {{ .Release.Name }}-pvc
-          mountPath: {{ .Values.app.data_mount }}
+          mountPath: /media
       volumes:
       - name: {{ .Release.Name }}-pvc
         persistentVolumeClaim:
