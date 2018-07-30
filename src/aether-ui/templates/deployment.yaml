@@ -27,17 +27,17 @@ spec:
         - name: PGHOST
           valueFrom :
             secretKeyRef:
-              name: database-credentials
+              name: {{ .Values.app.db.secret }}
               key: host
         - name: PGUSER
           valueFrom:
             secretKeyRef:
-              name: database-credentials
+              name: {{ .Values.app.db.secret }}
               key: user
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
-              name: database-credentials
+              name: {{ .Values.app.db.secret }}
               key: password
         - name: DB_NAME
           value: {{ .Values.app.rdsDbName }}
