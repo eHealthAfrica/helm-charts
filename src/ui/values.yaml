@@ -1,4 +1,4 @@
-replicaCount: 3
+replicaCount: 1
 pullPolicy: Always
 provider: aws
 debug: false
@@ -14,10 +14,16 @@ ingress:
   enabled: true
   path: /
 
+service:
+  name: nginx
+  type: NodePort
+  externalPort: 80
+  internalPort: 80
+
 app:
   port: 8000
   command: start
-  secrets: ui-secrets
+  secrets: secrets
   rdsDbName: aether_ui
   rdsDbUser: aether_ui
   rdsDbPort: 5432

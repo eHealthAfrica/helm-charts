@@ -1,4 +1,4 @@
-replicaCount: 3
+replicaCount: 1
 image:
   repository: nginx
   tag: stable-alpine
@@ -19,7 +19,7 @@ debug: true
 testing: false
 app:
   command: start
-  secret: kernel-secrets
+  secret: secrets
   data_mount: /media
   admin_user: admin
   readonly_user: readonlyuser

@@ -40,20 +40,26 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-database-user
+              key: gather-database-user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-database-password
+              key: gather-database-password
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-database-name
+              key: gather-database-name
+        {{- if .Values.app.extra_env_vars -}}
+        {{- range $key, $value := .Values.app.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ . | quote }}
+        {{- end -}}
+        {{ end }}
         volumeMounts:
         - mountPath: /scripts
-          name: odk-init
+          name: gather-init
         {{ if .Values.provider.gcp }}
         - name: cloudsql-instance-credentials
           mountPath: /secrets/cloudsql
@@ -72,7 +78,7 @@ spec:
             readOnly: true
       {{ end }}
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.odk.repository }}:{{ .Values.odk.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.gather.repository }}:{{ .Values.gather.tag | default .Chart.AppVersion }}"
         ports:
         - containerPort: 8000
         args:
@@ -101,14 +107,6 @@ spec:
               value: {{ .Values.url }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         env:
-        {{- if .Values.extra_env_vars -}}
-        {{- range $key, $value := .Values.extra_env_vars }}
-        - name: {{ $key }}
-          value: {{ . | quote }}
-        {{- end -}}
-        {{ end }}
-        - name: MEDIA_ROOT
-          value: {{ .Values.app.data_mount }}
         - name: CAS_SERVER_URL
           value: "https://{{ .Values.ums_url }}.ehealthafrica.org"
         - name: CSRF_COOKIE_DOMAIN
@@ -121,19 +119,19 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-django-secret-key
+              key: gather-django-secret-key
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
         - name: ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-django-admin-password
+              key: gather-django-admin-password
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-django-admin-token
+              key: gather-django-admin-token
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
@@ -143,6 +141,8 @@ spec:
           value: {{ .Values.kernel_url }}
         - name: AETHER_KERNEL_URL_TEST
           value: {{ .Values.kernel_url_test }}
+        - name: AETHER_MODULES
+          value: {{ .Values.AETHER_MODULES }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
@@ -151,10 +151,22 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-database-user
+              key: gather-database-user
+        - name: RDS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-user
         - name: PGPORT
           value: "5432"
+        - name: RDS_PORT
+          value: "5432"
         - name: PGHOST
+          valueFrom :
+            secretKeyRef:
+              name: {{ .Values.database.secret }}
+              key: host
+        - name: RDS_HOSTNAME
           valueFrom :
             secretKeyRef:
               name: {{ .Values.database.secret }}
@@ -163,24 +175,28 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-database-password
+              key: gather-database-password
+        - name: RDS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-password
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-database-name
+              key: gather-database-name
+        - name: RDS_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-name
         # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
         # which are using different ports in different environments. Once all
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
         # can be removed.
         - name: WEB_SERVER_PORT
-          value: {{ quote .Values.app.port }}
-        - name: DJANGO_STORAGE_BACKEND
-          value: {{ .Values.app.django_storage_backend }}
-        {{- if or (eq .Values.provider.aws true) (eq .Values.provider.gcp true) }}
-        - name: BUCKET_NAME
-          value: {{ .Values.project }}-{{ .Chart.Name }}-upload
-        {{ end }}
+          value: {{ quote .Values.webserverPort }}
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
@@ -192,18 +208,18 @@ spec:
         - mountPath: /var/www/static
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
-          name: odk-nginx-config
+          name: gather-nginx-config
       imagePullSecrets:
       - name: regsecret
       volumes:
       - name: static-assets-volume
         emptyDir: {}
-      - name: odk-nginx-config
+      - name: gather-nginx-config
         configMap:
-          name: odk-nginx-config
-      - name: odk-init
+          name: gather-nginx-config
+      - name: gather-init
         configMap:
-          name: odk-init
+          name: gather-init
           defaultMode: 0744
       {{ if .Values.provider.gcp }}
       - name: cloudsql-instance-credentials

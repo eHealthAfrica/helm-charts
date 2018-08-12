@@ -1,11 +1,11 @@
-{{- $serviceName := include "ui.name" . -}}
+{{- $serviceName := include "gather.name" . -}}
 {{- $servicePort := .Values.service.externalPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ template "ui.name" . }}
+  name: {{ template "gather.name" . }}
   labels:
-    app: {{ template "ui.name" . }}
+    app: {{ template "gather.name" . }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -28,4 +28,4 @@ spec:
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
-{{- end -}}
+    {{- end -}}

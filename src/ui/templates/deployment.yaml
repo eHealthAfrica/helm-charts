@@ -39,10 +39,16 @@ spec:
             secretKeyRef:
               name: database-credentials
               key: password
-        - name: DB_NAME
-          value: {{ .Values.app.rdsDbName }}
         - name: DB_USERNAME
-          value: {{ .Values.app.rdsDbUser }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secrets }}
+              key: ui-database-user
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secrets }}
+              key: ui-database-name
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -50,10 +56,26 @@ spec:
               key: ui-database-password
         volumeMounts:
         - mountPath: /scripts
-          name: init-config
+          name: odk-init-config
         - mountPath: /media
           name: {{ .Chart.Name }}
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        {{ end }}
       containers:
+      {{ if .Values.provider.gcp }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances={{ .Values.database.instance }}=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      {{ end }}
         - name: nginx
           image: nginx:stable-alpine
           ports:
@@ -67,7 +89,7 @@ spec:
             name: {{ .Chart.Name }}
         - name: ui
           # This default allows us to overwrite '.Chart.AppVersion' through the command line
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.ui.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           args:
           - {{ .Values.app.command }}
@@ -102,26 +124,35 @@ spec:
               secretKeyRef:
                 name: {{ .Values.app.secrets }}
                 key: ui-django-admin-password
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secrets }}
+                key: ui-database-user
+          - name: PGHOST
+            valueFrom :
+              secretKeyRef:
+                name: database-credentials
+                key: host
+          - name: PGPORT
+            value: "5432"
           - name: PGPASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.secrets }}
                 key: ui-database-password
-          - name: PGHOST
-            value: {{ .Values.app.rdsDbHost }}
-          - name: PGUSER
-            value: {{ .Values.app.rdsDbUser }}
-          - name: PGPORT
-            value: {{ quote .Values.app.rdsDbPort }}
           - name: DB_NAME
-            value: {{ .Values.app.rdsDbName }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secrets }}
+                key: ui-database-name
           - name: AETHER_KERNEL_URL
             value: {{ .Values.app.kernelUrl }}
           - name: AETHER_KERNEL_TOKEN
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.secrets }}
-                key: ui-kernel-token
+                key: kernel-token
           - name: DEBUG
             value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
           - name: WEB_SERVER_PORT
@@ -135,7 +166,12 @@ spec:
       - name: nginx-config
         configMap:
           name: {{ .Release.Name }}-nginx-config
-      - name: init-config
+      - name: odk-init-config
         configMap:
-          name: {{ .Release.Name }}-init-config
+          name: odk-init-config
           defaultMode: 0744
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      {{ end }}

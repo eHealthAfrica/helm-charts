@@ -1,0 +1,301 @@
+---
+# Source: aether-ui/templates/init-config-map.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: init-config
+data:
+  init.sh: |
+    #!/bin/bash
+    apk add --no-cache ca-certificates && update-ca-certificates
+    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /cloud_sql_proxy
+    chmod +x /cloud_sql_proxy
+    echo 8.8.8.8 >>/etc/resolv.conf
+    echo "starting proxy in background"
+    /cloud_sql_proxy -instances=kdbs-data-col-proj:europe-west2:db-instance=tcp:5432 -credential_file=/secrets/cloudsql/credentials.json &
+    PROXY_PID=$!
+    sleep 5
+    psql -c "CREATE DATABASE $DB_NAME;"
+    psql -c "CREATE USER $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
+    psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USERNAME;"
+
+    echo "sql executed.."
+    sleep 5
+    echo "stopping proxy"
+    kill $PROXY_PID
+
+
+---
+# Source: aether-ui/templates/nginx-config-map.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: RELEASE-NAME-nginx-config
+data:
+  default.conf: |
+    server {
+      access_log off;
+
+      location /health {
+        proxy_pass http://127.0.0.1:8000;
+      }
+    }
+
+    server {
+      listen      80
+      server_name RELEASE-NAME.gather2.org
+                  RELEASE-NAME;
+      access_log  off;
+
+      # Max upload size
+      client_max_body_size 75M;   # adjust to taste
+
+      if ($http_x_forwarded_proto != 'https') {
+       return 301 https://$host$request_uri;
+      }
+
+      location /static/ {
+        alias /var/www/static/;
+      }
+
+      # Finally, send all non-static requests to the Django server.
+      location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header        Host               $host;
+        proxy_set_header        X-Real-IP          $remote_addr;
+        proxy_set_header        X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header        X-Forwarded-Host   $host:443;
+        proxy_set_header        X-Forwarded-Server $host;
+        proxy_set_header        X-Forwarded-Port   443;
+        proxy_set_header        X-Forwarded-Proto  https;
+        include    /etc/nginx/uwsgi_params; # or the uwsgi_params you installed manually
+      }
+    }
+
+---
+# Source: aether-ui/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME
+  labels:
+    app: RELEASE-NAME
+    chart: aether-ui-0.0.1
+    release: RELEASE-NAME
+    heritage: Tiller
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    app: RELEASE-NAME
+    release: RELEASE-NAME
+
+---
+# Source: aether-ui/templates/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: RELEASE-NAME
+  labels:
+    app: RELEASE-NAME
+    chart: aether-ui-0.0.1
+    release: RELEASE-NAME
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: RELEASE-NAME
+      release: RELEASE-NAME
+  template:
+    metadata:
+      labels:
+        app: RELEASE-NAME
+        release: RELEASE-NAME
+    spec:
+      initContainers:
+      - name: init
+        image: postgres:9.3-alpine
+        command: ['bash', '-c', './scripts/init.sh']
+        env:
+        - name: PGHOST
+          valueFrom :
+            secretKeyRef:
+              name: database-credentials
+              key: host
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: database-credentials
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: database-credentials
+              key: password
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: secrets
+              key: ui-database-user
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: secrets
+              key: ui-database-name
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: secrets
+              key: ui-database-password
+        volumeMounts:
+        - mountPath: /scripts
+          name: init-config
+        - mountPath: /media
+          name: aether-ui
+        
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        
+      containers:
+      
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances=kdbs-data-col-proj:europe-west2:db-instance=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+      
+        - name: nginx
+          image: nginx:stable-alpine
+          ports:
+          - containerPort: 80
+          volumeMounts:
+          - mountPath: /var/www/static
+            name: static-assets-volume
+          - mountPath: /etc/nginx/conf.d
+            name: nginx-config
+          - mountPath: /media
+            name: aether-ui
+        - name: ui
+          # This default allows us to overwrite '.Chart.AppVersion' through the command line
+          image: "ehealthafrica/aether-ui:aet-filesystem-s3"
+          imagePullPolicy: Always
+          args:
+          - start
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: livenessProbe
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: readinessProbe
+          env:
+          - name: DJANGO_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: ui-django-secret-key
+          - name: ADMIN_USERNAME
+            value: admin
+          - name: ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: ui-django-admin-password
+          - name: PGUSER
+            valueFrom:
+            secretKeyRef:
+              name: 
+              key: ui-database-user
+          - name: PGHOST
+            valueFrom :
+              secretKeyRef:
+                name: database-credentials
+                key: host
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: 
+                key: ui-database-password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: 
+                key: ui-database-name
+          - name: AETHER_KERNEL_URL
+            value: http://kernel
+          - name: AETHER_KERNEL_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-token
+          - name: DEBUG
+            value: ""
+          - name: WEB_SERVER_PORT
+            value: "8000"
+          volumeMounts:
+          - mountPath: /var/www/static
+            name: static-assets-volume
+      volumes:
+      - name: aether-ui
+      - name: static-assets-volume
+      - name: nginx-config
+        configMap:
+          name: RELEASE-NAME-nginx-config
+      - name: init-config
+        configMap:
+          name: init-config
+          defaultMode: 0744
+      
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      
+
+---
+# Source: aether-ui/templates/ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: RELEASE-NAME
+  labels:
+    app: RELEASE-NAME
+    chart: aether-ui-0.0.1
+    release: RELEASE-NAME
+    heritage: Tiller
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+spec:
+  tls:
+  - hosts:
+    - "RELEASE-NAME.gather2.org"
+  rules:
+    - host: "RELEASE-NAME.gather2.org"
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: RELEASE-NAME
+              servicePort: 80
+

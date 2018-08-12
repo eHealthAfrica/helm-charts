@@ -31,30 +31,50 @@ spec:
               name: database-credentials
               key: host
         - name: PGUSER
-          valueFrom:
-            secretKeyRef:
+          valuefrom:
+            secretkeyref:
               name: database-credentials
               key: user
         - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
+          valuefrom:
+            secretkeyref:
               name: database-credentials
               key: password
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-database-user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: kernel-database-password
-        - name: DB_USERNAME
-          value: {{ .Values.app.rdsDbUser }}
         - name: DB_NAME
-          value: {{ .Values.app.rdsDbName }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-database-name
         volumeMounts:
         - mountPath: /scripts
-          name: init-config
-        - mountPath: /media
-          name: {{ .Release.Name }}-pvc
+          name: kernel-init-config
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        {{ end }}
       containers:
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances={{ .Values.database.instance }}=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      {{ end }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -64,8 +84,6 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
-        - mountPath: /media
-          name: {{ .Release.Name }}-pvc
       - name: kernel
         image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -120,7 +138,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: admin-token
+              key: kernel-django-admin-token
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
@@ -131,21 +149,38 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: kernel-database-password
-        - name: PGUSER
-          value: {{ .Values.database.user }}
         - name: PGPORT
-          value: {{ quote .Values.database.port }}
+          value: "5432"
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-database-user
         - name: PGHOST
-          value: {{ .Values.database.host }}
+          valueFrom :
+            secretKeyRef:
+              name: {{ .Values.database.secret }}
+              key: host
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-database-password
         - name: DB_NAME
-          value: {{ .Values.database.name }}
-        - name: KERNEL_READONLY_DB_USERNAME
-          value: {{ .Values.app.readonly_user }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-database-name
         - name: KERNEL_READONLY_DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: kernel-readonly-db-password
+        - name: KERNEL_READONLY_DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-readonly-db-user
         - name: TESTING
           value: {{ quote .Values.testing }}
         # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
@@ -154,21 +189,32 @@ spec:
         # can be removed.
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.app.port }}
+        - name: DJANGO_STORAGE_BACKEND
+          value: {{ .Values.app.django_storage_backend }}
+        {{- if (.Values.provider.aws) or (.Values.provider.gcp) }}
+        - name: BUCKET_NAME
+          value: {{ .Values.project }}-aether-{{ .Release.Name }}-upload
+        {{ end }}
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
-        - name: {{ .Release.Name }}-pvc
-          mountPath: {{ .Values.app.data_mount }}
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        {{ end }}
       volumes:
-      - name: {{ .Release.Name }}-pvc
-        persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-pvc
       - name: static-assets-volume
         emptyDir: {}
       - name: nginx-config
         configMap:
-          name: {{ .Release.Name }}-nginx-config
-      - name: init-config
+          name: nginx-config
+      - name: kernel-init-config
         configMap:
-          name: {{ .Release.Name }}-init-config
+          name: kernel-init-config
           defaultMode: 0744
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      {{ end }}

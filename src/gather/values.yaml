@@ -1,13 +1,13 @@
-# Default values for odk.
+# Default values for gather.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
 pullPolicy: IfNotPresent
-odk:
-  repository: "ehealthafrica/aether-odk"
+gather:
+  repository: "ehealthafrica/gather"
   # Use `--set image.tag` in the command line to overwrite the version
   # tag: {{ .Chart.AppVersion }}
-name: odk
+name: gather
 project: aether
 service:
   name: nginx
@@ -18,10 +18,11 @@ environment: "dev"
 ums_url: ums-dev
 kernel_url: http://kernel
 kernel_url_test: http://kernel
-domain: aether.local
-trusted_origins: .aether.local
+domain: gather.local
+trusted_origins: gather.local, .aether.local
 debug: false
 testing: false
+webserverPort: 8000
 namespace:
   create: false
 app:
@@ -29,7 +30,6 @@ app:
   secret: secrets
   data_mount: /media
   admin_user: admin
-  port: 8000
 database:
   secret: database-credentials
 provider:
@@ -37,6 +37,6 @@ provider:
 ingress:
   enabled: true
   hosts:
-    - odk.aether.local
+    - gather.aether.local
   annotations:
     nginx.ingress.kubernetes.io/ingress.class: "nginx"

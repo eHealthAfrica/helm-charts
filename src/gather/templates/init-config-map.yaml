@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: odk-init
+  name: gather-init
 data:
   {{- if .Values.provider.gcp }}
   init.sh: |
