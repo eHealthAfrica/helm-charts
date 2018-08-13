@@ -110,7 +110,7 @@ spec:
         - name: MEDIA_ROOT
           value: {{ .Values.app.data_mount }}
         - name: CAS_SERVER_URL
-          value: "https://{{ .Values.ums_url }}.ehealthafrica.org"
+          value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
@@ -129,6 +129,11 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: odk-django-admin-password
+        - name: AETHER_ODK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: odk-token
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:

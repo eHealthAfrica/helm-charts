@@ -56,7 +56,7 @@ spec:
               key: ui-database-password
         volumeMounts:
         - mountPath: /scripts
-          name: odk-init-config
+          name: ui-init-config
         - mountPath: /media
           name: {{ .Chart.Name }}
         {{ if .Values.provider.gcp }}
@@ -153,6 +153,10 @@ spec:
               secretKeyRef:
                 name: {{ .Values.app.secrets }}
                 key: kernel-token
+          - name: CSRF_COOKIE_DOMAIN
+            value: {{ .Values.domain }}
+          - name: CSRF_TRUSTED_ORIGINS
+            value: {{ .Values.trusted_origins }}
           - name: DEBUG
             value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
           - name: WEB_SERVER_PORT
@@ -165,10 +169,10 @@ spec:
       - name: static-assets-volume
       - name: nginx-config
         configMap:
-          name: {{ .Release.Name }}-nginx-config
-      - name: odk-init-config
+          name: ui-nginx-config
+      - name: ui-init-config
         configMap:
-          name: odk-init-config
+          name: ui-init-config
           defaultMode: 0744
       {{ if .Values.provider.gcp }}
       - name: cloudsql-instance-credentials

@@ -1,4 +1,4 @@
-{{- $serviceName := include "kernel.name" . -}}
+{{- $serviceName := .Chart.Name -}}
 {{- $servicePort := .Values.service.externalPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -19,6 +19,7 @@ spec:
     {{- range .Values.ingress.hosts }}
     - {{ . }}
     {{- end }}
+    secretName: "{{ .Values.ssl_certificate }}"
   rules:
     {{- range $host := .Values.ingress.hosts }}
     - host: {{ $host }}

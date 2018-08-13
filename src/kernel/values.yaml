@@ -17,6 +17,7 @@ namespace:
   create: false
 debug: true
 testing: false
+ssl_certificate: ehealthafrica-wildcard
 app:
   command: start
   secret: secrets

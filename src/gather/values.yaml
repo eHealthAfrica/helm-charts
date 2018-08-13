@@ -15,6 +15,7 @@ service:
   externalPort: 80
   internalPort: 80
 environment: "dev"
+ssl_certificate: ehealthafrica-wildcard
 ums_url: ums-dev
 kernel_url: http://kernel
 kernel_url_test: http://kernel

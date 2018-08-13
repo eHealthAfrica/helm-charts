@@ -1,29 +1,37 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-nginx-config
+  name: ui-nginx-config
 data:
   default.conf: |
     server {
-      {{- if .Values.debug }}
-      error_log /var/log/nginx/error.log info;
-      {{- else }}
-      access_log off;
-      {{- end }}
-
       location /health {
-        proxy_pass http://127.0.0.1:{{ .Values.app.port }};
+        proxy_pass http://127.0.0.1:8000;
       }
     }
 
     server {
-      listen      80
+      listen      80;
+      charset     utf-8;
+      server_name ui;
+
+      # Max upload size
+      client_max_body_size 75M;   # adjust to taste
+
+      # Finally, send all non-media requests to the Django server.
+      location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header        Host               $host;
+        proxy_set_header        X-Real-IP          $remote_addr;
+        proxy_set_header        X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header        X-Forwarded-Server $host;
+      }
+    }
+
+    server {
+      listen      80;
+      charset     utf-8;
       server_name *.{{ .Values.domain }};
-      {{- if .Values.debug }}
-      error_log   /var/log/nginx/error.log info;
-      {{- else }}
-      access_log  off;
-      {{- end }}
 
       # Max upload size
       client_max_body_size 75M;   # adjust to taste
@@ -36,9 +44,15 @@ data:
         alias /var/www/static/;
       }
 
-      # Finally, send all non-static requests to the Django server.
+      # Protected media
+      location /media-internal/ {
+        internal;  # Cannot be accessed from external calls
+        alias /media/;
+      }
+
+      # Finally, send all non-media requests to the Django server.
       location / {
-        proxy_pass http://127.0.0.1:{{ .Values.app.port }};
+        proxy_pass http://127.0.0.1:8000;
         proxy_set_header        Host               $host;
         proxy_set_header        X-Real-IP          $remote_addr;
         proxy_set_header        X-Forwarded-For    $proxy_add_x_forwarded_for;

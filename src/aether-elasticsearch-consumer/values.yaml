@@ -1,0 +1,18 @@
+replicaCount: 1
+pullPolicy: Always
+debug: false
+# {{ .Release.Name }}{{ .Values.domain }}
+# domain: yourdomain.org
+
+image:
+  repository: "ehealthafrica/aether-elasticsearch-consumer"
+  # Use `--set image.tag` in the command line to overwrite the version
+  # tag: {{ .Chart.AppVersion }}
+
+app:
+  elasticSearchUrl: "elasticsearch-client"
+  kafkaUrl: "kafka"
+  esConsumerConfigPath: "/code/conf/consumer/consumer.json"
+  esConsumerKafkaConfigPath: "/code/conf/consumer/kafka.json"
+  command: "start"
+  port: "9009"

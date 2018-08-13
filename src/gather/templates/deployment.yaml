@@ -114,7 +114,9 @@ spec:
         - name: CSRF_TRUSTED_ORIGINS
           value: {{ .Values.trusted_origins }}
         - name: HOSTNAME
-          value: "{{ .Values.url_prefix }}.{{ .Values.domain }}"
+          value: {{ .Values.domain }}
+        - name: INSTANCE_NAME
+          value: "Gather 3"
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -132,17 +134,26 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: gather-django-admin-token
+        - name: AETHER_ODK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: odk-django-admin-token
+        - name: AETHER_ODK_URL
+          value: {{ .Values.odk_url }}
+        - name: AETHER_KERNEL_URL_TEST
+          value: {{ .Values.kernel_url_test }}
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: kernel-token
+              key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
           value: {{ .Values.kernel_url }}
         - name: AETHER_KERNEL_URL_TEST
           value: {{ .Values.kernel_url_test }}
         - name: AETHER_MODULES
-          value: {{ .Values.AETHER_MODULES }}
+          value: {{ .Values.aether_modules }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING

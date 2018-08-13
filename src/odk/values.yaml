@@ -22,6 +22,8 @@ domain: aether.local
 trusted_origins: .aether.local
 debug: false
 testing: false
+webserverPort: 8000
+ssl_certificate: ehealthafrica-wildcard
 namespace:
   create: false
 app:

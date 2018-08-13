@@ -20,6 +20,7 @@ service:
   externalPort: 80
   internalPort: 80
 
+ssl_certificate: ehealthafrica-wildcard
 app:
   port: 8000
   command: start
@@ -27,6 +28,5 @@ app:
   rdsDbName: aether_ui
   rdsDbUser: aether_ui
   rdsDbPort: 5432
-  rdsDbHost: dev-k8s-eha-im.cpqsfknb8sgc.eu-west-1.rds.amazonaws.com
   kernelUrl: "http://kernel"
   adminUser: admin
