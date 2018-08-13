@@ -112,7 +112,7 @@ spec:
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Values.trusted_origins }}
+          value: .{{ .Values.trusted_origins }}
         - name: HOSTNAME
           value: {{ .Values.domain }}
         - name: INSTANCE_NAME
