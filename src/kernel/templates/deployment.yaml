@@ -84,6 +84,8 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
+        - mountPath: /media
+          name: media
       - name: kernel
         image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -122,6 +124,8 @@ spec:
           value: .{{ .Values.domain }}
         - name: HOSTNAME
           value: {{ .Release.Name }}.{{ .Values.domain }}
+        - name: MEDIA_ROOT
+          value: "/media"
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -143,7 +147,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: kernel-token
+              key: kernel-django-admin-token
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
@@ -205,6 +209,8 @@ spec:
         {{ end }}
       volumes:
       - name: static-assets-volume
+        emptyDir: {}
+      - name: media
         emptyDir: {}
       - name: nginx-config
         configMap:

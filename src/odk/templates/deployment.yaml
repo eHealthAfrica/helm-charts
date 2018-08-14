@@ -143,7 +143,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: kernel-token
+              key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
           value: {{ .Values.kernel_url }}
         - name: AETHER_KERNEL_URL_TEST
@@ -189,6 +189,8 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
+        - mountPath: /media
+          name: media
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -198,10 +200,14 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: odk-nginx-config
+        - mountPath: /media
+          name: media
       imagePullSecrets:
       - name: regsecret
       volumes:
       - name: static-assets-volume
+        emptyDir: {}
+      - name: media
         emptyDir: {}
       - name: odk-nginx-config
         configMap:

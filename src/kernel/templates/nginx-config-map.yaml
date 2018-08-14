@@ -38,7 +38,6 @@ data:
         alias /var/www/static/;
       }
 
-      # Protected media
       location /media-internal/ {
         internal;  # Cannot be accessed from external calls
         alias /media/;
