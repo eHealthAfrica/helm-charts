@@ -1,0 +1,403 @@
+---
+# Source: producer/templates/producer-config-map.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: producer-config
+data:
+  config.json: |
+    {
+        "offset_db_url" : "sqlite:///offset.db",
+        "start_delay": 5,
+        "sleep_time": 10,
+        "log_level" : "DEBUG",
+        "window_size_sec" : 2,
+        "postgres_pull_limit" : 250,
+
+        "postgres_host"   : "db",
+        "postgres_port"   : 5432,
+        "postgres_user"   : "readonlyuser",
+        "postgres_dbname" : "aether",
+
+        "kernel_url"      : "http://kernel:8000",
+        "kernel_admin_username" : "admin",
+        "kernel_admin_password" : "adminadmin",
+
+
+        "kafka_failure_wait_time" : 10,
+        "kafka_bootstrap_servers" : "kaduna-kafka.kafka:29092",
+
+        "kafka_settings" : {
+            "acks" : 1,
+            "max.in.flight.requests.per.connection" : 1,
+            "linger.ms" : 200,
+            "retry.backoff.ms": 25,
+            "default.topic.config": {
+                "request.timeout.ms" : 200,
+                "message.timeout.ms" : 1000
+            },
+            "message.send.max.retries" : 9,
+            "queue.buffering.max.ms" : 100,
+            "socket.blocking.max.ms" : 100,
+            "socket.timeout.ms" : 10000
+
+        },
+        "server_port" : 9005,
+        "server_ip"   : "",
+
+        "flask_settings": {
+            "max_connections" : 3
+        },
+        "topic_settings" : {
+            "name_modifier" : "%s"
+
+        }
+    }
+
+
+---
+# Source: producer/templates/volume_claim.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: producer
+spec:
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /data/pv0001
+  resources:
+    requests:
+      storage: 1Mi
+---
+# Source: producer/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: RELEASE-NAME-producer
+  labels:
+    app: producer
+    chart: producer-0.1.0
+    release: RELEASE-NAME
+    heritage: Tiller
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9005
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: producer
+    release: RELEASE-NAME
+
+---
+# Source: producer/templates/deployment.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: RELEASE-NAME-producer
+  labels:
+    app: producer
+    chart: producer-0.1.0
+    release: RELEASE-NAME
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+      release: RELEASE-NAME
+  template:
+    metadata:
+      labels:
+        app: producer
+        release: RELEASE-NAME
+    spec:
+      containers:
+
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances=kdbs-data-col-proj:europe-west2:db-instance=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+
+        - name: producer
+          image: "ehealthafrica/aether-producer:0.9.1"
+          imagePullPolicy: IfNotPresent
+          args:
+          - start
+          env:
+          - name: DEBUG
+            value:  "false"
+          - name: PRODUCER_SETTINGS_FILE
+            value:  "/etc/producer/config.json"
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-user
+          - name: PGPORT
+            value: "5432"
+          - name: PGHOST
+            valueFrom:
+              secretKeyRef:
+                name: database-credentials
+                key: host
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-name
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_HOST
+            valueFrom:
+              secretKeyRef:
+                name: database-credentials
+                key: host
+          - name: POSTGRES_DBNAME
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-name
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-readonly-user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-readonly-password
+          - name: KAFKA_URL
+            value: kafka.kaduna
+          - name: KERNEL_URL
+            value: https://kernel-kaduna.ehealthafrica.org
+          - name: KERNEL_ADMIN_USERNAME
+            value: admin
+          - name: KERNEL_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-admin-password
+          livenessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            httpGet:
+              path: /healthcheck
+              port: 9005
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: livenessProbe
+              - name: Host
+                value:
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            httpGet:
+              path: /healthcheck
+              port: 9005
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: check
+              - name: Host
+                value:
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+          volumeMounts:
+            - name: producer-config
+              mountPath: /etc/producer
+              readOnly: true
+      imagePullSecrets:
+      - name: regsecret
+      volumes:
+      - name: producer
+        gcePersistentDisk:
+          pdName:
+          fsType: ext4
+      - name: producer-config
+        configMap:
+          name: producer-config
+          defaultMode: 0744
+          items:
+          - key: config.json
+            path: config.json
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      resources:
+            {}
+
+
+---
+# Source: producer/templates/stateful_set.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: RELEASE-NAME-producer
+  labels:
+    app: producer
+    chart: producer-0.1.0
+    release: RELEASE-NAME
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+      release: RELEASE-NAME
+  template:
+    metadata:
+      labels:
+        app: producer
+        release: RELEASE-NAME
+    spec:
+
+      nodeSelector:
+        failure-domain.beta.kubernetes.io/zone: europe-west2-b
+
+      containers:
+
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances=kdbs-data-col-proj:europe-west2:db-instance=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+
+        - name: producer
+          image: "ehealthafrica/aether-producer:0.9.1"
+          imagePullPolicy: IfNotPresent
+          args:
+          - start
+          env:
+          - name: DEBUG
+            value:  "false"
+          - name: PRODUCER_SETTINGS_FILE
+            value:  "/etc/producer/config.json"
+          - name: PGUSER
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-user
+          - name: PGPORT
+            value: "5432"
+          - name: PGHOST
+            valueFrom:
+              secretKeyRef:
+                name: database-credentials
+                key: host
+          - name: PGPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-name
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_HOST
+            valueFrom:
+              secretKeyRef:
+                name: database-credentials
+                key: host
+          - name: POSTGRES_DBNAME
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-database-name
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-readonly-db-user
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-readonly-db-password
+          - name: KAFKA_BOOTSTRAP_SERVERS
+            value: kafka.kaduna
+          - name: KERNEL_URL
+            value: https://kernel-kaduna.ehealthafrica.org
+          - name: KERNEL_ADMIN_USERNAME
+            value: admin
+          - name: KERNEL_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-django-admin-password
+          - name: KERNEL_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: kernel-django-admin-token
+          livenessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            httpGet:
+              path: /healthcheck
+              port: 9005
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: livenessProbe
+              - name: Host
+                value:
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            httpGet:
+              path: /healthcheck
+              port: 9005
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: check
+              - name: Host
+                value:
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: producer-config
+              mountPath: /etc/producer
+              readOnly: true
+      imagePullSecrets:
+      - name: regsecret
+      volumes:
+      - name: producer
+
+        gcePersistentDisk:
+          pdName: kaduna-producer
+          fsType: ext4
+      - name: producer-config
+        configMap:
+          name: producer-config
+          defaultMode: 0744
+          items:
+          - key: config.json
+            path: config.json
+
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials

@@ -202,6 +202,8 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
+        - mountPath: /media
+          name: media
         {{ if .Values.provider.gcp }}
         - name: cloudsql-instance-credentials
           mountPath: /secrets/cloudsql
