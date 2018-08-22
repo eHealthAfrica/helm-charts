@@ -1,0 +1,234 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+spec:
+  progressDeadlineSeconds: 180
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        release: {{ .Chart.Version }}
+    spec:
+      initContainers:
+      - name: init
+        image: postgres:9.3-alpine
+        command: ['bash', '-c', './scripts/init.sh']
+        env:
+        - name: PGHOST
+          value: {{ .Values.app.db.host }}
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: password
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-password
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-name
+        {{- if .Values.app.extra_env_vars -}}
+        {{- range $key, $value := .Values.app.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ . | quote }}
+        {{- end -}}
+        {{ end }}
+        volumeMounts:
+        - mountPath: /scripts
+          name: gather-init
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        {{ end }}
+      containers:
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances={{ .Values.database.Host }}=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      {{ end }}
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.gather.repository }}:{{ .Values.gather.tag | default .Chart.AppVersion }}"
+        ports:
+        - containerPort: 8000
+        args:
+        - {{ .Values.app.command }}
+        livenessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          httpGet:
+            path: /health
+            port: 8000
+            httpHeaders:
+            - name: X-Kubernetes-Health-Check
+              value: livenessProbe
+            - name: Host
+              value: {{ .Values.url }}
+        readinessProbe:
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          httpGet:
+            path: /health
+            port: 8000
+            httpHeaders:
+            - name: X-Kubernetes-Health-Check
+              value: check
+            - name: Host
+              value: {{ .Values.url }}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        env:
+        - name: CAS_SERVER_URL
+          value: "{{ .Values.ums_url }}"
+        - name: CSRF_COOKIE_DOMAIN
+          value: {{ .Values.domain }}
+        - name: CSRF_TRUSTED_ORIGINS
+          value: .{{ .Values.trusted_origins }}
+        - name: HOSTNAME
+          value: {{ .Values.domain }}
+        - name: INSTANCE_NAME
+          value: "Gather 3"
+        - name: DJANGO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-django-secret-key
+        - name: ADMIN_USERNAME
+          value: {{ .Values.app.admin_user }}
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-django-admin-password
+        - name: ADMIN_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-django-admin-token
+        - name: AETHER_ODK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: odk-django-admin-token
+        - name: AETHER_ODK_URL
+          value: {{ .Values.odk_url }}
+        - name: AETHER_KERNEL_URL_TEST
+          value: {{ .Values.kernel_url_test }}
+        - name: AETHER_KERNEL_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-django-admin-token
+        - name: AETHER_KERNEL_URL
+          value: {{ .Values.kernel_url }}
+        - name: AETHER_KERNEL_URL_TEST
+          value: {{ .Values.kernel_url_test }}
+        - name: AETHER_MODULES
+          value: {{ .Values.aether_modules }}
+        - name: DEBUG
+          value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
+        - name: TESTING
+          value: {{ if .Values.testing }}"1"{{ else }}""{{ end }}
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-user
+        - name: RDS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-user
+        - name: PGPORT
+          value: "5432"
+        - name: RDS_PORT
+          value: "5432"
+        - name: PGHOST
+          value:
+        - name: RDS_HOSTNAME
+          valueFrom :
+            secretKeyRef:
+              name: {{ .Values.db.secret }}
+              key: host
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-password
+        - name: RDS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-password
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-name
+        - name: RDS_DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: gather-database-name
+        # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
+        # which are using different ports in different environments. Once all
+        # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
+        # can be removed.
+        - name: WEB_SERVER_PORT
+          value: {{ quote .Values.webserverPort }}
+        volumeMounts:
+        - mountPath: /var/www/static
+          name: static-assets-volume
+      - name: nginx
+        image: nginx:stable-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /var/www/static
+          name: static-assets-volume
+        - mountPath: /etc/nginx/conf.d
+          name: gather-nginx-config
+      imagePullSecrets:
+      - name: regsecret
+      volumes:
+      - name: static-assets-volume
+        emptyDir: {}
+      - name: gather-nginx-config
+        configMap:
+          name: gather-nginx-config
+      - name: gather-init
+        configMap:
+          name: gather-init
+          defaultMode: 0744
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      {{ end }}
+      restartPolicy: Always
