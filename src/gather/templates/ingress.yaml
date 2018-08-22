@@ -15,7 +15,7 @@ metadata:
 spec:
   tls:
   - hosts:
-    - "{{ .Release.Name }}.{{ .Values.domain }}"
+    - "{{ .Values.app.url }}"
   rules:
     - host: "{{ .Release.Name }}.{{ .Values.domain }}"
       http:

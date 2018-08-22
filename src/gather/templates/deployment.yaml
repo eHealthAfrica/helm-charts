@@ -111,7 +111,7 @@ spec:
         - name: CSRF_TRUSTED_ORIGINS
           value: .{{ .Values.trusted_origins }}
         - name: HOSTNAME
-          value: {{ .Values.domain }}
+          value: {{ .Values.url }}
         - name: INSTANCE_NAME
           value: "Gather 3"
         - name: DJANGO_SECRET_KEY
