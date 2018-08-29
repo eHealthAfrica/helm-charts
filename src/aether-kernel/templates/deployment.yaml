@@ -46,9 +46,9 @@ spec:
               name: {{ .Values.app.secret }}
               key: kernel-database-password
         - name: DB_USERNAME
-          value: {{ .Values.app.rdsDbUser }}
+          value: {{ .Values.app.db.user }}
         - name: DB_NAME
-          value: {{ .Values.app.rdsDbName }}
+          value: {{ .Values.app.db.name }}
         volumeMounts:
         - mountPath: /scripts
           name: init-config
@@ -67,7 +67,7 @@ spec:
         - mountPath: /media
           name: {{ .Release.Name }}-pvc
       - name: kernel
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
         args:
         - {{ .Values.app.command }}
@@ -104,6 +104,10 @@ spec:
           value: {{ .Release.Name }}.{{ .Values.domain }}
         - name: HOSTNAME
           value: {{ .Release.Name }}.{{ .Values.domain }}
+        - name: DJANGO_STORAGE_BACKEND
+          value: {{ .Values.app.storage.backend }}
+        - name: BUCKET_NAME
+          value: {{ .Values.app.storage.bucket }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
