@@ -21,7 +21,7 @@ spec:
         release: {{ .Release.Name }}
     spec:
       initContainers:
-      - name: init
+      - name: init-pg
         image: postgres:9.3-alpine
         command: ['bash', '-c', './scripts/init.sh']
         env:
@@ -51,9 +51,7 @@ spec:
           value: {{ .Values.app.db.name }}
         volumeMounts:
         - mountPath: /scripts
-          name: init-config
-        - mountPath: /media
-          name: {{ .Release.Name }}-pvc
+          name: init-pg-config
       containers:
       - name: nginx
         image: nginx:stable-alpine
@@ -172,7 +170,7 @@ spec:
       - name: nginx-config
         configMap:
           name: {{ .Release.Name }}-nginx-config
-      - name: init-config
+      - name: init-pg-config
         configMap:
-          name: {{ .Release.Name }}-init-config
+          name: {{ .Release.Name }}-init-pg-config
           defaultMode: 0744
