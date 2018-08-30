@@ -52,6 +52,39 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: init-pg-config
+      - name: init-py
+        image: uroybd/python3-psycopg2-alpine:latest
+        command: ['python', './scripts/create_ro_user.py']
+        env:
+        - name: PGPORT
+          value: {{ .Values.app.db.port | default 5432 | quote }}
+        - name: PGHOST
+          valueFrom :
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: host
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: password
+        - name: KERNEL_READONLY_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-database-password
+        - name: KERNEL_READONLY_DB_USERNAME
+          value: {{ .Values.app.db.user }}
+        - name: DB_NAME
+          value: {{ .Values.app.db.name }}
+        volumeMounts:
+        - mountPath: /scripts
+          name: init-py-config
       containers:
       - name: nginx
         image: nginx:stable-alpine
@@ -173,4 +206,8 @@ spec:
       - name: init-pg-config
         configMap:
           name: {{ .Release.Name }}-init-pg-config
+          defaultMode: 0744
+      - name: init-py-config
+        configMap:
+          name: {{ .Release.Name }}-init-py-config
           defaultMode: 0744
