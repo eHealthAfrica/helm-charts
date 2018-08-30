@@ -95,8 +95,6 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
-        - mountPath: /media
-          name: {{ .Release.Name }}-pvc
       - name: kernel
         image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
@@ -192,12 +190,7 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
-        - name: {{ .Release.Name }}-pvc
-          mountPath: /media
       volumes:
-      - name: {{ .Release.Name }}-pvc
-        persistentVolumeClaim:
-          claimName: {{ .Release.Name }}-pvc
       - name: static-assets-volume
         emptyDir: {}
       - name: nginx-config
