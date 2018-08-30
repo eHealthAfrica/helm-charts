@@ -19,6 +19,12 @@ data:
     import os
     import psycopg2
     from psycopg2 import sql
+    from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+
+    # `CREATE DATABASE` statements cannot run inside a transaction block, so we
+    # have to execute it independently. Besides, we also want to catch and silence
+    # the exception resulting when the DB already exists.
+    CREATE_DB = "CREATE DATABASE {database}"
 
     # Create a readonly user with username "{role}" if none exists.
     # Grant read permission for relevant tables.
@@ -37,11 +43,42 @@ data:
 
     GRANT CONNECT ON DATABASE {database} TO {role};
     GRANT USAGE ON SCHEMA public TO {role};
-    GRANT SELECT ON kernel_entity TO {role};
-    GRANT SELECT ON kernel_mapping TO {role};
-    GRANT SELECT ON kernel_projectschema TO {role};
-    GRANT SELECT ON kernel_schema TO {role};
     '''
+
+
+    def create_database(credentials):
+        db_name = credentials['dbname']
+        query = sql.SQL(CREATE_DB).format(database=sql.Identifier(db_name))
+        try:
+            execute(credentials, query, transaction=False)
+        # Don't exit if database already exists
+        except psycopg2.ProgrammingError:
+            pass
+
+
+    def create_readonly_user(credentials):
+        db_name = credentials['dbname']
+        ro_role = os.environ['KERNEL_READONLY_DB_USERNAME']
+        ro_password = os.environ['KERNEL_READONLY_DB_PASSWORD']
+
+        print("Creating user '{user}' on '{db}'".format(user=ro_role, db=db_name))
+
+        query = sql.SQL(CREATE_READONLY_USER).format(
+            database=sql.Identifier(db_name),
+            role=sql.Identifier(ro_role),
+            rolename=sql.Literal(ro_role),
+            password=sql.Literal(ro_password),
+        )
+        execute(credentials, query)
+        print('User created successfuly')
+
+
+    def execute(credentials, query, transaction=True):
+        with psycopg2.connect(**credentials) as conn:
+            if not transaction:
+                conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+            cursor = conn.cursor()
+            cursor.execute(query)
 
 
     def main():
@@ -59,17 +96,8 @@ data:
             'password': root_password,
         }
 
-        with psycopg2.connect(**postgres_credentials) as conn:
-            ro_role = os.environ['KERNEL_READONLY_DB_USERNAME']
-            ro_password = os.environ['KERNEL_READONLY_DB_PASSWORD']
-            cursor = conn.cursor()
-            query = sql.SQL(CREATE_READONLY_USER).format(
-                database=sql.Identifier(dbname),
-                role=sql.Identifier(ro_role),
-                rolename=sql.Literal(ro_role),
-                password=sql.Literal(ro_password),
-            )
-            cursor.execute(query)
+        create_database(postgres_credentials);
+        create_readonly_user(postgres_credentials);
 
 
     if __name__ == '__main__':
