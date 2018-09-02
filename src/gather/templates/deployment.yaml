@@ -31,7 +31,7 @@ spec:
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
+              name: {{ .Values.app.db.secret }}
               key: password
         - name: DB_USERNAME
           valueFrom:
@@ -67,7 +67,7 @@ spec:
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         command: ["/cloud_sql_proxy",
-                  "-instances={{ .Values.database.Host }}=tcp:5432",
+                  "-instances={{ .Values.database.instance }}=tcp:5432",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-instance-credentials
@@ -79,7 +79,7 @@ spec:
         ports:
         - containerPort: 8000
         args:
-        - {{ .Values.app.command }}
+          - {{ .Values.app.command }}
         livenessProbe:
           initialDelaySeconds: 5
           periodSeconds: 10
@@ -160,28 +160,11 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: gather-database-user
-        - name: RDS_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: gather-database-user
         - name: PGPORT
           value: "5432"
-        - name: RDS_PORT
-          value: "5432"
         - name: PGHOST
-          value:
-        - name: RDS_HOSTNAME
-          valueFrom :
-            secretKeyRef:
-              name: {{ .Values.db.secret }}
-              key: host
+          value: {{ .Values.app.db.host }}
         - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: gather-database-password
-        - name: RDS_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
@@ -191,7 +174,7 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: gather-database-name
-        - name: RDS_DB_NAME
+        - name: PGDATABASE
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}

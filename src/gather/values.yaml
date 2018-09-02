@@ -7,6 +7,11 @@ image:
   repository: "ehealthafrica/gather"
   # Use `--set image.tag` in the command line to overwrite the version
   # tag: {{ .Chart.AppVersion }}
+service:
+  name: nginx
+  type: NodePort
+  externalPort: 80
+  internalPort: 80
 name: gather
 environment: "prod"
 ums_url: ""
@@ -16,8 +21,11 @@ namespace:
   create: false
 app:
   command: start
-  secret: gather-secrets
+  secret: secrets
   admin_user: admin
+  db:
+    host: 127.0.0.1
+    secret: database-credentials
 provider:
   aws: false
   gcp: false
