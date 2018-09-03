@@ -54,9 +54,23 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: odk-init
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        {{ end }}
       containers:
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances={{ .Values.database.instance }}=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      {{ end }}
       - name: {{ .Chart.Name }}
         image: "{{ .Values.odk.repository }}:{{ .Values.odk.tag | default .Chart.AppVersion }}"
         ports:
@@ -93,8 +107,10 @@ spec:
           value: {{ . | quote }}
         {{- end -}}
         {{ end }}
-        - name: MEDIA_ROOT
-          value: {{ .Values.app.data_mount }}
+        - name: DJANGO_STORAGE_BACKEND
+          value: {{ .Values.app.storage.backend }}
+        - name: BUCKET_NAME
+          value: {{ .Values.app.storage.bucket_name }}
         - name: CAS_SERVER_URL
           value: "https://{{ .Values.ums_url }}.ehealthafrica.org"
         - name: CSRF_COOKIE_DOMAIN
@@ -114,12 +130,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-admin-password
+              key: odk-django-admin-password
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-token
+              key: odk-django-admin-token
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
@@ -164,8 +180,6 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -175,14 +189,9 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: odk-nginx-config
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
       imagePullSecrets:
       - name: regsecret
       volumes:
-      - name: {{ .Chart.Name }}
-        persistentVolumeClaim:
-          claimName: {{ .Chart.Name }}
       - name: static-assets-volume
         emptyDir: {}
       - name: odk-nginx-config
@@ -192,4 +201,9 @@ spec:
         configMap:
           name: odk-init
           defaultMode: 0744
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      {{ end }}
       restartPolicy: Always
