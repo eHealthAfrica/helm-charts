@@ -9,6 +9,7 @@ image:
 
 app:
   command: start
+  setup_command: setup
   secret: kernel-secrets
   admin_user: admin
   readonly_user: readonlyuser
