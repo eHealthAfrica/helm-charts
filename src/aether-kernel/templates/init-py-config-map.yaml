@@ -45,27 +45,27 @@ data:
 
 
     def main():
-        db_name = os.environ['DB_NAME']
-        db_host = os.environ['PGHOST']
-        db_port = os.environ['PGPORT']
-        root_user = os.environ['PGUSER']
+        dbname = os.environ['DB_NAME']
+        host = os.environ['PGHOST']
+        port = os.environ['PGPORT']
+        user = os.environ['PGUSER']
 
         postgres_credentials = {
-            'dbname': db_name,
-            'host': db_host,
-            'port': db_port,
-            'user': root_user,
+            'dbname': dbname,
+            'host': host,
+            'port': port,
+            'user': user,
         }
 
         with psycopg2.connect(**postgres_credentials) as conn:
-            ro_role = os.environ['KERNEL_READONLY_DB_USERNAME']
-            ro_password = os.environ['KERNEL_READONLY_DB_PASSWORD']
+            role = os.environ['KERNEL_READONLY_DB_USERNAME']
+            password = os.environ['KERNEL_READONLY_DB_PASSWORD']
             cursor = conn.cursor()
             query = sql.SQL(CREATE_READONLY_USER).format(
                 database=sql.Identifier(dbname),
-                role=sql.Identifier(ro_role),
-                rolename=sql.Literal(ro_role),
-                password=sql.Literal(ro_password),
+                role=sql.Identifier(role),
+                rolename=sql.Literal(role),
+                password=sql.Literal(password),
             )
             cursor.execute(query)
 
