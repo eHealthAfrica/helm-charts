@@ -52,11 +52,16 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: init-pg-config
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/cloudsql
+          name: cloudsql-instance-credentials
+          readOnly: true
+        {{ end }}
       - name: init-kernel-setup
-        image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
         args:
-        - {{ .Values.app.setup_command }}
+          - {{ .Values.app.setup_command }}
         env:
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
@@ -178,7 +183,28 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: kernel-django-secret-key
+        volumeMounts:
+        - mountPath: /scripts/python
+          name: init-py-config
+        - mountPath: /scripts
+          name: init-py-config-sh
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/cloudsql
+          name: cloudsql-instance-credentials
+          readOnly: true
+        {{ end }}
       containers:
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances={{ .Values.database.instance }}=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      {{ end }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -189,7 +215,7 @@ spec:
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
       - name: kernel
-        image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
         args:
         - {{ .Values.app.command }}
@@ -293,3 +319,8 @@ spec:
         configMap:
           name: {{ .Release.Name }}-init-pg-config
           defaultMode: 0744
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      {{ end }}

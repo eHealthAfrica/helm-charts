@@ -3,14 +3,12 @@ pullPolicy: Always
 debug: false
 ums_url: ""
 
-kernel:
-  repository: "ehealthafrica/aether-kernel"
-
 app:
   command: start
   setup_command: setup
   secret: kernel-secrets
   admin_user: admin
+  repository: "ehealthafrica/aether-kernel"
   port: 8000
   db:
     name:
@@ -18,3 +16,9 @@ app:
     port:
     user:
     readonly_user: readonlyuser
+  url: kernel
+service:
+  name: nginx
+  type: NodePort
+  externalPort: 80
+  internalPort: 80

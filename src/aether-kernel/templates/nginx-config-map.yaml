@@ -1,4 +1,3 @@
-{{- $domainName := printf "%s.%s" .Release.Name .Values.domain -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -17,12 +16,9 @@ data:
       }
     }
 
-    {{- range $serverName := tuple $domainName .Release.Name }}
     server {
       server_name {{ $serverName }};
 
-      listen      80;
-      charset     utf-8;
       {{- if $.Values.debug }}
       error_log   /var/log/nginx/error.log info;
       {{- else }}
@@ -42,12 +38,6 @@ data:
         alias /var/www/static/;
       }
 
-      # Protected media
-      location /media-internal/ {
-        internal;  # Cannot be accessed from external calls
-        alias /media/;
-      }
-
       # Finally, send all non-media requests to the Django server.
       location / {
         proxy_pass http://127.0.0.1:{{ $.Values.app.port }};
@@ -61,4 +51,3 @@ data:
         include    /etc/nginx/uwsgi_params; # or the uwsgi_params you installed manually
       }
     }
-    {{- end }}
