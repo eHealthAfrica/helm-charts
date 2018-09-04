@@ -73,7 +73,7 @@ spec:
             readOnly: true
       {{ end }}
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.geoserver.repository }}:{{ .Values.geoserver.tag | default .Chart.AppVersion }}"
         ports:
           - containerPort: 8080
         livenessProbe:

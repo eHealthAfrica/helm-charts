@@ -7,12 +7,14 @@ application:
   secret: secrets
   data_mount: /opt/geoserver/data_dir
 
-url_prefix: kaduna-geoserver
-domain: ehealthafrica.org 
+url_prefix: geoserver
+domain: thedomain.tld
 
-image:
+geoserver:
   repository: kartoza/geoserver
   tag: 2.13.0
+
+image:
   pullPolicy: IfNotPresent
 
 service:
@@ -20,27 +22,6 @@ service:
   externalPort: 8080
   internalPort: 8080
   port: 8080
-
-ingress:
-  enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  path: /
-  hosts:
-    - geoserver-kaduna.ehealthafrica.org
-  tls:
-   - secretName: ehealthafrica-wildcard
-     hosts:
-       - geoserver-kaduna.ehealthafrica.org
-
-ingress:
-  enabled: true
-  certsecret: ehealthafrica-wildcard
-  hosts:
-    - odk.aether.local
-  annotations:
-    nginx.ingress.kubernetes.io/ingress.class: "nginx"
 
 
 
