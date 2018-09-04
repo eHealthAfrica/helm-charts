@@ -1,7 +1,6 @@
 replicaCount: 3
 pullPolicy: Always
 debug: false
-ums_url: ""
 
 app:
   command: start
