@@ -12,6 +12,7 @@ service:
   type: NodePort
   externalPort: 80
   internalPort: 80
+webserverPort: 8000
 name: gather
 environment: "prod"
 ums_url: ""
