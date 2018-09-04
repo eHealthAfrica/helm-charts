@@ -55,5 +55,3 @@ spec:
             value: {{ .Values.app.esConsumerConfigPath }}
           - name: ES_CONSUMER_KAFKA_CONFIG_PATH
             value: {{ .Values.app.esConsumerKafkaConfigPath }}
-          - name: INDEX_PATH
-            value: "/dev/null"
