@@ -108,8 +108,6 @@ spec:
           value: {{ . | quote }}
         {{- end -}}
         {{ end }}
-        - name: HOSTNAME
-          value: "{{ .Values.url_prefix }}.{{ .Values.domain }}"
         - name: GEOSERVER_DATA_DIR
           value: {{ .Values.application.data_mount }}
         - name: PGUSER

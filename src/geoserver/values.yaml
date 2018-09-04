@@ -7,9 +7,6 @@ application:
   secret: secrets
   data_mount: /opt/geoserver/data_dir
 
-url_prefix: geoserver
-domain: thedomain.tld
-
 geoserver:
   repository: kartoza/geoserver
   tag: 2.13.0
