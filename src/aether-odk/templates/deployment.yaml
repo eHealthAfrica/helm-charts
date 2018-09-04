@@ -112,11 +112,11 @@ spec:
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket_name }}
         - name: CAS_SERVER_URL
-          value: "https://{{ .Values.ums_url }}.ehealthafrica.org"
+          value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Values.trusted_origins }}
+          value: "{{ .Values.trusted_origins | default ".{{ Values.domain }}" }}"
         - name: HOSTNAME
           value: "{{ .Values.url_prefix }}.{{ .Values.domain }}"
         - name: DJANGO_SECRET_KEY
