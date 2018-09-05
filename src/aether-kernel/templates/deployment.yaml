@@ -206,7 +206,7 @@ spec:
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
         - name: KERNEL_READONLY_DB_USERNAME
-          value: {{ .Values.app.readonly_user }}
+          value: {{ .Values.app.db.readonly_user }}
         - name: KERNEL_READONLY_DB_PASSWORD
           valueFrom:
             secretKeyRef:
