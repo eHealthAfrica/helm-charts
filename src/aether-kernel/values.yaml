@@ -12,5 +12,10 @@ app:
   setup_command: setup
   secret: kernel-secrets
   admin_user: admin
-  readonly_user: readonlyuser
   port: 8000
+  db:
+    name:
+    host:
+    port:
+    user:
+    readonly_user: readonlyuser
