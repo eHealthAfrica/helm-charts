@@ -3,7 +3,16 @@ entries:
   aether-kernel:
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2018-08-28T13:30:05.903402+02:00
+    created: 2018-09-04T17:49:40.553948112+02:00
+    description: eHealthAfrica's Aether-Kernel Helm chart
+    digest: f517fdef7cb8645c4f6ccf294043ccfb24daf44dc33707fa5f41d2af631be7aa
+    name: aether-kernel
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v1
+    appVersion: 0.8.0
+    created: 2018-09-04T17:46:17.536293908+02:00
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: bcd9fe832ba6c7c7d17c20aef07ee952cde881ae481b094144b90bc1dc963517
     name: aether-kernel
@@ -13,7 +22,7 @@ entries:
   aether-odk:
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2018-08-28T13:30:05.903825+02:00
+    created: 2018-09-04T17:49:40.554300857+02:00
     description: eHealthAfrica's ODK Helm chart
     digest: f71ddf6c3a6c6f30c447227459943c449df8019a9feb33a512049e37a3d9b31a
     name: aether-odk
@@ -23,11 +32,59 @@ entries:
   aether-ui:
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2018-08-28T13:30:05.904252+02:00
+    created: 2018-09-04T17:49:40.554646426+02:00
     description: eHealthAfrica's Aether-UI Helm chart
     digest: b084b0d112be9cc25932bc4ef8fa60bdcd416d66cb4c1e6a1af9ee418bb7d5bd
     name: aether-ui
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-0.0.1.tgz
     version: 0.0.1
-generated: 2018-08-28T13:30:05.902386+02:00
+  geoserver:
+  - apiVersion: v1
+    appVersion: 2.13.0
+    created: 2018-09-04T17:49:40.55500804+02:00
+    description: A Helm chart for Kubernetes
+    digest: 4598adc84e0ef18e87dc2f50da39432a1d3ee7822a94356f74a2ae00f0d10001
+    name: geoserver
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/geoserver-0.1.0.tgz
+    version: 0.1.0
+  kernel:
+  - apiVersion: v1
+    created: 2018-09-04T17:46:17.539115102+02:00
+    description: A Helm chart for Kubernetes
+    digest: 49fbc81f02a96a449dba13e701d819cdcec952305660d5080167f3d5cd8aec18
+    name: kernel
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/kernel-0.9.0.tgz
+    version: 0.9.0
+  odk:
+  - apiVersion: v1
+    created: 2018-09-04T17:46:17.539883375+02:00
+    description: A Helm chart for Kubernetes
+    digest: 104a779d5254244b87ca0f23bbdfc707f618515654ae4f4dca5e1f80f9539e25
+    name: odk
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/odk-0.8.0.tgz
+    version: 0.8.0
+  producer:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: 2018-09-04T17:46:17.540360723+02:00
+    description: A Helm chart for Kubernetes
+    digest: b0deace2d50ee0e991ae58a45e794b4b4e6a2f7e0a4b6616a736ad15e1644db1
+    name: producer
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/producer-0.1.0.tgz
+    version: 0.1.0
+  ui:
+  - apiVersion: v1
+    appVersion: 0.9.0
+    created: 2018-09-04T17:46:17.541139456+02:00
+    description: eHealthAfrica's Aether-UI Helm chart
+    digest: 84e32c4448c9a287147c2d1767c94b20de7db1678899e741b1b6c4905e0bd1e6
+    name: ui
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/ui-0.1.0.tgz
+    version: 0.1.0
+generated: 2018-09-04T17:49:40.553381602+02:00
