@@ -1,4 +1,4 @@
-replicaCount: 3
+replicaCount: 1
 application:
   secret: secrets
   data_mount: /opt/geoserver/data_dir
