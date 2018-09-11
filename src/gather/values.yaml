@@ -21,11 +21,9 @@ namespace:
   create: false
 app:
   command: start
-  secret: secrets
   admin_user: admin
   db:
     host: 127.0.0.1
-    secret: database-credentials
 provider:
   aws: false
   gcp: false
