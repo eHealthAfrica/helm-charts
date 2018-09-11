@@ -105,6 +105,10 @@ spec:
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket }}
+        {{ if .Values.provider.gcp }}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: {{ .Values.app.storage.bucket.credentialsPath }}
+        {{ end }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -309,6 +313,11 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/gcp
+          name: google-bucket-credentials
+          readOnly: true
+        {{ end }}
       volumes:
       - name: static-assets-volume
         emptyDir: {}
@@ -323,4 +332,7 @@ spec:
       - name: cloudsql-instance-credentials
         secret:
           secretName: cloudsql-instance-credentials
+      - name: google-bucket-credentials
+        secret:
+          secretName: {{ .Values.app.storage.bucket.credentialsSecret }}
       {{ end }}
