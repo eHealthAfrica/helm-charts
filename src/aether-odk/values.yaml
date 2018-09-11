@@ -28,13 +28,9 @@ app:
   secret: odk-secrets
   data_mount: /media
   admin_user: admin
-database:
-  secret: database-credentials
 provider:
   aws: false
 ingress:
   enabled: true
   hosts:
     - odk.aether.local
-  annotations:
-    nginx.ingress.kubernetes.io/ingress.class: "nginx"

@@ -110,7 +110,11 @@ spec:
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
-          value: {{ .Values.app.storage.bucket_name }}
+          value: {{ .Values.app.storage.bucket.name }}
+        {{ if .Values.provider.gcp }}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: {{ .Values.app.storage.bucket.credentialsPath }}
+        {{ end }}
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
@@ -180,6 +184,11 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/gcp
+          name: google-bucket-credentials
+          readOnly: true
+        {{ end }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -205,5 +214,8 @@ spec:
       - name: cloudsql-instance-credentials
         secret:
           secretName: cloudsql-instance-credentials
+      - name: google-bucket-credentials
+        secret:
+          secretName: {{ .Values.app.storage.bucket.credentialsSecret }}
       {{ end }}
       restartPolicy: Always
