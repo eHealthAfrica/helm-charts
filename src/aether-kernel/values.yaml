@@ -1,11 +1,11 @@
 replicaCount: 3
 pullPolicy: Always
-environment: "prod"
 debug: false
 ums_url: ""
 
-image:
-  repository: "ehealthafrica/aether-kernel"
+kernel:
+  repository: "ehealthafrica/aether-kernel-testing"
+  tag: "mourino"
 
 app:
   command: start
