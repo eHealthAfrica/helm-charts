@@ -29,7 +29,7 @@ redis:
   name: redis
   data_mount: /data
   host: redis
-  port: 6379
+  port: "6379"
   db: couchdb-sync
 couchdb:
   name: couchdb
