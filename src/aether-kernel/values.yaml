@@ -1,10 +1,9 @@
 replicaCount: 3
 pullPolicy: Always
-environment: "prod"
 debug: false
 ums_url: ""
 
-image:
+kernel:
   repository: "ehealthafrica/aether-kernel"
 
 app:
