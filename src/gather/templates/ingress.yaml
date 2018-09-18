@@ -19,7 +19,7 @@ spec:
     {{- range .Values.ingress.hosts }}
     - {{ . }}
     {{- end }}
-    {{ if .Values.ingress.ssl.letsencrypt }}
+    {{ if .Values.ingress.ssl }}
     secretName: {{ .Values.ingress.ssl.cert_secret }}
     {{ end }}
   rules:
