@@ -1,8 +1,8 @@
 # Default values for gather.
 # Declare variables to be passed into your templates.
-replicaCount: 3
+replicaCount: 1
 pullPolicy: Always
-image:
+gather:
   repository: "ehealthafrica/gather"
   # Use `--set image.tag` in the command line to overwrite the version
   # tag: {{ .Chart.AppVersion }}

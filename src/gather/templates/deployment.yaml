@@ -34,20 +34,14 @@ spec:
               name: {{ .Values.app.db.secret }}
               key: password
         - name: DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: gather-database-user
+          value:  {{ .Values.app.db.user }}
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: gather-database-password
         - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: gather-database-name
+          value: {{ .Values.app.db.name }}
         {{- if .Values.app.extra_env_vars -}}
         {{- range $key, $value := .Values.app.extra_env_vars }}
         - name: {{ $key }}
@@ -129,8 +123,9 @@ spec:
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.aether.odk.secret }}
+              name: {{ .Values.app.secret }}
               key: gather-django-admin-token
+        {{ if .Values.aether.odk.enabled }}
         - name: AETHER_ODK_TOKEN
           valueFrom:
             secretKeyRef:
@@ -138,6 +133,7 @@ spec:
               key: odk-django-admin-token
         - name: AETHER_ODK_URL
           value: {{ .Values.aether.odk.url }}
+         {{ end }}
         - name: AETHER_KERNEL_URL_TEST
           value: {{ .Values.aether.kernelTest }}
         - name: AETHER_KERNEL_TOKEN
@@ -156,10 +152,7 @@ spec:
         - name: TESTING
           value: {{ if .Values.testing }}"1"{{ else }}""{{ end }}
         - name: PGUSER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: gather-database-user
+          value: {{ .Values.app.db.user }}
         - name: PGPORT
           value: "5432"
         - name: PGHOST
@@ -170,15 +163,9 @@ spec:
               name: {{ .Values.app.secret }}
               key: gather-database-password
         - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: gather-database-name
+          value: {{ .Values.app.db.name }}
         - name: PGDATABASE
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: gather-database-name
+          value: {{ .Values.app.db.name }}
         # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
         # which are using different ports in different environments. Once all
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
