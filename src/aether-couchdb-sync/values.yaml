@@ -1,54 +1,17 @@
-# Default values for couchdb-sync.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
 replicaCount: 3
-pullPolicy: IfNotPresent
-couchdbsync:
-  repository: "ehealthafrica/aether-couchdb-sync"
-  # Use `--set image.tag` in the command line to overwrite the version
-  # tag: {{ .Chart.AppVersion }}
-name: couchdb-sync
-project: aether
-service:
-  name: nginx
-  type: NodePort
-  externalPort: 80
-  internalPort: 80
-environment: "dev"
-ums_url: ums-dev
-kernel_url: http://kernel
-kernel_url_test: http://kernel
-domain: aether.local
-trusted_origins: .aether.local
+pullPolicy: Always
+environment: "prod"
 debug: false
-testing: false
-webserverPort: 8000
-namespace:
-  create: false
-redis:
-  name: redis
-  data_mount: /data
-  host: redis
-  port: 6379
-  db: couchdb-sync
-couchdb:
-  name: couchdb
-  url: http://couchdb:5984
-  user: admin
-  port: 5484
-  clusterSize: 1
+ums_url: ""
+image:
+  repository: "ehealthafrica/aether-couchdb-sync"
 app:
   command: start
+  setup_command: setup
   secret: couchdb-sync-secrets
-  data_mount: /media
   admin_user: admin
-database:
-  secret: database-credentials
-provider:
-  aws: false
-ingress:
-  enabled: true
-  hosts:
-    - couchdb-sync.aether.local
-  annotations:
-    nginx.ingress.kubernetes.io/ingress.class: "nginx"
+  port: 8000
+  db:
+    name:
+    host:
+    user:

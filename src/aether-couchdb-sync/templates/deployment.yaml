@@ -93,8 +93,6 @@ spec:
           value: {{ . | quote }}
         {{- end -}}
         {{ end }}
-        - name: MEDIA_ROOT
-          value: {{ .Values.app.data_mount }}
         - name: CAS_SERVER_URL
           value: "https://{{ .Values.ums_url }}.ehealthafrica.org"
         - name: CSRF_COOKIE_DOMAIN
@@ -151,12 +149,9 @@ spec:
               name: {{ .Values.app.secret }}
               key: couchdb-sync-database-password
         - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: couchdb-sync-database-name
+          value: {{ Values.app.db.name }}
         - name: WEB_SERVER_PORT
-          value: {{ quote .Values.webserverPort }}
+          value: {{ quote .Values.app.port }}
         - name: COUCHDB_URL
           value: {{ .Values.couchdb.url }}
         - name: COUCHDB_USER
@@ -185,8 +180,6 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -196,10 +189,7 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: couchdb-sync-nginx-config
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
       imagePullSecrets:
-      - name: regsecret
       volumes:
       - name: {{ .Chart.Name }}
         persistentVolumeClaim:
