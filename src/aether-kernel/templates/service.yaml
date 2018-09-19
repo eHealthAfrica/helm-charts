@@ -16,4 +16,3 @@ spec:
       name: http
   selector:
     app: {{ .Chart.Name }}
-    release: {{ .Release.Name }}
