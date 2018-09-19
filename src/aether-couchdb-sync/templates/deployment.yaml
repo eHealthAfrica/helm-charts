@@ -73,7 +73,7 @@ spec:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
             - name: Host
-              value: {{ .Values.url }}
+              value: {{ .Chart.Name }}.{{ .Values.domain }}
         readinessProbe:
           initialDelaySeconds: 5
           periodSeconds: 10
@@ -84,7 +84,7 @@ spec:
             - name: X-Kubernetes-Health-Check
               value: check
             - name: Host
-              value: {{ .Values.url }}
+              value: {{ .Chart.Name }}.{{ .Values.domain }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         env:
         {{- if .Values.extra_env_vars -}}
@@ -169,7 +169,7 @@ spec:
         - name: REDIS_HOST
           value: {{ .Values.redis.host }}
         - name: REDIS_PORT
-          value: {{ .Values.redis.port }}
+          value: "6379"
         - name: REDIS_DB
           value: {{ .Values.redis.db }}
         - name: REDIS_PASSWORD
@@ -198,34 +198,6 @@ spec:
           name: couchdb-sync-nginx-config
         - name: {{ .Chart.Name }}
           mountPath: {{ .Values.app.data_mount }}
-      - name: redis
-        image: redis:alpine
-        command: ['redis-server', '--requirepass', '${REDIS_PASSWORD}']
-        ports:
-        - containerPort: 6379
-        livenessProbe:
-          exec:
-            command:
-            - redis-cli
-            - ping
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        readinessProbe:
-          exec:
-            command:
-            - redis-cli
-            - ping
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        env:
-        - name: REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: redis-password
-        volumeMounts:
-        - mountPath: {{ .Values.couchdb.data_mount }}
-          name: {{ .Chart.Name }}
       imagePullSecrets:
       - name: regsecret
       volumes:

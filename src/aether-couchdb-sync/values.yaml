@@ -29,38 +29,14 @@ redis:
   name: redis
   data_mount: /data
   host: redis
-  port: "6379"
+  port: 6379
   db: couchdb-sync
 couchdb:
   name: couchdb
-  image:
-    repository: couchdb
-    tag: 1.7.1
-  ## Sidecar that connects the individual Pods into a cluster
-  helperImage:
-    repository: kocolosk/couchdb-statefulset-assembler
-    tag: 1.1.0
-    pullPolicy: IfNotPresent
   url: http://couchdb:5984
   user: admin
   port: 5484
   clusterSize: 1
-  podManagementPolicy: Parallel
-  ## erlangFlags is a map that is passed to the Erlang VM as flags using the
-## ERL_FLAGS env. `name` and `setcookie` flags are minimally required to
-## establish connectivity between cluster nodes.
-## ref: http://erlang.org/doc/man/erl.html#init_flags
-  erlangFlags:
-    name: couchdb
-    setcookie: monster
-  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
-  resources: {}
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # limits:
-  #  cpu: 56
-  #  memory: 256Gi
 app:
   command: start
   secret: couchdb-sync-secrets
