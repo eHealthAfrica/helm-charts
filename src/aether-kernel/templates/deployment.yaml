@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Chart.Name }}
     chart: {{ template "kernel.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -12,13 +12,13 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
-      release: {{ .Release.Name }}
+      app: {{ .Chart.Name }}
+      release: {{ .Chart.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
-        release: {{ .Release.Name }}
+        app: {{ .Chart.Name }}
+        release: {{ .Chart.Name }}
     spec:
       initContainers:
       - name: init-pg
@@ -91,11 +91,11 @@ spec:
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: "{{ .Values.url }} | default {{ .Chart.Name }}.{{ .Values.domain }}"
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: "{{ .Values.url }} | default {{ .Chart.Name }}.{{ .Values.domain }}"
         - name: HOSTNAME
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: "{{ .Values.url }} | default {{ .Chart.Name }}.{{ .Values.domain }}"
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
@@ -164,11 +164,11 @@ spec:
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: "{{ .Values.url }} | default {{ .Chart.Name }}.{{ .Values.domain }}"
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: "{{ .Values.url }} | default {{ .Chart.Name }}.{{ .Values.domain }}"
         - name: HOSTNAME
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: "{{ .Values.url }} | default {{ .Chart.Name }}.{{ .Values.domain }}"
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME

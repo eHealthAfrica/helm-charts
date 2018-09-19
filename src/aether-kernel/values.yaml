@@ -2,10 +2,9 @@ replicaCount: 3
 pullPolicy: Always
 debug: false
 ums_url: ""
-
 kernel:
+  url: "kernel.aether.local"
   repository: "ehealthafrica/aether-kernel"
-
 app:
   command: start
   setup_command: setup
