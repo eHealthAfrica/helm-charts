@@ -105,7 +105,7 @@ spec:
         imagePullPolicy: {{ .Values.pullPolicy }}
         env:
         - name: CAS_SERVER_URL
-          value: "{{ .Values.ums_url }}"
+          value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
@@ -129,28 +129,28 @@ spec:
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
+              name: {{ .Values.aether.odk.secret }}
               key: gather-django-admin-token
         - name: AETHER_ODK_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
+              name: {{ .Values.aether.odk.secret }}
               key: odk-django-admin-token
         - name: AETHER_ODK_URL
-          value: {{ .Values.odk_url }}
+          value: {{ .Values.aether.odk.url }}
         - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.kernel_url_test }}
+          value: {{ .Values.aether.kernelTest }}
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
+              name: {{ .Values.aether.kernel.secrets }}
               key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.kernel_url }}
+          value: {{ .Values.aether.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.kernel_url_test }}
+          value: {{ .Values.aether.kernel.urlTest }}
         - name: AETHER_MODULES
-          value: {{ .Values.aether_modules }}
+          value: {{ .Values.aether.modules }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
