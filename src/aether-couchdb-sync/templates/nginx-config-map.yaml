@@ -26,12 +26,6 @@ data:
         alias /var/www/static/;
       }
 
-      # Protected media
-      location /media-internal/ {
-        internal;  # Cannot be accessed from external calls
-        alias /media/;
-      }
-
       location /_couchdb {
         rewrite /_couchdb/(.*) /$1 break;
         proxy_pass {{ .Values.app.couchdb.url }};
