@@ -3,13 +3,20 @@ pullPolicy: Always
 environment: "prod"
 debug: false
 ums_url: ""
-image:
-  repository: "ehealthafrica/aether-couchdb-sync"
+service:
+  name: nginx
+  type: NodePort
+  externalPort: 80
+  internalPort: 80
 app:
   command: start
+  rq:
+    command: start_rq
   setup_command: setup
   secret: couchdb-sync-secrets
   admin_user: admin
+  repository: "ehealthafrica/aether-couchdb-sync"
+  django_storage_backend: filesystem
   port: 8000
   db:
     name:

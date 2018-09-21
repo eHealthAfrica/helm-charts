@@ -22,10 +22,7 @@ spec:
         command: ['bash', '-c', './scripts/init.sh']
         env:
         - name: PGHOST
-          valueFrom :
-            secretKeyRef:
-              name: {{ .Values.database.secret }}
-              key: host
+          value: {{ .Values.app.db.host }}
         - name: PGUSER
           valueFrom:
             secretKeyRef:
@@ -37,28 +34,20 @@ spec:
               name: {{ .Values.database.secret }}
               key: password
         - name: DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: couchdb-sync-database-user
+          value: {{ .Values.app.db.user }}
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: couchdb-sync-database-password
         - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: couchdb-sync-database-name
+          value: {{ .Values.app.db.name }}
         volumeMounts:
         - mountPath: /scripts
           name: couchdb-sync-init
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.couchdbsync.repository }}:{{ .Values.couchdbsync.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         ports:
         - containerPort: 8000
         args:
@@ -94,7 +83,109 @@ spec:
         {{- end -}}
         {{ end }}
         - name: CAS_SERVER_URL
-          value: "https://{{ .Values.ums_url }}.ehealthafrica.org"
+          value: {{ .Values.ums_url }}
+        - name: CSRF_COOKIE_DOMAIN
+          value: {{ .Values.domain }}
+        - name: CSRF_TRUSTED_ORIGINS
+          value: .{{ .Values.domain }}
+        - name: HOSTNAME
+          value: "{{ .Values.url_prefix }}.{{ .Values.domain }}"
+        - name: DJANGO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: couchdb-sync-django-secret-key
+        - name: DJANGO_STORAGE_BACKEND
+          value: {{ .Values.app.django_storage_backend }}
+        - name: ADMIN_USERNAME
+          value: {{ .Values.app.admin_user }}
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: couchdb-sync-django-admin-password
+        - name: ADMIN_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: couchdb-sync-django-token
+        - name: AETHER_KERNEL_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.kernel.secret }}
+              key: admin-token
+        - name: AETHER_KERNEL_URL
+          value: {{ .Values.app.kernel.url }}
+        - name: AETHER_KERNEL_URL_TEST
+          value: {{ .Values.kernel_url_test }}
+        - name: DEBUG
+          value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
+        - name: TESTING
+          value: {{ if .Values.testing }}"1"{{ else }}""{{ end }}
+        - name: PGUSER
+          value: {{ .Values.app.db.user }}
+        - name: PGPORT
+          value: "5432"
+        - name: PGHOST
+          value: {{ .Values.app.db.host }}
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: couchdb-sync-database-password
+        - name: DB_NAME
+          value: {{ .Values.app.db.name }}
+        - name: WEB_SERVER_PORT
+          value: {{ quote .Values.app.port }}
+        - name: COUCHDB_URL
+          value: {{ .Values.app.couchdb.url }}
+        - name: COUCHDB_USER
+          value: {{ .Values.app.couchdb.user }}
+        - name: COUCHDB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.couchdb.secret }}
+              key: adminPassword
+        - name: REDIS_HOST
+          value: {{ .Values.app.redis.host }}
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_DB
+          value: {{ .Values.app.redis.db }}
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.redis.secret }}
+              key: redis-password
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: google-client-id
+        volumeMounts:
+        - mountPath: /var/www/static
+          name: static-assets-volume
+      - name: {{ .Chart.Name }}-rq
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
+        args:
+        - {{ .Values.app.rq.command }}
+        livenessProbe:
+          exec:
+            command:
+            - ./entrypoint.sh
+            - health_rq
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        env:
+        {{- if .Values.extra_env_vars -}}
+        {{- range $key, $value := .Values.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ . | quote }}
+        {{- end -}}
+        {{ end }}
+        - name: CAS_SERVER_URL
+          value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
@@ -106,25 +197,27 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: couchdb-sync-django-secret-key
+        - name: DJANGO_STORAGE_BACKEND
+          value: {{ .Values.app.django_storage_backend }}
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
         - name: ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: couchdb-sync-admin-password
+              key: couchdb-sync-django-admin-password
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: couchdb-sync-token
+              key: couchdb-sync-django-token
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: kernel-token
+              name: {{ .Values.app.kernel.secret }}
+              key: admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.kernel_url }}
+          value: {{ .Values.app.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
           value: {{ .Values.kernel_url_test }}
         - name: DEBUG
@@ -132,45 +225,39 @@ spec:
         - name: TESTING
           value: {{ if .Values.testing }}"1"{{ else }}""{{ end }}
         - name: PGUSER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: couchdb-sync-database-user
+          value: {{ .Values.app.db.user }}
         - name: PGPORT
           value: "5432"
         - name: PGHOST
-          valueFrom :
-            secretKeyRef:
-              name: {{ .Values.database.secret }}
-              key: host
+          value: {{ .Values.app.db.host }}
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: couchdb-sync-database-password
         - name: DB_NAME
-          value: {{ Values.app.db.name }}
+          value: {{ .Values.app.db.name }}
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.app.port }}
         - name: COUCHDB_URL
-          value: {{ .Values.couchdb.url }}
+          value: {{ .Values.app.couchdb.url }}
         - name: COUCHDB_USER
-          value: {{ .Values.couchdb.user }}
+          value: {{ .Values.app.couchdb.user }}
         - name: COUCHDB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: couchdb-password
+              name: {{ .Values.app.couchdb.secret }}
+              key: adminPassword
         - name: REDIS_HOST
-          value: {{ .Values.redis.host }}
+          value: {{ .Values.app.redis.host }}
         - name: REDIS_PORT
           value: "6379"
         - name: REDIS_DB
-          value: {{ .Values.redis.db }}
+          value: {{ .Values.app.redis.db }}
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
+              name: {{ .Values.app.redis.secret }}
               key: redis-password
         - name: GOOGLE_CLIENT_ID
           valueFrom:
@@ -191,9 +278,6 @@ spec:
           name: couchdb-sync-nginx-config
       imagePullSecrets:
       volumes:
-      - name: {{ .Chart.Name }}
-        persistentVolumeClaim:
-          claimName: {{ .Chart.Name }}
       - name: static-assets-volume
         emptyDir: {}
       - name: couchdb-sync-nginx-config
