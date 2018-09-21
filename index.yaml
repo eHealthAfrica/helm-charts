@@ -1,18 +1,28 @@
 apiVersion: v1
 entries:
+  aether-couchdb-sync:
+  - apiVersion: v1
+    appVersion: 0.9.1
+    created: 2018-09-21T15:19:41.421061+02:00
+    description: eHealthAfrica's couchdb sync Helm chart
+    digest: 396b1c22a7edfe76d98815d5a103996a173f18a61d8cb63231d6a8efb90c5927
+    name: aether-couchdb-sync
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/aether-couchdb-sync-0.0.1.tgz
+    version: 0.0.1
   aether-kernel:
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2018-09-11T14:55:45.394398+02:00
+    created: 2018-09-21T15:19:41.422061+02:00
     description: eHealthAfrica's Aether-Kernel Helm chart
-    digest: 11ec48ec1ead83cd75ef3d4eb8cc8847968d65b7ce3332b6b911c6865e48acc2
+    digest: da26cf2c5ef130ab56aef09b3202258f5be185b5bb2a86d57954fe46c897091f
     name: aether-kernel
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-0.0.2.tgz
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2018-09-11T14:55:45.39412+02:00
+    created: 2018-09-21T15:19:41.421714+02:00
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: bcd9fe832ba6c7c7d17c20aef07ee952cde881ae481b094144b90bc1dc963517
     name: aether-kernel
@@ -22,7 +32,7 @@ entries:
   aether-odk:
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2018-08-28T13:30:05.903825+02:00
+    created: 2018-09-21T15:19:41.422456+02:00
     description: eHealthAfrica's ODK Helm chart
     digest: f71ddf6c3a6c6f30c447227459943c449df8019a9feb33a512049e37a3d9b31a
     name: aether-odk
@@ -32,11 +42,11 @@ entries:
   aether-ui:
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2018-08-28T13:30:05.904252+02:00
+    created: 2018-09-21T15:19:41.422937+02:00
     description: eHealthAfrica's Aether-UI Helm chart
     digest: b084b0d112be9cc25932bc4ef8fa60bdcd416d66cb4c1e6a1af9ee418bb7d5bd
     name: aether-ui
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-0.0.1.tgz
     version: 0.0.1
-generated: 2018-09-11T14:55:45.393401+02:00
+generated: 2018-09-21T15:19:41.420324+02:00
