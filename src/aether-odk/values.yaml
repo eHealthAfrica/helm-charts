@@ -30,6 +30,7 @@ app:
   secret: odk-secrets
   data_mount: /media
   admin_user: admin
+  port: 8000
 database:
   secret: database-credentials
 provider:
