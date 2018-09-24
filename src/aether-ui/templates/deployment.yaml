@@ -95,6 +95,13 @@ spec:
               secretKeyRef:
                 name: {{ .Values.app.secrets }}
                 key: ui-django-secret-key
+          {{ if .Values.sentry.enabled }}
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.sentry.dsn }}
+                key: sentry-dsn
+          {{ end }}
           - name: ADMIN_USERNAME
             value: {{ .Values.app.adminUser }}
           - name: ADMIN_PASSWORD

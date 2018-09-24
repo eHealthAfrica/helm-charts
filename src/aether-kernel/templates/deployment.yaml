@@ -228,6 +228,13 @@ spec:
           value: {{ .Release.Name }}.{{ .Values.domain }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
+        {{ if .Values.sentry.enabled }}
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.sentry.dsn }}
+              key: sentry-dsn
+        {{ end }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket }}
         - name: DJANGO_SECRET_KEY
