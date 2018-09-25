@@ -165,7 +165,7 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
-      - name: {{ .Chart.Name }}-rq
+      - name: {{ .Chart.Name }}-rq-scheduler
         image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         args:
         - {{ .Values.app.rq.command }}
