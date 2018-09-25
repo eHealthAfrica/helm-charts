@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Chart.Name }}
     chart: {{ template "kernel.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -12,12 +12,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Chart.Name }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
     spec:
       initContainers:
@@ -96,11 +96,11 @@ spec:
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: .{{ .Values.domain }}
         - name: HOSTNAME
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.app.url }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
@@ -177,7 +177,7 @@ spec:
         - name: CSRF_TRUSTED_ORIGINS
           value: .{{ .Values.domain }}
         - name: HOSTNAME
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.app.url }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
@@ -235,7 +235,7 @@ spec:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
             - name: Host
-              value: {{ .Release.Name }}.{{ .Values.domain }}
+              value: {{ .Values.app.url }}
         readinessProbe:
           httpGet:
             path: /health
@@ -244,7 +244,7 @@ spec:
             - name: X-Kubernetes-Health-Check
               value: readinessProbe
             - name: Host
-              value: {{ .Release.Name }}.{{ .Values.domain }}
+              value: {{ .Values.app.url }}
         env:
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
