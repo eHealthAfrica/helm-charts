@@ -1,6 +1,9 @@
 replicaCount: 3
 pullPolicy: Always
 debug: false
+ingress:
+  ssl:
+    letsencrypt: false
 
 app:
   command: start
