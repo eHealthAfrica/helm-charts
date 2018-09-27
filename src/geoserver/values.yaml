@@ -1,21 +1,17 @@
 replicaCount: 1
-application:
+
+app:
   secret: secrets
-  data_mount: /opt/geoserver/data_dir
-
-geoserver:
-  repository: kartoza/geoserver
+  repository: "kartoza/geoserver"
   tag: 2.13.0
-
-image:
   pullPolicy: IfNotPresent
+  data_mount: /opt/geoserver/data_dir
+  port: 8080
 
 service:
   type: ClusterIP
-  externalPort: 8080
-  internalPort: 8080
-  port: 8080
 
 database:
   secret: database-credentials
   instance:
+

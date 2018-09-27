@@ -1,5 +1,5 @@
 {{- $serviceName := include "geoserver.name" . -}}
-{{- $servicePort := .Values.service.externalPort -}}
+{{- $servicePort := .Values.app.port -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:

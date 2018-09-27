@@ -38,23 +38,23 @@ spec:
         - name: DB_USERNAME
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: geoserver-database-user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: geoserver-database-password
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: geoserver-database-name
         volumeMounts:
         - mountPath: /scripts
           name: geoserver-init
         - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.application.data_mount }}
+          mountPath: {{ .Values.app.data_mount }}
         {{ if .Values.provider.gcp }}
         - name: cloudsql-instance-credentials
           mountPath: /secrets/cloudsql
@@ -73,15 +73,15 @@ spec:
             readOnly: true
       {{ end }}
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.geoserver.repository }}:{{ .Values.geoserver.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         ports:
-          - containerPort: 8080
+          - containerPort: {{ .Values.app.port }}
         livenessProbe:
           initialDelaySeconds: 120
           periodSeconds: 10
           httpGet:
             path: /
-            port: 8080
+            port: {{ .Values.app.port }}
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
@@ -92,16 +92,16 @@ spec:
           periodSeconds: 10
           httpGet:
             path: /
-            port: 8080
+            port: {{ .Values.app.port }}
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: check
             - name: Host
               value: {{ .Values.url }}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        imagePullPolicy: {{ .Values.app.pullPolicy }}
         env:
         - name: DEBUG
-          value:  {{ quote .Values.debug }}
+          value:  {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         {{- if .Values.extra_env_vars -}}
         {{- range $key, $value := .Values.extra_env_vars }}
         - name: {{ $key }}
@@ -109,11 +109,11 @@ spec:
         {{- end -}}
         {{ end }}
         - name: GEOSERVER_DATA_DIR
-          value: {{ .Values.application.data_mount }}
+          value: {{ .Values.app.data_mount }}
         - name: PGUSER
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: geoserver-database-user
         - name: PGPORT
           value: "5432"
@@ -125,16 +125,16 @@ spec:
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: geoserver-database-password
         - name: DB_NAME
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.application.secret }}
+              name: {{ .Values.app.secret }}
               key: geoserver-database-name
         volumeMounts:
         - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.application.data_mount }}
+          mountPath: {{ .Values.app.data_mount }}
       imagePullSecrets:
       - name: regsecret
       volumes:
