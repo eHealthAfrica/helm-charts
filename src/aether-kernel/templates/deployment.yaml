@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Release.Name }}
   labels:
     app: {{ .Chart.Name }}
     chart: {{ template "kernel.chart" . }}
@@ -60,8 +60,7 @@ spec:
       - name: init-kernel-setup
         image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
-        args:
-          - {{ .Values.app.setup_command }}
+        command: ['bash', '-c', '/scripts/shell/setup.sh']
         env:
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
@@ -127,10 +126,18 @@ spec:
               key: kernel-readonly-db-password
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.app.port }}
+        volumeMounts:
+        - mountPath: /scripts/shell
+          name: init-setup-sh
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/cloudsql
+          name: cloudsql-instance-credentials
+          readOnly: true
+        {{ end }}
       - name: init-kernel-create-readonly-user
-        image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
-        command: ['python', '/code/sql/create_readonly_user.py']
+        command: ['/bin/sh', '/scripts/shell/create_ro_user.sh']
         env:
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
@@ -188,10 +195,8 @@ spec:
               name: {{ .Values.app.secret }}
               key: kernel-django-secret-key
         volumeMounts:
-        - mountPath: /scripts/python
-          name: init-py-config
-        - mountPath: /scripts
-          name: init-py-config-sh
+        - mountPath: /scripts/shell
+          name: init-create-readonly-user-sh
         {{ if .Values.provider.gcp }}
         - mountPath: /secrets/cloudsql
           name: cloudsql-instance-credentials
@@ -219,7 +224,7 @@ spec:
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
       - name: kernel
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
         args:
         - {{ .Values.app.command }}
@@ -323,10 +328,18 @@ spec:
         emptyDir: {}
       - name: nginx-config
         configMap:
-          name: {{ .Release.Name }}-nginx-config
+          name: {{ .Chart.Name }}-nginx-config
       - name: init-pg-config
         configMap:
-          name: {{ .Release.Name }}-init-pg-config
+          name: {{ .Chart.Name }}-init-pg-config
+          defaultMode: 0744
+      - name: init-create-readonly-user-sh
+        configMap:
+          name: {{ .Chart.Name }}-create-readonly-user-sh
+          defaultMode: 0744
+      - name: init-setup-sh
+        configMap:
+          name: {{ .Chart.Name }}-setup-sh
           defaultMode: 0744
       {{ if .Values.provider.gcp }}
       - name: cloudsql-instance-credentials
