@@ -24,8 +24,16 @@ namespace:
 app:
   command: start
   admin_user: admin
+  secret: gather-secrets
   db:
     host: 127.0.0.1
 provider:
   aws: false
   gcp: false
+aether:
+  odk:
+    enabled: false
+    secret: odk-secrets
+  kernel:
+    secret: kernel-secrets
+  modules: kernel,odk
