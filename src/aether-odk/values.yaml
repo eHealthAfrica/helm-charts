@@ -1,10 +1,8 @@
 # Default values for odk.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-replicaCount: 3
+replicaCount: 1
 pullPolicy: IfNotPresent
-odk:
-  repository: "ehealthafrica/aether-odk"
   # Use `--set image.tag` in the command line to overwrite the version
   # tag: {{ .Chart.AppVersion }}
 name: odk
@@ -24,10 +22,14 @@ webserverPort: 8000
 namespace:
   create: false
 app:
+  repository: "ehealthafrica/aether-odk"
   command: start
   secret: odk-secrets
-  data_mount: /media
   admin_user: admin
+  port: 8000
+  kernel:
+    secret: kernel-secrets
+    url: http://kernel.aether.local
 provider:
   aws: false
 ingress:

@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Release.Name }}
   labels:
     app: {{ .Chart.Name }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
@@ -72,7 +72,7 @@ spec:
             readOnly: true
       {{ end }}
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.odk.repository }}:{{ .Values.odk.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         ports:
         - containerPort: 8000
         args:
@@ -143,12 +143,12 @@ spec:
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: kernel-token
+              name: {{ .Values.app.kernel.secret }}
+              key: admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.kernel_url }}
+          value: {{ .Values.app.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.kernel_url_test }}
+          value: {{ .Values.app.kernel.url_test }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
@@ -180,7 +180,7 @@ spec:
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
         # can be removed.
         - name: WEB_SERVER_PORT
-          value: {{ quote .Values.webserverPort }}
+          value: {{ quote .Values.app.port }}
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
@@ -199,16 +199,15 @@ spec:
         - mountPath: /etc/nginx/conf.d
           name: odk-nginx-config
       imagePullSecrets:
-      - name: regsecret
       volumes:
       - name: static-assets-volume
         emptyDir: {}
       - name: odk-nginx-config
         configMap:
-          name: odk-nginx-config
+          name: {{ .Chart.Name }}-nginx-config
       - name: odk-init
         configMap:
-          name: odk-init
+          name: {{ .Chart.Name }}-init
           defaultMode: 0744
       {{ if .Values.provider.gcp }}
       - name: cloudsql-instance-credentials
