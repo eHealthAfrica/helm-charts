@@ -10,8 +10,8 @@ app:
 
 service:
   type: ClusterIP
+  port: 80
 
 database:
   secret: database-credentials
   instance:
-
