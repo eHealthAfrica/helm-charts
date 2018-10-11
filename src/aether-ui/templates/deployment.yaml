@@ -40,9 +40,9 @@ spec:
               name: {{ .Values.app.db.secret }}
               key: password
         - name: DB_NAME
-          value: {{ .Values.app.rdsDbName }}
+          value: {{ .Values.app.db.name }}
         - name: DB_USERNAME
-          value: {{ .Values.app.rdsDbUser }}
+          value: {{ .Values.app.db.user }}
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -108,13 +108,13 @@ spec:
                 name: {{ .Values.app.secrets }}
                 key: ui-database-password
           - name: PGHOST
-            value: {{ .Values.app.rdsDbHost }}
+            value: {{ .Values.app.db.host }}
           - name: PGUSER
-            value: {{ .Values.app.rdsDbUser }}
+            value: {{ .Values.app.db.user }}
           - name: PGPORT
-            value: {{ quote .Values.app.rdsDbPort }}
+            value: {{ quote .Values.app.db.port }}
           - name: DB_NAME
-            value: {{ .Values.app.rdsDbName }}
+            value: {{ .Values.app.db.name }}
           - name: AETHER_KERNEL_URL
             value: {{ .Values.app.kernelUrl }}
           - name: AETHER_KERNEL_TOKEN
