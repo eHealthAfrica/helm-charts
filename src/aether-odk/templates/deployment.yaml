@@ -54,11 +54,25 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: odk-init
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        {{ end }}
       containers:
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances={{ .Values.database.instance }}=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      {{ end }}
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.odk.repository }}:{{ .Values.odk.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         ports:
         - containerPort: 8000
         args:
@@ -93,14 +107,20 @@ spec:
           value: {{ . | quote }}
         {{- end -}}
         {{ end }}
-        - name: MEDIA_ROOT
-          value: {{ .Values.app.data_mount }}
+        - name: DJANGO_STORAGE_BACKEND
+          value: {{ .Values.app.storage.backend }}
+        - name: BUCKET_NAME
+          value: {{ .Values.app.storage.bucket.name }}
+        {{ if .Values.provider.gcp }}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: {{ .Values.app.storage.bucket.credentialsPath }}
+        {{ end }}
         - name: CAS_SERVER_URL
-          value: "https://{{ .Values.ums_url }}.ehealthafrica.org"
+          value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Values.trusted_origins }}
+          value: "{{ .Values.trusted_origins | default ".{{ Values.domain }}" }}"
         - name: HOSTNAME
           value: "{{ .Values.url_prefix }}.{{ .Values.domain }}"
         - name: DJANGO_SECRET_KEY
@@ -114,21 +134,21 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-admin-password
+              key: odk-django-admin-password
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-token
+              key: odk-django-admin-token
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: kernel-token
+              name: {{ .Values.app.kernel.secret }}
+              key: admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.kernel_url }}
+          value: {{ .Values.app.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.kernel_url_test }}
+          value: {{ .Values.app.kernel.url_test }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
@@ -160,12 +180,15 @@ spec:
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
         # can be removed.
         - name: WEB_SERVER_PORT
-          value: {{ quote .Values.webserverPort }}
+          value: {{ quote .Values.app.port }}
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/gcp
+          name: google-bucket-credentials
+          readOnly: true
+        {{ end }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -175,21 +198,23 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: odk-nginx-config
-        - name: {{ .Chart.Name }}
-          mountPath: {{ .Values.app.data_mount }}
       imagePullSecrets:
-      - name: regsecret
       volumes:
-      - name: {{ .Chart.Name }}
-        persistentVolumeClaim:
-          claimName: {{ .Chart.Name }}
       - name: static-assets-volume
         emptyDir: {}
       - name: odk-nginx-config
         configMap:
-          name: odk-nginx-config
+          name: {{ .Chart.Name }}-nginx-config
       - name: odk-init
         configMap:
-          name: odk-init
+          name: {{ .Chart.Name }}-init
           defaultMode: 0744
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      - name: google-bucket-credentials
+        secret:
+          secretName: {{ .Values.app.storage.bucket.credentialsSecret }}
+      {{ end }}
       restartPolicy: Always
