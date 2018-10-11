@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Chart.Name }}
     chart: {{ template "kernel.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -12,12 +12,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Chart.Name }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
     spec:
       initContainers:
@@ -52,11 +52,15 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: init-pg-config
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/cloudsql
+          name: cloudsql-instance-credentials
+          readOnly: true
+        {{ end }}
       - name: init-kernel-setup
-        image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
-        args:
-        - {{ .Values.app.setup_command }}
+        command: ['bash', '-c', '/scripts/shell/setup.sh']
         env:
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
@@ -91,15 +95,19 @@ spec:
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: .{{ .Values.domain }}
         - name: HOSTNAME
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.app.url }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket }}
+        {{ if .Values.provider.gcp }}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: {{ .Values.app.storage.bucket.credentialsPath }}
+        {{ end }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -118,10 +126,18 @@ spec:
               key: kernel-readonly-db-password
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.app.port }}
+        volumeMounts:
+        - mountPath: /scripts/shell
+          name: init-setup-sh
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/cloudsql
+          name: cloudsql-instance-credentials
+          readOnly: true
+        {{ end }}
       - name: init-kernel-create-readonly-user
-        image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
-        command: ['python', '/code/sql/create_readonly_user.py']
+        command: ['/bin/sh', '/scripts/shell/create_ro_user.sh']
         env:
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
@@ -164,11 +180,11 @@ spec:
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: .{{ .Values.domain }}
         - name: HOSTNAME
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.app.url }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
@@ -178,7 +194,26 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: kernel-django-secret-key
+        volumeMounts:
+        - mountPath: /scripts/shell
+          name: init-create-readonly-user-sh
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/cloudsql
+          name: cloudsql-instance-credentials
+          readOnly: true
+        {{ end }}
       containers:
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances={{ .Values.database.instance }}=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      {{ end }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -189,7 +224,7 @@ spec:
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
       - name: kernel
-        image: "{{ .Values.kernel.repository }}:{{ .Values.kernel.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
         args:
         - {{ .Values.app.command }}
@@ -205,7 +240,7 @@ spec:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
             - name: Host
-              value: {{ .Release.Name }}.{{ .Values.domain }}
+              value: {{ .Values.app.url }}
         readinessProbe:
           httpGet:
             path: /health
@@ -214,7 +249,7 @@ spec:
             - name: X-Kubernetes-Health-Check
               value: readinessProbe
             - name: Host
-              value: {{ .Release.Name }}.{{ .Values.domain }}
+              value: {{ .Values.app.url }}
         env:
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
@@ -283,13 +318,34 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/gcp
+          name: google-bucket-credentials
+          readOnly: true
+        {{ end }}
       volumes:
       - name: static-assets-volume
         emptyDir: {}
       - name: nginx-config
         configMap:
-          name: {{ .Release.Name }}-nginx-config
+          name: {{ .Chart.Name }}-nginx-config
       - name: init-pg-config
         configMap:
-          name: {{ .Release.Name }}-init-pg-config
+          name: {{ .Chart.Name }}-init-pg-config
           defaultMode: 0744
+      - name: init-create-readonly-user-sh
+        configMap:
+          name: {{ .Chart.Name }}-create-readonly-user-sh
+          defaultMode: 0744
+      - name: init-setup-sh
+        configMap:
+          name: {{ .Chart.Name }}-setup-sh
+          defaultMode: 0744
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      - name: google-bucket-credentials
+        secret:
+          secretName: {{ .Values.app.storage.bucket.credentialsSecret }}
+      {{ end }}
