@@ -24,33 +24,27 @@ spec:
         - name: PGHOST
           valueFrom :
             secretKeyRef:
-              name: {{ .Values.database.secret }}
+              name: {{ .Values.app.db.secret }}
               key: host
         - name: PGUSER
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.database.secret }}
+              name: {{ .Values.app.db.secret }}
               key: user
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.database.secret }}
+              name: {{ .Values.app.db.secret }}
               key: password
         - name: DB_USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-database-user
+          value: {{ .Values.app.db.user }}
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: odk-database-password
         - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-database-name
+          value: {{ .Values.app.db.name }}
         volumeMounts:
         - mountPath: /scripts
           name: odk-init
@@ -110,7 +104,7 @@ spec:
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
-          value: {{ .Values.app.storage.bucket.name }}
+          value: {{ .Values.app.storage.bucket }}
         {{ if .Values.provider.gcp }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: {{ .Values.app.storage.bucket.credentialsPath }}
@@ -122,7 +116,7 @@ spec:
         - name: CSRF_TRUSTED_ORIGINS
           value: "{{ .Values.trusted_origins | default ".{{ Values.domain }}" }}"
         - name: HOSTNAME
-          value: "{{ .Values.url_prefix }}.{{ .Values.domain }}"
+          value: "{{ .Values.app.url }}"
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -154,16 +148,13 @@ spec:
         - name: TESTING
           value: {{ if .Values.testing }}"1"{{ else }}""{{ end }}
         - name: PGUSER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-database-user
+          value: {{ .Values.app.db.user }}
         - name: PGPORT
           value: "5432"
         - name: PGHOST
           valueFrom :
             secretKeyRef:
-              name: {{ .Values.database.secret }}
+              name: {{ .Values.app.db.secret }}
               key: host
         - name: PGPASSWORD
           valueFrom:
@@ -171,10 +162,7 @@ spec:
               name: {{ .Values.app.secret }}
               key: odk-database-password
         - name: DB_NAME
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-database-name
+          value: {{ .Values.app.db.name }}
         # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
         # which are using different ports in different environments. Once all
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
