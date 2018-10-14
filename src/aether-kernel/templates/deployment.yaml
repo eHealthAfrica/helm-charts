@@ -188,7 +188,7 @@ spec:
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
-          value: {{ .Values.app.storage.bucket.name }}
+          value: {{ .Values.app.storage.bucket }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
