@@ -12,10 +12,10 @@ spec:
   jobTemplate:
     spec:
       template:
-        {{ if .Values.back.kube2iam }}
+        {{ if .Values.backup.kube2iam }}
         metadata:
           annotations:
-          iam.amazonaws.com/role: {{ .Values.backup.role_arn }}
+          iam.amazonaws.com/role: {{ .Values.backup.iam_role_arn }}
         {{ end }}
         spec:
           containers:
