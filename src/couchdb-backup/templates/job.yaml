@@ -1,0 +1,46 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.backup.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        {{ if .Values.back.kube2iam }}
+        metadata:
+          annotations:
+          iam.amazonaws.com/role: {{ .Values.backup.role_arn }}
+        {{ end }}
+        spec:
+          containers:
+          - name: {{ .Chart.Name }}
+            image:  "{{ .Values.backup.repository }}:{{ .Values.backup.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.pullPolicy }}
+            args:
+              - {{ .Values.backup.command }}
+            env:
+            - name: BUCKET_NAME
+              value: {{ .Values.backup.bucketName }}
+            - name: COUCHDB_SERVICE_NAME
+              value: {{ .Values.backup.couchdb.service }}
+            - name: AWS_KMS_KEY_ARN
+              value: {{ .Values.backup.awsKmsKeyArn }}
+            - name: COUCHDB_USER
+              value: {{ .Values.backup.couchDB.user }}
+            - name: COUCHDB_USER
+              valueFrom:
+              secretKeyRef:
+                name: {{ .Values.backup.couchDB.secret }}
+                key: adminUsername
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+              secretKeyRef:
+                name: {{ .Values.backup.couchDB.secret }}
+                key: adminPassword
+          restartPolicy: OnFailure

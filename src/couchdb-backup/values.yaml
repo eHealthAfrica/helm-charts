@@ -1,0 +1,10 @@
+pullPolicy: Always
+backup:
+  # backup once a hour
+  schedule: '0 */1 * * *'
+  tag: 0.1.0
+  command: backup
+  repository: 'ehealthafrica/couchdb-backup'
+  bucketName: ''
+  couchdbServiceName: ''
+  awsKmsKeyArn: ''
