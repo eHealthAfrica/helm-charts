@@ -15,7 +15,7 @@ spec:
         {{ if .Values.backup.kube2iam }}
         metadata:
           annotations:
-          iam.amazonaws.com/role: {{ .Values.backup.AwsIamRoleArn }}
+            iam.amazonaws.com/role: {{ .Values.backup.AwsIamRoleArn }}
         {{ end }}
         spec:
           containers:
@@ -28,19 +28,23 @@ spec:
             - name: BUCKET_NAME
               value: {{ .Values.backup.bucketName }}
             - name: COUCHDB_SERVICE_NAME
-              value: {{ .Values.backup.couchdb.service }}
+              value: {{ .Values.backup.couchdbService }}
             - name: AWS_KMS_KEY_ARN
               value: {{ .Values.backup.awsKmsKeyArn }}
-            - name: COUCHDB_USER
-              value: {{ .Values.backup.couchdb.user }}
+            - name: AWS_REGION
+              value: {{ .Values.backup.awsRegion }}
+            - name: ENV
+              value: {{ .Values.backup.env }}
+            - name: PROJECT
+              value: {{ .Values.backup.project }}
             - name: COUCHDB_USER
               valueFrom:
               secretKeyRef:
-                name: {{ .Values.backup.couchdb.secret }}
+                name: {{ .Values.backup.couchdbSecret }}
                 key: adminUsername
             - name: COUCHDB_PASSWORD
               valueFrom:
               secretKeyRef:
-                name: {{ .Values.backup.couchdb.secret }}
+                name: {{ .Values.backup.couchdbSecret }}
                 key: adminPassword
           restartPolicy: OnFailure

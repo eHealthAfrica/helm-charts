@@ -261,7 +261,7 @@ entries:
   - apiVersion: v1
     created: 2018-11-19T13:20:55.004735+01:00
     description: A Helm chart for automating CouchDB backups
-    digest: a3626908828eacfa174e9d5a8ca9b845592cf491e1a9196a71e86b0f05538b79
+    digest: 0c1b57baed86ced15f5b90d7e68a4cfc791495100295b8a5849f4b42977f635b
     name: couchdb-backup
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/couchdb-backup-0.1.0.tgz

@@ -8,3 +8,4 @@ backup:
   bucketName: ''
   couchdbServiceName: ''
   awsKmsKeyArn: ''
+  awsRegion: 'eu-west-1'
