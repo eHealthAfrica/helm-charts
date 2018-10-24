@@ -27,6 +27,14 @@ app:
   secret: odk-secrets
   admin_user: admin
   port: 8000
+  storage:
+    backend:
+    bucket:
+  db:
+    name:
+    host:
+    port:
+    user:
   kernel:
     secret: kernel-secrets
     url: http://kernel.aether.local
@@ -36,3 +44,5 @@ ingress:
   enabled: true
   hosts:
     - odk.aether.local
+  ssl:
+    letsencrypt:

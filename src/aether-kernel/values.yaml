@@ -4,20 +4,27 @@ debug: false
 ingress:
   ssl:
     letsencrypt: false
-
+provider:
+  aws:
+  gcp:
 app:
   command: start
   setup_command: setup
   secret: kernel-secrets
   admin_user: admin
   repository: "ehealthafrica/aether-kernel"
+  tag:
   port: 8000
+  storage:
+    backend:
+    bucket:
   db:
     name:
     host:
     port:
     user:
     readonly_user: readonlyuser
+    create_ro_user:
   url: kernel
 service:
   name: nginx
