@@ -268,9 +268,9 @@ spec:
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: .{{ .Values.domain }}
         - name: HOSTNAME
           value: {{ .Release.Name }}.{{ .Values.domain }}
         - name: DJANGO_STORAGE_BACKEND
