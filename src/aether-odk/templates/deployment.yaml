@@ -108,7 +108,7 @@ spec:
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
-          value: {{ .Values.app.storage.bucket }}
+          value: {{ .Values.app.storage.bucket.name }}
         {{ if .Values.provider.gcp }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: {{ .Values.app.storage.bucket.credentialsPath }}
@@ -118,7 +118,7 @@ spec:
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: "{{ .Values.trusted_origins | default ".{{ Values.domain }}" }}"
+          value: .{{ .Values.domain }}
         - name: HOSTNAME
           value: "{{ .Values.app.url }}"
         - name: DJANGO_SECRET_KEY
@@ -144,9 +144,9 @@ spec:
               name: {{ .Values.app.kernel.secret }}
               key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.app.kernel.url }}
+          value: {{ .Values.aether.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.app.kernel.url_test }}
+          value: {{ .Values.aether.kernel.url_test }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
