@@ -42,7 +42,12 @@ provider:
   aws: false
 ingress:
   enabled: true
+  ssl:
+    letsencrypt: false
   hosts:
     - odk.aether.local
-  ssl:
-    letsencrypt:
+service:
+  name: nginx
+  type: NodePort
+  externalPort: 80
+  internalPort: 80

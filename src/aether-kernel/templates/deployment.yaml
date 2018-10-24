@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
     chart: {{ template "kernel.chart" . }}
@@ -73,7 +73,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: admin-token
+              key: kernel-django-admin-token
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
@@ -151,7 +151,14 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: admin-token
+              key: kernel-django-admin-token
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: kernel-database-password
+        - name: PGUSER
+          value: {{ .Values.app.db.user }}
         - name: PGPORT
           value: {{ .Values.app.db.port | default 5432 | quote }}
         - name: PGHOST
@@ -286,12 +293,12 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: admin-token
+              key: kernel-django-admin-token
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: kernel-token
+              key: kernel-django-admin-token
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:

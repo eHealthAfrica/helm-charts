@@ -1,9 +1,9 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Chart.Name }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Chart.Name }}
     chart: {{ template "ui.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -11,12 +11,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Chart.Name }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
     spec:
       initContainers:
@@ -51,8 +51,6 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: init-config
-        - mountPath: /media
-          name: {{ .Chart.Name }}
       containers:
         - name: nginx
           image: nginx:stable-alpine
@@ -116,12 +114,14 @@ spec:
           - name: DB_NAME
             value: {{ .Values.app.db.name }}
           - name: AETHER_KERNEL_URL
-            value: {{ .Values.app.kernelUrl }}
+            value: {{ .Values.aether.kernel.url }}
           - name: AETHER_KERNEL_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.app.secrets }}
-                key: ui-kernel-token
+                name: {{ .Values.aether.kernel.secret }}
+                key: kernel-django-admin-token
+          - name: DJANGO_STORAGE_BACKEND
+            value: 'filesystem'
           - name: DEBUG
             value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
           - name: WEB_SERVER_PORT
@@ -134,8 +134,8 @@ spec:
       - name: static-assets-volume
       - name: nginx-config
         configMap:
-          name: {{ .Release.Name }}-nginx-config
+          name: {{ .Chart.Name }}-nginx-config
       - name: init-config
         configMap:
-          name: {{ .Release.Name }}-init-config
+          name: {{ .Chart.Name }}-init-config
           defaultMode: 0744
