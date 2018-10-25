@@ -16,6 +16,10 @@ spec:
       release: {{ .Release.Name }}
   template:
     metadata:
+      {{ if .Values.kube2iam.enabled }}
+      annotations:
+        iam.amazonaws.com/role: {{ .Values.app.iam.role }}
+      {{ end }}
       labels:
         app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
@@ -112,6 +116,13 @@ spec:
         {{ if .Values.provider.gcp }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: {{ .Values.app.storage.bucket.credentialsPath }}
+        {{ end }}
+        {{ if .Values.sentry.enabled }}
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: sentry-dsn
         {{ end }}
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}

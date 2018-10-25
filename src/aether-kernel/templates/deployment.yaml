@@ -16,6 +16,10 @@ spec:
       release: {{ .Release.Name }}
   template:
     metadata:
+      {{ if .Values.kube2iam.enabled }}
+      annotations:
+        iam.amazonaws.com/role: {{ .Values.app.iam.role }}
+      {{ end }}
       labels:
         app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
@@ -277,6 +281,13 @@ spec:
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ if .Values.sentry.enabled }}
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: sentry-dsn
+        {{ end }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
