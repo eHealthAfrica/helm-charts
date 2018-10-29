@@ -138,7 +138,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.aether.kernel.secret }}
-              key: admin-token
+              key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
           value: {{ .Values.aether.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST

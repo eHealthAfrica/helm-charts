@@ -4,17 +4,25 @@ metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Chart.Version }}
+    chart: {{ template "odk.chart" . }}
+    release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   progressDeadlineSeconds: 180
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      release: {{ .Release.Name }}
   template:
     metadata:
+      {{ if .Values.kube2iam.enabled }}
+      annotations:
+        iam.amazonaws.com/role: {{ .Values.app.iam.role }}
+      {{ end }}
       labels:
         app: {{ .Chart.Name }}
-        release: {{ .Chart.Version }}
+        release: {{ .Release.Name }}
     spec:
       initContainers:
       - name: init
@@ -104,17 +112,32 @@ spec:
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
-          value: {{ .Values.app.storage.bucket }}
+          value: {{ .Values.app.storage.bucket.name }}
+        {{ if .Values.provider.aws }}
+        - name: AWS_S3_REGION_NAME
+          value: {{ .Values.app.storage.bucket.region }}
+        - name: AWS_S3_ENDPOINT_URL
+          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
+        - name: AWS_DEFAULT_ACL
+          value: {{ .Values.app.storage.bucket.default_acl }}
+        {{ end }}
         {{ if .Values.provider.gcp }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: {{ .Values.app.storage.bucket.credentialsPath }}
+        {{ end }}
+        {{ if .Values.sentry.enabled }}
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: sentry-dsn
         {{ end }}
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
-          value: "{{ .Values.trusted_origins | default ".{{ Values.domain }}" }}"
+          value: .{{ .Values.domain }}
         - name: HOSTNAME
           value: "{{ .Values.app.url }}"
         - name: DJANGO_SECRET_KEY
@@ -138,11 +161,11 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.kernel.secret }}
-              key: admin-token
+              key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.app.kernel.url }}
+          value: {{ .Values.aether.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.app.kernel.url_test }}
+          value: {{ .Values.aether.kernel.url_test }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING

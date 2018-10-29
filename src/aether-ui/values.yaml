@@ -1,9 +1,7 @@
-replicaCount: 3
+replicaCount: 1
 pullPolicy: Always
 provider: aws
 debug: false
-# {{ .Release.Name }}{{ .Values.domain }}
-# domain: yourdomain.org
 
 image:
   repository: "ehealthafrica/aether-ui"
@@ -13,6 +11,8 @@ image:
 ingress:
   enabled: true
   path: /
+  ssl:
+    letsencrypt: false
 
 app:
   port: 8000
@@ -20,8 +20,8 @@ app:
   secrets: ui-secrets
   kernelUrl: "http://kernel"
   adminUser: admin
-  db:
-    name: aether_ui
-    user: aether_ui
-    port: 5432
-    host: dev-k8s-eha-im.cpqsfknb8sgc.eu-west-1.rds.amazonaws.com
+service:
+  name: nginx
+  type: NodePort
+  externalPort: 80
+  internalPort: 80

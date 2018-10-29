@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 replicaCount: 1
-pullPolicy: IfNotPresent
+pullPolicy: Always
   # Use `--set image.tag` in the command line to overwrite the version
   # tag: {{ .Chart.AppVersion }}
 name: odk
@@ -15,7 +15,6 @@ environment: "dev"
 kernel_url: http://kernel
 kernel_url_test: http://kernel
 domain: aether.local
-trusted_origins: .aether.local
 debug: false
 testing: false
 webserverPort: 8000
@@ -42,7 +41,12 @@ provider:
   aws: false
 ingress:
   enabled: true
+  ssl:
+    letsencrypt: false
   hosts:
     - odk.aether.local
-  ssl:
-    letsencrypt:
+service:
+  name: nginx
+  type: NodePort
+  externalPort: 80
+  internalPort: 80

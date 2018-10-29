@@ -1,19 +1,19 @@
-Aether UI helm chart
-===
 
-Values:
-* app.adminUser: The admin username (to be created at install time)
-* app.kernelUrl: The URL of the kernel
-* app.db.secrets: The name of the secret resource holding the DB password
-* app.db.host: The DB host name
-* app.db.name: The DB name to be used
-* app.db.port: The DB port
-* app.db.user: The user to connect to the DB
-* debug: Enables debug logs for all containers
-* domain: The domain for the DNS records. Default: `http://RELEASE-NAME.{{ .Values.domain }}`
-* image.repository: The name of the image. Default: _"ehealthafrica/aether-ui"_
-* image.tag: The docker image tag
-* ingress.annotations: A list of annotations for the ingress
-* ingress.enabled: Enable/disable ingress creation. Default: `true`
-* pullPolicy: The `imagePullPolicy` to use. Default: _"Always"_
-* replicaCount: The number of replicas. Default: `3`
+{{- if .Values.ingress.enabled }}
+{{- range .Values.ingress.hosts }}
+  http://{{ . }}
+{{- end }}
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ template "kernel.fullname" . }})
+  export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+     NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+           You can watch the status of by running 'kubectl get svc -w {{ template "kernel.fullname" . }}'
+  export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "kernel.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP:{{ .Values.service.externalPort }}
+{{- else if contains "ClusterIP" .Values.service.type }}
+  export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "kernel.name" . }},release={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl port-forward $POD_NAME 8080:{{ .Values.service.internalPort }}
+{{- end }}

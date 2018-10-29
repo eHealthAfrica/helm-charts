@@ -2,4 +2,4 @@ apiVersion: v1
 appVersion: "3.0.0-rc"
 description: eHealthAfrica's Gather Helm chart
 name: gather
-version: 0.0.1
+version: 0.0.2
