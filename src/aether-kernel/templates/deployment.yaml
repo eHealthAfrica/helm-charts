@@ -108,6 +108,14 @@ spec:
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ if .Values.provider.aws }}
+        - name: AWS_S3_REGION_NAME
+          value: {{ .Values.app.storage.bucket.region }}
+        - name: AWS_S3_ENDPOINT_URL
+          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
+        - name: AWS_DEFAULT_ACL
+          value: {{ .Values.app.storage.bucket.default_acl }}
+        {{ end }}
         {{ if .Values.provider.gcp }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: {{ .Values.app.storage.bucket.credentialsPath }}
@@ -188,6 +196,14 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: kernel-readonly-db-password
+        {{ if .Values.provider.aws }}
+        - name: AWS_S3_REGION_NAME
+          value: {{ .Values.app.storage.bucket.region }}
+        - name: AWS_S3_ENDPOINT_URL
+          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
+        - name: AWS_DEFAULT_ACL
+          value: {{ .Values.app.storage.bucket.default_acl }}
+        {{ end }}
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.app.port }}
         - name: DEBUG
@@ -204,6 +220,14 @@ spec:
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ if .Values.provider.aws }}
+        - name: AWS_S3_REGION_NAME
+          value: {{ .Values.app.storage.bucket.region }}
+        - name: AWS_S3_ENDPOINT_URL
+          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
+        - name: AWS_DEFAULT_ACL
+          value: {{ .Values.app.storage.bucket.default_acl }}
+        {{ end }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -281,6 +305,16 @@ spec:
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ if .Values.provider.aws }}
+        - name: AWS_S3_REGION_NAME
+          value: {{ .Values.app.storage.bucket.region }}
+        - name: AWS_S3_ENDPOINT_URL
+          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
+        - name: AWS_S3_HOST
+          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
+        - name: AWS_DEFAULT_ACL
+          value: {{ .Values.app.storage.bucket.default_acl }}
+        {{ end }}
         {{ if .Values.sentry.enabled }}
         - name: SENTRY_DSN
           valueFrom:
@@ -325,6 +359,10 @@ spec:
           value: {{ .Values.app.db.name }}
         - name: KERNEL_READONLY_DB_USERNAME
           value: {{ .Values.app.db.readonly_user }}
+        {{ if .Values.provider.aws }}
+        - name: AWS_S3_HOST
+          value: {{ .Values.app.storage.bucket.region }}.amazonaws.com
+        {{ end }}
         - name: KERNEL_READONLY_DB_PASSWORD
           valueFrom:
             secretKeyRef:

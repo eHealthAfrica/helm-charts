@@ -113,6 +113,14 @@ spec:
           value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ if .Values.provider.aws }}
+        - name: AWS_S3_REGION_NAME
+          value: {{ .Values.app.storage.bucket.region }}
+        - name: AWS_S3_ENDPOINT_URL
+          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
+        - name: AWS_DEFAULT_ACL
+          value: {{ .Values.app.storage.bucket.default_acl }}
+        {{ end }}
         {{ if .Values.provider.gcp }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: {{ .Values.app.storage.bucket.credentialsPath }}
