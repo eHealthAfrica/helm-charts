@@ -29,8 +29,10 @@ spec:
               value: {{ .Values.backup.bucketName }}
             - name: COUCHDB_SERVICE_NAME
               value: {{ .Values.backup.couchdbService }}
+            {{ if .Values.backup.kms.enabled }}
             - name: AWS_KMS_KEY_ARN
               value: {{ .Values.backup.awsKmsKeyArn }}
+            {{ end }}
             - name: AWS_REGION
               value: {{ .Values.backup.awsRegion }}
             - name: ENV
