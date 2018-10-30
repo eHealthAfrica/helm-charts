@@ -5,7 +5,6 @@ debug: false
 image:
   repository: "ehealthafrica/aether-elasticsearch-consumer"
   # Use `--set image.tag` in the command line to overwrite the version
-  # tag: {{ .Chart.AppVersion }}
 
 app:
   esConsumerConfigPath: "/code/conf/consumer/consumer.json"

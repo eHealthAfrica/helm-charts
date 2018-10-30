@@ -62,7 +62,7 @@ spec:
           readOnly: true
         {{ end }}
       - name: init-kernel-setup
-        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
         command: ['bash', '-c', '/scripts/shell/setup.sh']
         env:
@@ -148,7 +148,7 @@ spec:
         {{ end }}
       {{ if .Values.app.db.create_ro_user }}
       - name: init-kernel-create-readonly-user
-        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
         command: ['/bin/sh', '/scripts/shell/create_ro_user.sh']
         env:
@@ -262,7 +262,7 @@ spec:
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
       - name: kernel
-        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
         imagePullPolicy: {{ .Values.pullPolicy }}
         args:
         - {{ .Values.app.command }}

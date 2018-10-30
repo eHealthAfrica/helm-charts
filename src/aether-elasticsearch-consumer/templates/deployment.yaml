@@ -21,8 +21,8 @@ spec:
     spec:
       containers:
         - name: consumer
-          # This default allows us to overwrite '.Chart.AppVersion' through the command line
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          # This default allows us to overwrite '.Chart.Version' through the command line
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.Version }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           args:
           - {{ .Values.app.command }}
