@@ -1,0 +1,57 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+    chart: {{ template "aether-elasticsearch-consumer.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: consumer
+          # This default allows us to overwrite '.Chart.AppVersion' through the command line
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          args:
+          - {{ .Values.app.command }}
+          ports:
+          - name: http
+            containerPort: {{ .Values.app.port }}
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: livenessProbe
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: readinessProbe
+          env:
+          - name: ELASTICSEARCH_URL
+            value: {{ .Values.app.elasticSearchUrl }}
+          - name: KAFKA_URL
+            value: {{ .Values.app.kafkaUrl }}
+          - name: CONSUMER_PORT
+            value: "9009"
+          - name: ES_CONSUMER_CONFIG_PATH
+            value: {{ .Values.app.esConsumerConfigPath }}
+          - name: ES_CONSUMER_KAFKA_CONFIG_PATH
+            value: {{ .Values.app.esConsumerKafkaConfigPath }}
