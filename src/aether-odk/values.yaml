@@ -39,6 +39,8 @@ app:
     url: http://kernel.aether.local
 provider:
   aws: false
+kube2iam:
+  enabled: false
 ingress:
   enabled: true
   ssl:

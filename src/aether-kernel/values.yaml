@@ -26,6 +26,8 @@ app:
     readonly_user: readonlyuser
     create_ro_user:
   url: kernel
+kube2iam:
+  enabled: false
 service:
   name: nginx
   type: NodePort

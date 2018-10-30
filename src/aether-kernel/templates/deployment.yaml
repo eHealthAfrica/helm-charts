@@ -223,8 +223,6 @@ spec:
         {{ if .Values.provider.aws }}
         - name: AWS_S3_REGION_NAME
           value: {{ .Values.app.storage.bucket.region }}
-        - name: AWS_S3_ENDPOINT_URL
-          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
         - name: AWS_DEFAULT_ACL
           value: {{ .Values.app.storage.bucket.default_acl }}
         {{ end }}
@@ -279,8 +277,6 @@ spec:
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
-            - name: Host
-              value: {{ .Values.app.url }}
         readinessProbe:
           httpGet:
             path: /health
@@ -288,8 +284,6 @@ spec:
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: readinessProbe
-            - name: Host
-              value: {{ .Values.app.url }}
         env:
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
@@ -308,10 +302,6 @@ spec:
         {{ if .Values.provider.aws }}
         - name: AWS_S3_REGION_NAME
           value: {{ .Values.app.storage.bucket.region }}
-        - name: AWS_S3_ENDPOINT_URL
-          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
-        - name: AWS_S3_HOST
-          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
         - name: AWS_DEFAULT_ACL
           value: {{ .Values.app.storage.bucket.default_acl }}
         {{ end }}
@@ -359,10 +349,6 @@ spec:
           value: {{ .Values.app.db.name }}
         - name: KERNEL_READONLY_DB_USERNAME
           value: {{ .Values.app.db.readonly_user }}
-        {{ if .Values.provider.aws }}
-        - name: AWS_S3_HOST
-          value: {{ .Values.app.storage.bucket.region }}.amazonaws.com
-        {{ end }}
         - name: KERNEL_READONLY_DB_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -370,6 +356,10 @@ spec:
               key: kernel-readonly-db-password
         - name: TESTING
           value: {{ quote .Values.testing }}
+        {{ if .Values.provider.gcp }}
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: {{ .Values.app.storage.bucket.credentialsPath }}
+        {{ end }}
         # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
         # which are using different ports in different environments. Once all
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
