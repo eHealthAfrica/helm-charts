@@ -47,7 +47,7 @@ spec:
           name: couchdb-sync-init
       containers:
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
         ports:
         - containerPort: 8000
         args:
@@ -166,7 +166,7 @@ spec:
         - mountPath: /var/www/static
           name: static-assets-volume
       - name: {{ .Chart.Name }}-rq-scheduler
-        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
         args:
         - {{ .Values.app.rq.command }}
         livenessProbe:

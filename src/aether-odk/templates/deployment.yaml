@@ -73,8 +73,8 @@ spec:
             mountPath: /secrets/cloudsql
             readOnly: true
       {{ end }}
-      - name: {{ .Chart.Name }}
-        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.AppVersion }}"
+      - name: odk
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
         ports:
         - containerPort: 8000
         args:
@@ -88,8 +88,6 @@ spec:
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
-            - name: Host
-              value: {{ .Values.url }}
         readinessProbe:
           initialDelaySeconds: 5
           periodSeconds: 10

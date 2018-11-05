@@ -69,7 +69,7 @@ spec:
             readOnly: true
       {{ end }}
       - name: {{ .Chart.Name }}
-        image: "{{ .Values.gather.repository }}:{{ .Values.gather.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.gather.repository }}:{{ .Values.gather.tag | default .Chart.Version }}"
         ports:
         - containerPort: 8000
         args:

@@ -5,7 +5,6 @@ pullPolicy: Always
 gather:
   repository: "ehealthafrica/gather"
   # Use `--set image.tag` in the command line to overwrite the version
-  # tag: {{ .Chart.AppVersion }}
 ingress:
   ssl: false
 service:
