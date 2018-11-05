@@ -1,4 +1,4 @@
 apiVersion: v1
 description: The ODK Module for Aether, an open source development platform for data curation, exchange, and publication
 name: aether-odk
-version: 0.11.0
+version: 1.0.0
