@@ -115,6 +115,10 @@ spec:
             value: {{ .Values.app.db.name }}
           - name: AETHER_KERNEL_URL
             value: {{ .Values.aether.kernel.url }}
+          - name: CSRF_COOKIE_DOMAIN
+            value: {{ .Values.domain }}
+          - name: CSRF_TRUSTED_ORIGINS
+            value: .{{ .Values.domain }}
           - name: AETHER_KERNEL_TOKEN
             valueFrom:
               secretKeyRef:
