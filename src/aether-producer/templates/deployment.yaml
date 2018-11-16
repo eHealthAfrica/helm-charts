@@ -100,8 +100,6 @@ spec:
             - name: producer-config
               mountPath: /etc/producer
               readOnly: true
-      imagePullSecrets:
-      - name: regsecret
       volumes:
       - name: {{ .Chart.Name }}
       {{ if .Values.provider.gcp }}
