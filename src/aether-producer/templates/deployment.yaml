@@ -19,6 +19,43 @@ spec:
         app: {{ template "producer.name" . }}
         release: {{ .Release.Name }}
     spec:
+      initContainers:
+      - name: init
+        image: postgres:9.3-alpine
+        command: ['bash', '-c', './scripts/init.sh']
+        env:
+        - name: PGHOST
+          valueFrom :
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: host
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: password
+        - name: DB_USERNAME
+          value: {{ .Values.app.db.user }}
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: producer-database-password
+        - name: DB_NAME
+          value: {{ .Values.app.db.name }}
+        volumeMounts:
+        - mountPath: /scripts
+          name: producer-init
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        {{ end }}
       containers:
         {{ if .Values.provider.gcp }}
         - name: cloudsql-proxy
@@ -35,7 +72,7 @@ spec:
           image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-          - {{ .Values.application.command }}
+          - {{ .Values.app.command }}
           env:
           - name: DEBUG
             value:  {{ quote .Values.debug }}
@@ -44,30 +81,32 @@ spec:
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.application.secret }}
+                name: {{ .Values.app.kernel.secret }}
                 key: kernel-readonly-db-user
           - name: POSTGRES_HOST
-            value: "127.0.0.1"
+            value: {{ quote .Values.app.db.host }}
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.application.secret }}
+                name: {{ .Values.app.kernel.secret }}
                 key: kernel-readonly-db-password
           - name: POSTGRES_DBNAME
+            value: {{ .Values.app.kernel.db.name }}
+          - name: OFFSET_DB_URL
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.application.secret }}
-                key: kernel-database-name
+                name: {{ .Values.app.secret }}
+                key: offset-db-url
           - name: KAFKA_BOOTSTRAP_SERVERS
             value: {{ .Values.app.kafkaUrl }}
           - name: KERNEL_URL
-            value: {{ .Values.kernel_url }}
+            value: {{ .Values.app.kernel.url }}
           - name: KERNEL_ADMIN_USERNAME
-            value: {{ .Values.kernel_admin_username }}
+            value: {{ .Values.app.kernel.adminUser }}
           - name: KERNEL_ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.application.secret }}
+                name: {{ .Values.app.kernel.secret }}
                 key: kernel-django-admin-password
           livenessProbe:
             initialDelaySeconds: 5
@@ -101,15 +140,6 @@ spec:
               mountPath: /etc/producer
               readOnly: true
       volumes:
-      - name: {{ .Chart.Name }}
-      {{ if .Values.provider.gcp }}
-        gcePersistentDisk:
-          pdName: {{ .Values.persistent_disk.name }}
-          fsType: ext4
-      {{ else }}
-        persistentVolumeClaim:
-          claimName: {{ .Chart.Name }}
-      {{ end }}
       - name: producer-config
         configMap:
           name: producer-config
@@ -117,6 +147,10 @@ spec:
           items:
           - key: config.json
             path: config.json
+      - name: producer-init
+        configMap:
+          name: {{ .Chart.Name }}-init
+          defaultMode: 0744
     {{- if .Values.provider.gcp }}
       - name: cloudsql-instance-credentials
         secret:

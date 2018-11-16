@@ -5,7 +5,6 @@ metadata:
 data:
   config.json: |
     {
-        "offset_db_url" : "sqlite:///offset.db",
         "start_delay": 5,
         "sleep_time": 10,
         "window_size_sec" : 2,
