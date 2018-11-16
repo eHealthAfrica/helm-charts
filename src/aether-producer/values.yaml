@@ -6,7 +6,6 @@ application:
   config: /etc/producer/config.json
 image:
   repository: ehealthafrica/aether-producer
-  tag: 0.9.1
   pullPolicy: IfNotPresent
 
 service:

@@ -31,8 +31,8 @@ spec:
               mountPath: /secrets/cloudsql
               readOnly: true
         {{ end }}
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: producer
+          image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
           - {{ .Values.application.command }}
