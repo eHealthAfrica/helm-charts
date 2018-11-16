@@ -41,12 +41,12 @@ spec:
               value: {{ .Values.backup.project }}
             - name: COUCHDB_USER
               valueFrom:
-              secretKeyRef:
-                name: {{ .Values.backup.couchdbSecret }}
-                key: adminUsername
+                secretKeyRef:
+                  name: {{ .Values.backup.couchdbSecret }}
+                  key: adminUsername
             - name: COUCHDB_PASSWORD
               valueFrom:
-              secretKeyRef:
-                name: {{ .Values.backup.couchdbSecret }}
-                key: adminPassword
+                secretKeyRef:
+                  name: {{ .Values.backup.couchdbSecret }}
+                  key: adminPassword
           restartPolicy: OnFailure

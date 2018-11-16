@@ -8,4 +8,6 @@ backup:
   bucketName: ''
   couchdbServiceName: ''
   awsKmsKeyArn: ''
+  kube2iam: True
   awsRegion: 'eu-west-1'
+  secret: couchdb-backup-secrets
