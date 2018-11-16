@@ -92,11 +92,19 @@ spec:
                 key: kernel-readonly-db-password
           - name: POSTGRES_DBNAME
             value: {{ .Values.app.kernel.db.name }}
-          - name: OFFSET_DB_URL
+          - name: OFFSET_DB_HOST
+            value: {{ .Values.app.db.host }}
+          - name: OFFSET_DB_NAME
+            value: {{ .Values.app.db.name }}
+          - name: OFFSET_DB_PORT
+            value: {{ .Values.app.db.port }}
+          - name: OFFSET_DB_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.secret }}
-                key: offset-db-url
+                key: offset-db-password
+          - name: OFFSET_DB_USER
+            value: {{ .Values.app.db.user }}
           - name: KAFKA_BOOTSTRAP_SERVERS
             value: {{ .Values.app.kafkaUrl }}
           - name: KERNEL_URL

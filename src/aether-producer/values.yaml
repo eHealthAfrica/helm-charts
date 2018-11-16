@@ -20,6 +20,7 @@ app:
   repository: ehealthafrica/aether-producer
   db:
     secret: database-credentials
+    port: 5432
   kernel:
     url: http://kernel
     secret: kernel-secrets
