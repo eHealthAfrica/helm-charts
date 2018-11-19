@@ -45,7 +45,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: producer-database-password
+              key: offset-db-password
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
         volumeMounts:
@@ -97,7 +97,7 @@ spec:
           - name: OFFSET_DB_NAME
             value: {{ .Values.app.db.name }}
           - name: OFFSET_DB_PORT
-            value: {{ .Values.app.db.port }}
+            value: {{ quote .Values.app.db.port }}
           - name: OFFSET_DB_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -105,13 +105,13 @@ spec:
                 key: offset-db-password
           - name: OFFSET_DB_USER
             value: {{ .Values.app.db.user }}
-          - name: KAFKA_BOOTSTRAP_SERVERS
+          - name: KAFKA_URL
             value: {{ .Values.app.kafkaUrl }}
           - name: KERNEL_URL
             value: {{ .Values.app.kernel.url }}
-          - name: KERNEL_ADMIN_USERNAME
+          - name: KERNEL_USERNAME
             value: {{ .Values.app.kernel.adminUser }}
-          - name: KERNEL_ADMIN_PASSWORD
+          - name: KERNEL_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.kernel.secret }}

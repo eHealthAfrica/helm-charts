@@ -1,4 +1,4 @@
 apiVersion: v1
-description: The Producer module for Aether, an open source development platform
+description: The Producer module for Aether, an open source development platform for data curation, exchange, and publication
 name: aether-producer
-version: 1.0.1
+version: 1.0.2

@@ -21,6 +21,7 @@ app:
   db:
     secret: database-credentials
     port: 5432
+    host: 127.0.0.1
   kernel:
     url: http://kernel
     secret: kernel-secrets
