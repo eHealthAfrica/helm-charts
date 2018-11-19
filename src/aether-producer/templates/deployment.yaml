@@ -1,0 +1,166 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "producer.fullname" . }}
+  labels:
+    app: {{ template "producer.name" . }}
+    chart: {{ template "producer.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "producer.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "producer.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      initContainers:
+      - name: init
+        image: postgres:9.3-alpine
+        command: ['bash', '-c', './scripts/init.sh']
+        env:
+        - name: PGHOST
+          valueFrom :
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: host
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: password
+        - name: DB_USERNAME
+          value: {{ .Values.app.db.user }}
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: offset-db-password
+        - name: DB_NAME
+          value: {{ .Values.app.db.name }}
+        volumeMounts:
+        - mountPath: /scripts
+          name: producer-init
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+        {{ end }}
+      containers:
+        {{ if .Values.provider.gcp }}
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances={{ .Values.database.instance }}=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+        {{ end }}
+        - name: producer
+          image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+          - {{ .Values.app.command }}
+          env:
+          - name: DEBUG
+            value:  {{ quote .Values.debug }}
+          - name: PRODUCER_SETTINGS_FILE
+            value:  {{ quote .Values.application.config }}
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.kernel.secret }}
+                key: kernel-readonly-db-user
+          - name: POSTGRES_HOST
+            value: {{ quote .Values.app.db.host }}
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.kernel.secret }}
+                key: kernel-readonly-db-password
+          - name: POSTGRES_DBNAME
+            value: {{ .Values.app.kernel.db.name }}
+          - name: OFFSET_DB_HOST
+            value: {{ .Values.app.db.host }}
+          - name: OFFSET_DB_NAME
+            value: {{ .Values.app.db.name }}
+          - name: OFFSET_DB_PORT
+            value: {{ quote .Values.app.db.port }}
+          - name: OFFSET_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: offset-db-password
+          - name: OFFSET_DB_USER
+            value: {{ .Values.app.db.user }}
+          - name: KAFKA_URL
+            value: {{ .Values.app.kafkaUrl }}
+          - name: KERNEL_URL
+            value: {{ .Values.app.kernel.url }}
+          - name: KERNEL_USERNAME
+            value: {{ .Values.app.kernel.adminUser }}
+          - name: KERNEL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.kernel.secret }}
+                key: kernel-django-admin-password
+          livenessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            httpGet:
+              path: /healthcheck
+              port: {{ .Values.service.port }}
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: livenessProbe
+              - name: Host
+                value: {{ .Values.url }}
+          readinessProbe:
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            httpGet:
+              path: /healthcheck
+              port: {{ .Values.service.port }}
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: check
+              - name: Host
+                value: {{ .Values.url }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+          volumeMounts:
+            - name: producer-config
+              mountPath: /etc/producer
+              readOnly: true
+      volumes:
+      - name: producer-config
+        configMap:
+          name: producer-config
+          defaultMode: 0744
+          items:
+          - key: config.json
+            path: config.json
+      - name: producer-init
+        configMap:
+          name: {{ .Chart.Name }}-init
+          defaultMode: 0744
+    {{- if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+    {{- end }}
