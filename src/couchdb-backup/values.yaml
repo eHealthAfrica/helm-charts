@@ -1,0 +1,13 @@
+pullPolicy: Always
+backup:
+  # backup once a hour
+  schedule: '0 */1 * * *'
+  tag: 0.1.0
+  command: backup
+  repository: 'ehealthafrica/couchdb-backup'
+  bucketName: ''
+  couchdbServiceName: ''
+  awsKmsKeyArn: ''
+  kube2iam: True
+  awsRegion: 'eu-west-1'
+  secret: couchdb-backup-secrets
