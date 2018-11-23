@@ -109,8 +109,10 @@ spec:
         {{ end }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
+        {{ if .Values.app.storage.bucket.name }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ end }}
         {{ if .Values.provider.aws }}
         - name: AWS_S3_REGION_NAME
           value: {{ .Values.app.storage.bucket.region }}

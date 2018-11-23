@@ -106,8 +106,10 @@ spec:
           value: {{ .Values.app.url }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
+        {{ if .Values.app.storage.bucket.enabled }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ end }}
         {{ if .Values.provider.aws }}
         - name: AWS_S3_REGION_NAME
           value: {{ .Values.app.storage.bucket.region }}
@@ -218,8 +220,10 @@ spec:
           value: {{ .Values.app.url }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
+        {{ if .Values.app.storage.bucket.name }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ end }}
         {{ if .Values.provider.aws }}
         - name: AWS_S3_REGION_NAME
           value: {{ .Values.app.storage.bucket.region }}
@@ -294,11 +298,13 @@ spec:
         - name: CSRF_TRUSTED_ORIGINS
           value: .{{ .Values.domain }}
         - name: HOSTNAME
-          value: {{ .Release.Name }}.{{ .Values.domain }}
+          value: {{ .Values.app.url }}
         - name: DJANGO_STORAGE_BACKEND
           value: {{ .Values.app.storage.backend }}
+        {{ if .Values.app.storage.bucket.name }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        {{ end }}
         {{ if .Values.provider.aws }}
         - name: AWS_S3_REGION_NAME
           value: {{ .Values.app.storage.bucket.region }}
