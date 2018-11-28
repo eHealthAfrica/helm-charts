@@ -26,12 +26,12 @@ spec:
         - name: PGUSER
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.database.secret }}
+              name: {{ .Values.app.db.secret }}
               key: user
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.database.secret }}
+              name: {{ .Values.app.db.secret }}
               key: password
         - name: DB_USERNAME
           value: {{ .Values.app.db.user }}
@@ -108,14 +108,14 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: couchdb-sync-django-token
+              key: couchdb-sync-django-admin-token
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.kernel.secret }}
-              key: admin-token
+              name: {{ .Values.aether.kernel.secret }}
+              key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.app.kernel.url }}
+          value: {{ .Values.aether.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
           value: {{ .Values.kernel_url_test }}
         - name: DEBUG
@@ -214,10 +214,10 @@ spec:
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.kernel.secret }}
+              name: {{ .Values.aether.kernel.secret }}
               key: admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.app.kernel.url }}
+          value: {{ .Values.aether.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
           value: {{ .Values.kernel_url_test }}
         - name: DEBUG
