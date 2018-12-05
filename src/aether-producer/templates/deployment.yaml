@@ -116,6 +116,13 @@ spec:
               secretKeyRef:
                 name: {{ .Values.app.kernel.secret }}
                 key: kernel-django-admin-password
+          - name: PRODUCER_ADMIN_USER
+            value: {{ .Values.app.adminUser }}
+          - name: PRODUCER_ADMIN_PW
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: admin-password
           livenessProbe:
             initialDelaySeconds: 5
             periodSeconds: 10

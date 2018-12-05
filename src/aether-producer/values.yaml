@@ -18,6 +18,7 @@ app:
   secrets: producer-secrets
   command: start
   repository: ehealthafrica/aether-producer
+  adminUser: admin
   db:
     secret: database-credentials
     port: 5432
