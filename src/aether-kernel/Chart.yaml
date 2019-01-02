@@ -1,4 +1,4 @@
 apiVersion: v1
-description: The Kernel Module for Aether, an open source development platform for data curation, exchange, and publication
+description: Kernel module for the Aether platform
 name: aether-kernel
-version: 1.0.3
+version: test
