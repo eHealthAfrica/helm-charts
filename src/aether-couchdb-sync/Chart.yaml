@@ -1,4 +1,4 @@
 apiVersion: v1
-description: The CouchDB Sync module for Aether, an open source development platform for data curation, exchange, and publication
+description: The Sync Module for Aether, an open source development platform for data curation & dissemination
 name: aether-couchdb-sync
-version: 1.0.3
+version: 1.1.0-rc
