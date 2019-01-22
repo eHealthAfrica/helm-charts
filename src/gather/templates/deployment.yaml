@@ -170,6 +170,12 @@ spec:
         # can be removed.
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.webserverPort }}
+        {{- if .Values.app.extra_env_vars -}}
+        {{- range $key, $value := .Values.app.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ . | quote }}
+        {{- end -}}
+        {{ end }}
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
