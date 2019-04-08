@@ -8,6 +8,7 @@ metadata:
     release: {{ .Chart.Version }}
     heritage: {{ .Release.Service }}
 spec:
+  {{ if .Values.podAntiAffinity.enabled }}
   spec:
     affinity:
       podAntiAffinity:
@@ -19,6 +20,7 @@ spec:
               values:
               - {{ .Chart.Name }}
           topologyKey: "kubernetes.io/hostname"
+  {{ end }}
   progressDeadlineSeconds: 180
   replicas: {{ .Values.replicaCount }}
   template:
