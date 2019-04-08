@@ -28,6 +28,8 @@ app:
   url: kernel
 kube2iam:
   enabled: false
+podAntiAffinity:
+  enabled: true
 service:
   name: nginx
   type: NodePort

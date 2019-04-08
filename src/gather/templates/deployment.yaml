@@ -8,6 +8,17 @@ metadata:
     release: {{ .Chart.Version }}
     heritage: {{ .Release.Service }}
 spec:
+  spec:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - {{ .Chart.Name }}
+          topologyKey: "kubernetes.io/hostname"
   progressDeadlineSeconds: 180
   replicas: {{ .Values.replicaCount }}
   template:

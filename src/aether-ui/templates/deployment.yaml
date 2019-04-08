@@ -13,6 +13,17 @@ spec:
     matchLabels:
       app: {{ .Chart.Name }}
       release: {{ .Release.Name }}
+  spec:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - {{ .Chart.Name }}
+          topologyKey: "kubernetes.io/hostname"
   template:
     metadata:
       labels:

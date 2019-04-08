@@ -11,7 +11,8 @@ ingress:
   path: /
   ssl:
     letsencrypt: false
-
+podAntiAffinity:
+  enabled: true
 app:
   port: 8000
   command: start
