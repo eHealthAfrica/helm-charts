@@ -123,7 +123,7 @@ spec:
                 name: {{ .Values.app.secrets }}
                 key: ui-django-secret-key
           - name: ADMIN_USERNAME
-            value: {{ .Values.app.adminUser }}
+            value: {{ .Values.app.admin_user }}
           - name: ADMIN_PASSWORD
             valueFrom:
               secretKeyRef:
