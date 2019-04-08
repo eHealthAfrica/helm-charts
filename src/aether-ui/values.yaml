@@ -1,24 +1,51 @@
+# Default values for UI.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
 replicaCount: 1
 pullPolicy: Always
-provider: aws
+  # Use `--set image.tag` in the command line to overwrite the version
+name: ui
+project: aether
+service:
+  name: nginx
+  externalPort: 80
+  internalPort: 80
+environment: "dev"
+domain: aether.local
 debug: false
-
-image:
-  repository: "ehealthafrica/aether-ui"
-
-ingress:
-  enabled: true
-  path: /
-  ssl:
-    letsencrypt: false
+testing: false
+webserverPort: 8000
+namespace:
+  create: false
 podAntiAffinity:
   enabled: true
 app:
-  port: 8000
+  repository: "ehealthafrica/aether-ui"
   command: start
-  secrets: ui-secrets
-  kernelUrl: "http://kernel"
-  adminUser: admin
+  secret: ui-secrets
+  admin_user: admin
+  port: 8000
+  storage:
+    backend:
+    bucket:
+  db:
+    name:
+    host:
+    port:
+    user:
+  kernel:
+    secret: kernel-secrets
+    url: http://kernel.aether.local
+provider:
+  aws: false
+kube2iam:
+  enabled: false
+ingress:
+  enabled: true
+  ssl:
+    letsencrypt: false
+  hosts:
+    - ui.aether.local
 service:
   name: nginx
   type: NodePort
