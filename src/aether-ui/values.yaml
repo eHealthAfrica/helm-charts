@@ -22,7 +22,7 @@ namespace:
 podAntiAffinity:
   enabled: true
 app:
-  repository: "ehealthafrica/aether-odk"
+  repository: "ehealthafrica/aether-ui"
   command: start
   secret: ui-secrets
   admin_user: admin
