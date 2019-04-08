@@ -18,6 +18,8 @@ environment: "prod"
 ums_url: ""
 debug: false
 testing: false
+podAntiAffinity:
+  enabled: true
 namespace:
   create: false
 app:

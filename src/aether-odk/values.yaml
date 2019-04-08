@@ -19,6 +19,8 @@ testing: false
 webserverPort: 8000
 namespace:
   create: false
+podAntiAffinity:
+  enabled: true
 app:
   repository: "ehealthafrica/aether-odk"
   command: start
