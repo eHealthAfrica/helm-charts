@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Chart.Name }}-init
+  name: {{ .Chart.Name }}-init-pg-config
 data:
 {{- if .Values.provider.gcp }}
   init.sh: |

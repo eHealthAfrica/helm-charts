@@ -170,7 +170,7 @@ spec:
           name: {{ .Chart.Name }}-nginx-config
       - name: init-config
         configMap:
-          name: {{ .Chart.Name }}-init-config
+          name: {{ .Chart.Name }}-init-pg-config
           defaultMode: 0744
       {{ if .Values.provider.gcp }}
       - name: cloudsql-instance-credentials
