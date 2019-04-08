@@ -94,7 +94,7 @@ spec:
             name: {{ .Chart.Name }}
         - name: ui
           # This default allows us to overwrite '.Chart.Version' through the command line
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.Version }}"
+          image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           args:
           - {{ .Values.app.command }}
@@ -143,7 +143,7 @@ spec:
           - name: DB_NAME
             value: {{ .Values.app.db.name }}
           - name: AETHER_KERNEL_URL
-            value: {{ .Values.aether.kernel.url }}
+            value: {{ .Values.app.kernel.url }}
           - name: CSRF_COOKIE_DOMAIN
             value: {{ .Values.domain }}
           - name: CSRF_TRUSTED_ORIGINS
@@ -151,7 +151,7 @@ spec:
           - name: AETHER_KERNEL_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.aether.kernel.secret }}
+                name: {{ .Values.app.kernel.secret }}
                 key: kernel-django-admin-token
           - name: DJANGO_STORAGE_BACKEND
             value: 'filesystem'
