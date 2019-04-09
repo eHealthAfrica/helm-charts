@@ -32,10 +32,10 @@ app:
     backend:
     bucket:
   db:
-    name:
-    host:
-    port:
-    user:
+    name: odk
+    host: 127.0.0.1
+    port: 5432
+    user: postgres
   kernel:
     secret: kernel-secrets
     url: http://kernel.aether.local
