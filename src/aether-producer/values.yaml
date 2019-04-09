@@ -27,6 +27,7 @@ app:
     url: http://kernel
     secret: kernel-secrets
     adminUser: admin
+    readonly_user: kernel-ro
 ingress:
   enabled: false
 provider:

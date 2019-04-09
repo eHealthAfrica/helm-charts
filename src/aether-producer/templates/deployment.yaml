@@ -79,10 +79,7 @@ spec:
           - name: PRODUCER_SETTINGS_FILE
             value:  {{ quote .Values.application.config }}
           - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.app.kernel.secret }}
-                key: kernel-readonly-db-user
+            value: {{ .Values.app.kernel.readonly_user }}
           - name: POSTGRES_HOST
             value: {{ quote .Values.app.db.host }}
           - name: POSTGRES_PASSWORD
