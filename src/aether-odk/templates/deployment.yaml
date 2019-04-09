@@ -174,9 +174,9 @@ spec:
               name: {{ .Values.app.kernel.secret }}
               key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.aether.kernel.url }}
+          value: {{ .Values.app.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.aether.kernel.url_test }}
+          value: {{ .Values.app.kernel.url_test }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
@@ -184,7 +184,7 @@ spec:
         - name: PGUSER
           value: {{ .Values.app.db.user }}
         - name: PGPORT
-          value: "5432"
+          value: {{ .Values.app.db.port }}
         - name: PGHOST
           valueFrom :
             secretKeyRef:
