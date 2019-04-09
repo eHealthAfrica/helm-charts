@@ -19,13 +19,13 @@ app:
     backend:
     bucket:
   db:
-    name:
-    host:
-    port:
-    user:
+    name: kernel
+    host: 127.0.0.1
+    port: 5432
+    user: postgres
     readonly_user: readonlyuser
-    create_ro_user:
-  url: kernel
+    create_ro_user: readonlyuser
+  url: http://kernel.aether.local
 kube2iam:
   enabled: false
 podAntiAffinity:

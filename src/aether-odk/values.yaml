@@ -11,8 +11,6 @@ service:
   externalPort: 80
   internalPort: 80
 environment: "dev"
-kernel_url: http://kernel
-kernel_url_test: http://kernel
 domain: aether.local
 debug: false
 testing: false
@@ -27,14 +25,17 @@ app:
   secret: odk-secrets
   admin_user: admin
   port: 8000
+  kernel:
+    url: http://kernel
+    kernel_url_test: http://kernel
   storage:
     backend:
     bucket:
   db:
-    name:
-    host:
-    port:
-    user:
+    name: odk
+    host: 127.0.0.1
+    port: 5432
+    user: postgres
   kernel:
     secret: kernel-secrets
     url: http://kernel.aether.local
