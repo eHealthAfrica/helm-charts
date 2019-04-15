@@ -184,7 +184,7 @@ spec:
         - name: PGUSER
           value: {{ .Values.app.db.user }}
         - name: PGPORT
-          value: {{ .Values.app.db.port }}
+          value: {{ .Values.app.db.port | default 5432 | quote }}
         - name: PGHOST
           valueFrom :
             secretKeyRef:
