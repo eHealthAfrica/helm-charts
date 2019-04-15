@@ -125,7 +125,7 @@ spec:
         - name: PGUSER
           value: {{ .Values.app.db.user }}
         - name: PGPORT
-          value: "5432"
+          value: {{ .Values.app.db.port | default 5432 | quote }}
         - name: PGHOST
           value: {{ .Values.app.db.host }}
         - name: PGPASSWORD
