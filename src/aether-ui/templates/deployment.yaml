@@ -139,7 +139,7 @@ spec:
           - name: PGUSER
             value: {{ .Values.app.db.user }}
           - name: PGPORT
-          value: {{ .Values.app.db.port | default 5432 | quote }}
+            value: {{ .Values.app.db.port | default 5432 | quote }}
           - name: DB_NAME
             value: {{ .Values.app.db.name }}
           - name: AETHER_KERNEL_URL
