@@ -8,11 +8,20 @@ jobs:
       - checkout
 
       - run:
-          name: Gather
+          name: gather
           command: helm lint -f tests/overrides/service.yaml src/gather/
       - run:
-          name: Aether-kernel
+          name: aether-kernel
           command: helm lint -f tests/overrides/service.yaml src/aether-kernel/
       - run:
-          name: Aether-odk
+          name: aether-odk
           command: helm lint -f tests/overrides/service.yaml src/aether-odk/
+      - run:
+          name: aether-producer
+          command: helm lint -f tests/overrides/service.yaml src/aether-producer/
+      - run:
+          name: aether-ui
+          command: helm lint -f tests/overrides/service.yaml src/aether-ui/
+      - run:
+          name: aether-elasticsearch-consumer
+          command: helm lint -f tests/overrides/service.yaml src/aether-elasticsearch-consumer/

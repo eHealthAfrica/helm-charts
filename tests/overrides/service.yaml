@@ -22,6 +22,13 @@ app:
       name: kernel-gcs-bucket
       credentialsPath: "/secrets/gcp/credentials.json"
       credentialsSecret: "gcs-bucket-credentials"
+  kernel:
+    db:
+      name: kernel-test
+    secret: kernel-secrets
+    ur: https://kernel.aether.local
+    adminUser: admin
+    readonly_user: kernel-test-ro
 service:
   type: NodePort
 ingress:
