@@ -1,0 +1,18 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: debian:stretch
+
+    steps:
+      - checkout
+
+      - run:
+          name: Gather
+          command: helm lint -f tests/overrides/service.yaml src/gather/
+      - run:
+          name: Aether-kernel
+          command: helm lint -f tests/overrides/service.yaml src/aether-kernel/
+      - run:
+          name: Aether-odk
+          command: helm lint -f tests/overrides/service.yaml src/aether-odk/
