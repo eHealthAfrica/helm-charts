@@ -1,0 +1,45 @@
+environment: "prod"
+replicaCount: 2
+aether:
+  kernel:
+    url: https://kernel.aether.local
+odk_url: https://odk.aether.local
+domain: ehealthafrica.org
+trusted_origins: .ehealthafrica.org
+sentry:
+  enabled: false
+app:
+  secret: secrets
+  db:
+    host: 127.0.0.1
+    user: test_user
+    name: test
+    readonly_user: test_ro
+    secret: database-credentials
+  storage:
+    backend: gcs
+    bucket:
+      name: kernel-gcs-bucket
+      credentialsPath: "/secrets/gcp/credentials.json"
+      credentialsSecret: "gcs-bucket-credentials"
+  kernel:
+    db:
+      name: kernel-test
+    secret: kernel-secrets
+    ur: https://kernel.aether.local
+    adminUser: admin
+    readonly_user: kernel-test-ro
+service:
+  type: NodePort
+ingress:
+  certsecret: https://kernel
+  hosts:
+    - kernel.aether.local
+  ssl:
+    letsencrypt: true
+    cert_secret: kernel.aether.local
+database:
+  # set google sql instance name, e.g. modern-rex-207814:europe-west1:gatherdb-instance
+  instance: db-instance
+provider:
+  gcp: true
