@@ -13,6 +13,11 @@ spec:
     matchLabels:
       app: {{ template "producer.name" . }}
       release: {{ .Release.Name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
