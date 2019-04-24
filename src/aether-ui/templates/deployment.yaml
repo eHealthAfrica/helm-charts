@@ -13,6 +13,11 @@ spec:
     matchLabels:
       app: {{ .Chart.Name }}
       release: {{ .Release.Name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   {{ if .Values.podAntiAffinity.enabled }}
   spec:
     affinity:
