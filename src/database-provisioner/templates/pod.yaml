@@ -1,4 +1,4 @@
-apiVersion: batch/v1beta1
+apiVersion: v1
 kind: Pod
 metadata:
   name: {{ .Chart.Name }}
@@ -10,7 +10,7 @@ metadata:
 spec:
   containers:
   - name: {{ .Chart.Name }}
-    image:  "{{ .Values.provision.repository }}:{{ .Values.provision.tag | default .Chart.AppVersion }}"
+    image:  "{{ .Values.provisioner.repository }}:{{ .Values.provisioner.tag | default .Chart.Version }}"
     imagePullPolicy: {{ .Values.pullPolicy }}
     args:
       - {{ .Values.provisioner.command }}
@@ -18,37 +18,41 @@ spec:
     - name: PGHOST
       valueFrom :
         secretKeyRef:
-          name: {{ .Values.provisioner.database.rootSecret }}
+          name: {{ .Values.database.rootSecret }}
           key: host
     - name: PGUSER
       valueFrom:
         secretKeyRef:
-          name: {{ .Values.provisioner.database.rootSecret }}
+          name: {{ .Values.database.rootSecret }}
           key: user
     - name: PGPASSWORD
       valueFrom:
         secretKeyRef:
-          name: {{ .Values.provisioner.database.rootSecret }}
+          name: {{ .Values.database.rootSecret }}
           key: password
     - name: DB_NAME
-      value: {{ .Values.provisioner.database.name }}
+      value: {{ .Values.database.name }}
     - name: DB_USERNAME
-      value: {{ .Values.provisioner.database.userName }}
+      value: {{ .Values.database.userName }}
     - name: DB_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: {{ .Values.provisioner.database.secret }}
+          name: {{ .Values.database.secret }}
           key: password
-  restartPolicy: Never
-  volumeMounts:
-  - mountPath: /scripts
-    name: {{ .Chart.Name }}
-  {{ if .Values.provisioner.provider.gcp }}
-  - mountPath: /secrets/cloudsql
-    name: cloudsql-instance-credentials
-    readOnly: true
-  {{ end }}
+    restartPolicy: Never
+    volumeMounts:
+    - mountPath: /scripts
+      name: {{ .Chart.Name }}
+    {{ if .Values.provider.gcp }}
+    - mountPath: /secrets/cloudsql
+      name: cloudsql-instance-credentials
+      readOnly: true
+    {{ end }}
   volumes:
+  - name: {{ .Chart.Name }}
+    configMap:
+      name: {{ .Chart.Name }}
+      defaultMode: 0744
   {{ if .Values.provider.gcp }}
   - name: cloudsql-instance-credentials
     secret:
