@@ -1,0 +1,13 @@
+pullPolicy: Always
+provisioner:
+  # backup once a hour
+  schedule: '0 */1 * * *'
+  tag: 0.1.0
+  command: provision
+  repository: 'ehealthafrica/database-provisioner'
+  provider:
+    gcp: false
+  database:
+    instance: 127.0.0.1
+    userName: 'postgres'
+    name: 'postgres'
