@@ -1,0 +1,11 @@
+pullPolicy: Always
+provisioner:
+  command: provision
+  repository: 'ehealthafrica/database-provisioner'
+provider:
+  gcp: false
+database:
+  instance: 127.0.0.1
+  userName: 'postgres'
+  name: 'postgres'
+  rootSecret: database-credentials

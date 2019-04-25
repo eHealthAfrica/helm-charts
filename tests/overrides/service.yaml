@@ -43,3 +43,16 @@ database:
   instance: db-instance
 provider:
   gcp: true
+
+# database-provsioner
+provisioner:
+  # backup once a hour
+  tag: 1.0.0
+  command: provision
+  repository: 'ehealthafrica/database-provisioner'
+  provider:
+    gcp: false
+  database:
+    instance: 127.0.0.1
+    userName: 'postgres'
+    name: 'postgres'
