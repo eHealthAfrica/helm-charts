@@ -48,7 +48,7 @@ provider:
 provisioner:
   # backup once a hour
   tag: 1.0.0
-  command: provision foo
+  command: provision
   repository: 'ehealthafrica/database-provisioner'
   provider:
     gcp: false
