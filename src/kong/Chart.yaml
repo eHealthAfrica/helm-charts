@@ -1,0 +1,14 @@
+apiVersion: v1
+description: The Cloud-Native Ingress and
+  Service Mesh for APIs and Microservices
+engine: gotpl
+home: https://KongHQ.com/
+icon: https://s3.amazonaws.com/downloads.kong/universe/assets/icon-kong-inc-large.png
+maintainers:
+- name: eHA DevOps
+  email: devops@ehealthafrica.org
+name: kong
+sources:
+- https://github.com/ehealthafrica/helm-charts/src/kong
+version: 0.10.0
+appVersion: 1.1
