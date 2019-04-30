@@ -25,7 +25,7 @@ spec:
   {{- end }}
   {{- end }}
   externalIPs:
-  {{- range $ip := .Values.kong.proxy.externalIPs }}
+  {{- range $ip := .Values.proxy.externalIPs }}
   - {{ $ip }}
   {{- end }}
   ports:
@@ -42,7 +42,7 @@ spec:
   - name: kong-proxy-tls
     port: {{ .Values.proxy.tls.servicePort }}
     targetPort: {{ .Values.proxy.tls.containerPort }}
-  {{- if (and (eq .Values.proxy.type "NodePort") (not (empty .Values.kong.proxy.tls.nodePort))) }}
+  {{- if (and (eq .Values.proxy.type "NodePort") (not (empty .Values.proxy.tls.nodePort))) }}
     nodePort: {{ .Values.proxy.tls.nodePort }}
   {{- end }}
     protocol: TCP
