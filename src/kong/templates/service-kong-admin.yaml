@@ -12,24 +12,24 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
-  type: {{ .Values.kong.admin.type }}
-  {{- if eq .Values.kong.admin.type "LoadBalancer" }}
-  {{- if .Values.kong.admin.loadBalancerIP }}
-  loadBalancerIP: {{ .Values.kong.admin.loadBalancerIP }}
+  type: {{ .Values.admin.type }}
+  {{- if eq .Values.admin.type "LoadBalancer" }}
+  {{- if .Values.admin.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.admin.loadBalancerIP }}
   {{- end }}
-  {{- if .Values.kong.admin.loadBalancerSourceRanges }}
+  {{- if .Values.admin.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
-  {{- range $cidr := .Values.kong.admin.loadBalancerSourceRanges }}
+  {{- range $cidr := .Values.admin.loadBalancerSourceRanges }}
   - {{ $cidr }}
   {{- end }}
   {{- end }}
   {{- end }}
   ports:
   - name: kong-admin
-    port: {{ .Values.kong.admin.servicePort }}
-    targetPort: {{ .Values.kong.admin.containerPort }}
-  {{- if (and (eq .Values.kong.admin.type "NodePort") (not (empty .Values.kong.admin.nodePort))) }}
-    nodePort: {{ .Values.kong.admin.nodePort }}
+    port: {{ .Values.admin.servicePort }}
+    targetPort: {{ .Values.admin.containerPort }}
+  {{- if (and (eq .Values.admin.type "NodePort") (not (empty .Values.admin.nodePort))) }}
+    nodePort: {{ .Values.admin.nodePort }}
   {{- end }}
     protocol: TCP
   selector:
