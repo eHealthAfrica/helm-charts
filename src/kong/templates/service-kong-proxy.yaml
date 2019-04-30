@@ -12,14 +12,14 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
-  type: {{ .Values.kong.proxy.type }}
-  {{- if eq .Values.kong.proxy.type "LoadBalancer" }}
+  type: {{ .Values.proxy.type }}
+  {{- if eq .Values.proxy.type "LoadBalancer" }}
   {{- if .Values.proxy.loadBalancerIP }}
-  loadBalancerIP: {{ .Values.kong.proxy.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.proxy.loadBalancerIP }}
   {{- end }}
   {{- if .Values.kong.proxy.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
-  {{- range $cidr := .Values.kong.proxy.loadBalancerSourceRanges }}
+  {{- range $cidr := .Values.proxy.loadBalancerSourceRanges }}
   - {{ $cidr }}
   {{- end }}
   {{- end }}
@@ -29,21 +29,21 @@ spec:
   - {{ $ip }}
   {{- end }}
   ports:
-  {{- if .Values.kong.proxy.http.enabled }}
+  {{- if .Values.proxy.http.enabled }}
   - name: kong-proxy
-    port: {{ .Values.kong.proxy.http.servicePort }}
-    targetPort: {{ .Values.kong.proxy.http.containerPort }}
-  {{- if (and (eq .Values.kong.proxy.type "NodePort") (not (empty .Values.proxy.http.nodePort))) }}
-    nodePort: {{ .Values.kong.proxy.http.nodePort }}
+    port: {{ .Values.proxy.http.servicePort }}
+    targetPort: {{ .Values.proxy.http.containerPort }}
+  {{- if (and (eq .Values.proxy.type "NodePort") (not (empty .Values.proxy.http.nodePort))) }}
+    nodePort: {{ .Values.proxy.http.nodePort }}
   {{- end }}
     protocol: TCP
   {{- end }}
-  {{- if or .Values.kong.proxy.tls.enabled }}
+  {{- if or .Values.proxy.tls.enabled }}
   - name: kong-proxy-tls
-    port: {{ .Values.kong.proxy.tls.servicePort }}
-    targetPort: {{ .Values.kong.proxy.tls.containerPort }}
-  {{- if (and (eq .Values.kong.proxy.type "NodePort") (not (empty .Values.kong.proxy.tls.nodePort))) }}
-    nodePort: {{ .Values.kong.proxy.tls.nodePort }}
+    port: {{ .Values.proxy.tls.servicePort }}
+    targetPort: {{ .Values.proxy.tls.containerPort }}
+  {{- if (and (eq .Values.proxy.type "NodePort") (not (empty .Values.kong.proxy.tls.nodePort))) }}
+    nodePort: {{ .Values.proxy.tls.nodePort }}
   {{- end }}
     protocol: TCP
   {{- end }}
