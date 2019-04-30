@@ -17,7 +17,7 @@ spec:
   {{- if .Values.proxy.loadBalancerIP }}
   loadBalancerIP: {{ .Values.proxy.loadBalancerIP }}
   {{- end }}
-  {{- if .Values.kong.proxy.loadBalancerSourceRanges }}
+  {{- if .Values.proxy.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
   {{- range $cidr := .Values.proxy.loadBalancerSourceRanges }}
   - {{ $cidr }}

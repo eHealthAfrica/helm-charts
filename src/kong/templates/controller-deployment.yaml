@@ -10,7 +10,7 @@ metadata:
     heritage: "{{ .Release.Service }}"
     component: "controller"
 spec:
-  replicas: {{ .Values.kong.ingressController.replicaCount }}
+  replicas: {{ .Values.ingressController.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "kong.name" . }}
@@ -35,13 +35,13 @@ spec:
       {{- end }}
       {{- end }}
       initContainers:
-{{- if .Values.kong.extraInitContainers }}
-{{- with .Values.kong.extraInitContainers }}
+{{- if .Values.extraInitContainers }}
+{{- with .Values.extraInitContainers }}
 {{ tpl . $ | indent 8 }}
 {{- end }}
 {{- end }}
       - name: wait-for-db
-        image: "{{ .Values.image.repository }}:{{ .Values.kong.image.tag }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         env:
         {{- include "kong.env" .  | indent 8 }}
         {{- if .Values.postgresql.enabled }}
@@ -61,8 +61,8 @@ spec:
         {{- end }}
         command: [ "/bin/sh", "-c", "until kong start; do echo 'waiting for db'; sleep 1; done; kong stop" ]
       containers:
-{{- if .Values.kong.extraContainers }}
-{{- with .Values.kong.extraContainers }}
+{{- if .Values.extraContainers }}
+{{- with .Values.extraContainers }}
 {{ tpl . $ | indent 8 }}
 {{- end }}
 {{- end }}
@@ -73,7 +73,7 @@ spec:
         - name: KONG_PROXY_LISTEN
           value: 'off'
         {{- include "kong.env" .  | indent 8 }}
-        {{- if .Values.kong.admin.useTLS }}
+        {{- if .Values.admin.useTLS }}
         - name: KONG_ADMIN_LISTEN
           value: "0.0.0.0:{{ .Values.admin.containerPort }} ssl"
         {{- else }}
