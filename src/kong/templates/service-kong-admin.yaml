@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ template "kong.fullname" . }}-admin
   annotations:
-    {{- range $key, $value := .Values.admin.annotations }}
+    {{- range $key, $value := .Values.kong.admin.annotations }}
       {{ $key }}: {{ $value | quote }}
     {{- end }}
   labels:
@@ -12,24 +12,24 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
-  type: {{ .Values.admin.type }}
-  {{- if eq .Values.admin.type "LoadBalancer" }}
-  {{- if .Values.admin.loadBalancerIP }}
-  loadBalancerIP: {{ .Values.admin.loadBalancerIP }}
+  type: {{ .Values.kong.admin.type }}
+  {{- if eq .Values.kong.admin.type "LoadBalancer" }}
+  {{- if .Values.kong.admin.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.kong.admin.loadBalancerIP }}
   {{- end }}
-  {{- if .Values.admin.loadBalancerSourceRanges }}
+  {{- if .Values.kong.admin.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
-  {{- range $cidr := .Values.admin.loadBalancerSourceRanges }}
+  {{- range $cidr := .Values.kong.admin.loadBalancerSourceRanges }}
   - {{ $cidr }}
   {{- end }}
   {{- end }}
   {{- end }}
   ports:
   - name: kong-admin
-    port: {{ .Values.admin.servicePort }}
-    targetPort: {{ .Values.admin.containerPort }}
-  {{- if (and (eq .Values.admin.type "NodePort") (not (empty .Values.admin.nodePort))) }}
-    nodePort: {{ .Values.admin.nodePort }}
+    port: {{ .Values.kong.admin.servicePort }}
+    targetPort: {{ .Values.kong.admin.containerPort }}
+  {{- if (and (eq .Values.kong.admin.type "NodePort") (not (empty .Values.kong.admin.nodePort))) }}
+    nodePort: {{ .Values.kong.admin.nodePort }}
   {{- end }}
     protocol: TCP
   selector:

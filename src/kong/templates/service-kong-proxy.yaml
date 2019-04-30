@@ -12,38 +12,38 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 spec:
-  type: {{ .Values.proxy.type }}
-  {{- if eq .Values.proxy.type "LoadBalancer" }}
+  type: {{ .Values.kong.proxy.type }}
+  {{- if eq .Values.kong.proxy.type "LoadBalancer" }}
   {{- if .Values.proxy.loadBalancerIP }}
-  loadBalancerIP: {{ .Values.proxy.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.kong.proxy.loadBalancerIP }}
   {{- end }}
-  {{- if .Values.proxy.loadBalancerSourceRanges }}
+  {{- if .Values.kong.proxy.loadBalancerSourceRanges }}
   loadBalancerSourceRanges:
-  {{- range $cidr := .Values.proxy.loadBalancerSourceRanges }}
+  {{- range $cidr := .Values.kong.proxy.loadBalancerSourceRanges }}
   - {{ $cidr }}
   {{- end }}
   {{- end }}
   {{- end }}
   externalIPs:
-  {{- range $ip := .Values.proxy.externalIPs }}
+  {{- range $ip := .Values.kong.proxy.externalIPs }}
   - {{ $ip }}
   {{- end }}
   ports:
-  {{- if .Values.proxy.http.enabled }}
+  {{- if .Values.kong.proxy.http.enabled }}
   - name: kong-proxy
-    port: {{ .Values.proxy.http.servicePort }}
-    targetPort: {{ .Values.proxy.http.containerPort }}
-  {{- if (and (eq .Values.proxy.type "NodePort") (not (empty .Values.proxy.http.nodePort))) }}
-    nodePort: {{ .Values.proxy.http.nodePort }}
+    port: {{ .Values.kong.proxy.http.servicePort }}
+    targetPort: {{ .Values.kong.proxy.http.containerPort }}
+  {{- if (and (eq .Values.kong.proxy.type "NodePort") (not (empty .Values.proxy.http.nodePort))) }}
+    nodePort: {{ .Values.kong.proxy.http.nodePort }}
   {{- end }}
     protocol: TCP
   {{- end }}
-  {{- if or .Values.proxy.tls.enabled }}
+  {{- if or .Values.kong.proxy.tls.enabled }}
   - name: kong-proxy-tls
-    port: {{ .Values.proxy.tls.servicePort }}
-    targetPort: {{ .Values.proxy.tls.containerPort }}
-  {{- if (and (eq .Values.proxy.type "NodePort") (not (empty .Values.proxy.tls.nodePort))) }}
-    nodePort: {{ .Values.proxy.tls.nodePort }}
+    port: {{ .Values.kong.proxy.tls.servicePort }}
+    targetPort: {{ .Values.kong.proxy.tls.containerPort }}
+  {{- if (and (eq .Values.kong.proxy.type "NodePort") (not (empty .Values.kong.proxy.tls.nodePort))) }}
+    nodePort: {{ .Values.kong.proxy.tls.nodePort }}
   {{- end }}
     protocol: TCP
   {{- end }}

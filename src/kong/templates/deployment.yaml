@@ -33,6 +33,11 @@ spec:
       {{- end }}
       {{- end }}
       initContainers:
+{{- if .Values.kong.extraInitContainers }}
+{{- with .Values.kong.extraInitContainers }}
+{{ tpl . $ | indent 8 }}
+{{- end }}
+{{- end }}
       - name: wait-for-db
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -55,13 +60,8 @@ spec:
         {{- include "kong.env" .  | indent 8 }}
         command: [ "/bin/sh", "-c", "until kong start; do echo 'waiting for db'; sleep 1; done; kong stop" ]
       containers:
-{{- if .Values.kong.extraContainers }}
-{{- with .Values.kong.extraContainers }}
-{{ tpl . $ | indent 8 }}
-{{- end }}
-{{- end }}
-{{- if .Values.kong.extraVolumeMounts }}
-{{- with .Values.kong.extraVolumeMounts }}
+{{- if .Values.extraContainers }}
+{{- with .Values.extraContainers }}
 {{ tpl . $ | indent 8 }}
 {{- end }}
 {{- end }}
@@ -139,6 +139,6 @@ spec:
     {{- end }}
       tolerations:
 {{ toYaml .Values.tolerations | indent 8 }}
-{{- with .Values.kong.extraVolumes }}
+{{- with .Values.extraVolumes }}
 {{ tpl . $ | indent 8 }}
 {{- end }}
