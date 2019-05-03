@@ -34,36 +34,10 @@ spec:
         - name: {{ . }}
       {{- end }}
       {{- end }}
-      initContainers:
-{{- if .Values.extraInitContainers }}
-{{- with .Values.extraInitContainers }}
-{{ tpl . $ | indent 8 }}
-{{- end }}
-{{- end }}
-      - name: wait-for-db
-        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-        env:
-        {{- include "kong.env" .  | indent 8 }}
-        {{- if .Values.postgresql.enabled }}
-        - name: KONG_PG_HOST
-          value: {{ template "kong.postgresql.fullname" . }}
-        - name: KONG_PG_PORT
-          value: "{{ .Values.postgresql.service.port }}"
-        - name: KONG_PG_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ template "kong.postgresql.fullname" . }}
-              key: postgresql-password
-        {{- end }}
-        {{- if .Values.cassandra.enabled }}
-        - name: KONG_CASSANDRA_CONTACT_POINTS
-          value: {{ template "kong.cassandra.fullname" . }}
-        {{- end }}
-        command: [ "/bin/sh", "-c", "until kong start; do echo 'waiting for db'; sleep 1; done; kong stop" ]
       containers:
 {{- if .Values.extraContainers }}
 {{- with .Values.extraContainers }}
-{{ tpl . $ | indent 8 }}
+{{ tpl . $ | indent 6 }}
 {{- end }}
 {{- end }}
       - name: admin-api
@@ -82,16 +56,12 @@ spec:
         {{- end }}
         {{- if .Values.postgresql.enabled }}
         - name: KONG_PG_HOST
-          value: {{ template "kong.postgresql.fullname" . }}
+          value: {{ .Values.postgresql.host }}
         - name: KONG_PG_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ template "kong.postgresql.fullname" . }}
-              key: postgresql-password
-        {{- end }}
-        {{- if .Values.cassandra.enabled }}
-        - name: KONG_CASSANDRA_CONTACT_POINTS
-          value: {{ template "kong.cassandra.fullname" . }}
+              name: {{ .Values.postgresql.secret }}
+              key: database-password
         {{- end }}
         ports:
         - name: admin
@@ -152,6 +122,10 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 1
-        resources:
-{{ toYaml .Values.ingressController.resources | indent 10 }}
-{{- end -}}
+{{- if .Values.extraVolumes }}
+      volumes:
+{{- with .Values.extraVolumes }}
+{{ tpl . $ | indent 8 }}
+{{- end }}
+{{- end }}
+{{- end }}

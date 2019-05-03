@@ -30,4 +30,4 @@ jobs:
           command: helm lint -f tests/overrides/service.yaml src/database-provisioner/
       - run:
           name: kong
-          command: helm lint -f src/kong/ci/default-values.yaml src/kong/
+          command: helm lint -f src/kong/ci/values.yaml src/kong/

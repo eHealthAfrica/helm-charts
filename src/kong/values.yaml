@@ -174,16 +174,13 @@ cassandra:
 postgresql:
   enabled: true
   deploy: false
+  host: 127.0.0.1
   postgresqlUsername: kong
   postgresqlDatabase: kong
   service:
     port: 5432
-  existingService: true
   # Specifies an existing secret to be used for the database password
-  existingSecret: kong
-  # The key in the existing secret that stores the password
-  existingSecretKey: database-password
-
+  secret: kong
 
 # Kong Ingress Controller's primary purpose is to satisfy Ingress resources
 # created in k8s.  It uses CRDs for more fine grained control over routing and
