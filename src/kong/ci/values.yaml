@@ -20,7 +20,7 @@ extraInitContainers: |
     - name: cloudsql-proxy
       image: gcr.io/cloudsql-docker/gce-proxy:1.11
       command: ["/cloud_sql_proxy",
-                "-instances=development-223016:europe-west1:ehealth-africa-dev=tcp:5432",
+                "-instances=test:europe-west1:dev=tcp:5432",
                 "-credential_file=/secrets/cloudsql/credentials.json"]
       volumeMounts:
         - name: cloudsql-instance-credentials
@@ -32,7 +32,7 @@ extraContainers: |
     - name: cloudsql-proxy
       image: gcr.io/cloudsql-docker/gce-proxy:1.11
       command: ["/cloud_sql_proxy",
-                "-instances=development-223016:europe-west1:ehealth-africa-dev=tcp:5432",
+                "-instances=test:europe-west1:dev=tcp:5432",
                 "-credential_file=/secrets/cloudsql/credentials.json"]
       volumeMounts:
         - name: cloudsql-instance-credentials
