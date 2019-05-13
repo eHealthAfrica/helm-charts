@@ -1,5 +1,6 @@
 {{- $serviceName := include "ui.name" . -}}
 {{- $servicePort := .Values.service.externalPort -}}
+{{- $servicePath := .Values.service.externalServicePath -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -27,7 +28,7 @@ spec:
     - host: {{ $host }}
       http:
         paths:
-          - path: /
+          - path: {{ $servicePath }}
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
