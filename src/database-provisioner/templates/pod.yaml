@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ .Chart.Name }}-{{ .Values.database.name }}
   labels:
-    app: {{ .Chart.Name }}-{{ .Values.database.name }}
+    app: {{ .Chart.Name }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Chart.Version }}
     heritage: {{ .Release.Service }}
 spec:
   containers:
-  - name: {{ .Chart.Name }}-{{ .Values.database.name }}
+  - name: {{ .Chart.Name }}
     image:  "{{ .Values.provisioner.repository }}:{{ .Values.provisioner.tag | default .Chart.Version }}"
     imagePullPolicy: {{ .Values.pullPolicy }}
     args:
