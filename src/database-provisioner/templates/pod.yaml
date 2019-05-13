@@ -3,13 +3,13 @@ kind: Pod
 metadata:
   name: {{ .Chart.Name }}
   labels:
-    app: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}-{{ .Values.database.name }}
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Chart.Version }}
     heritage: {{ .Release.Service }}
 spec:
   containers:
-  - name: {{ .Chart.Name }}
+  - name: {{ .Chart.Name }}-{{ .Values.database.name }}
     image:  "{{ .Values.provisioner.repository }}:{{ .Values.provisioner.tag | default .Chart.Version }}"
     imagePullPolicy: {{ .Values.pullPolicy }}
     args:
