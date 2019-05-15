@@ -1,0 +1,3 @@
+pullPolicy: Always
+gatewayManager:
+  repository: 'ehealthafrica/gateway-manager'

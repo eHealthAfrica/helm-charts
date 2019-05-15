@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+spec:
+  containers:
+  - name: {{ .Chart.Name }}
+    image:  "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
+    imagePullPolicy: {{ .Values.gw.pullPolicy }}
+    args:
+      - {{ .Values.gatewayManager.command }}
+    env:
+    - name:
+      value:
+    restartPolicy: Never

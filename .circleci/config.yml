@@ -31,3 +31,6 @@ jobs:
       - run:
           name: kong
           command: helm lint -f src/kong/ci/values.yaml src/kong/
+      - run:
+          name: gateway-manager
+          command: helm lint -f src/gateway-manager/ci/values.yaml src/gateway-manager/
