@@ -1,3 +1,14 @@
 pullPolicy: Always
-gatewayManager:
+gw:
   repository: 'ehealthafrica/gateway-manager'
+  tag: 'latest'
+  aether:
+    services: ["odk", "ui", "kernel", "gather"]
+  keyCloak:
+    globalAdmin: ''
+    kongClient: ''
+    baseDomain: ''
+    baseHost: ''
+    internalService: ''
+  kong:
+    internalService: ''
