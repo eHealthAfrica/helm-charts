@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Chart.Name }}-odk-service
+  name: odk-service
 data:
   ui.json: |
     {

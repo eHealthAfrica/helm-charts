@@ -16,7 +16,7 @@ spec:
       - {{ .Values.gw.command }}
     env:
     - name: DEBUG
-      value: null
+      value: {{ .Values.gw.debug }}
     - name: KEYCLOAK_GLOBAL_ADMIN
       value: {{ .Values.gw.keyCloak.globalAdmin }}
     - name: KEYCLOAK_GLOBAL_PASSWORD
@@ -31,4 +31,14 @@ spec:
       value: {{ .Values.gw.keyCloak.internalService }}
     - name: KONG_INTERNAL
       value: {{ .Values.gw.kong.internalService }}
-    restartPolicy: Never
+    volumeMounts:
+    {{- range $key, $value := .Values.gw.aether.services }}
+    - name: {{ $value }}
+      mountPath: /aether/service.json
+    {{ end }}
+  volumes:
+  {{- range $key, $value := .Values.gw.aether.services }}
+  - name: {{ $value }}-service
+    configMap:
+      name: {{ $value }}-service
+  {{ end }}
