@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}-{{ .Values.database.name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+spec:
+  template:
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+      - name: {{ .Chart.Name }}-{{ .Values.database.name }}
+        image:  "{{ .Values.provisioner.repository }}:{{ .Values.provisioner.tag | default .Chart.Version }}"
+        args:
+          - {{ .Values.provisioner.command }}
+        env:
+        - name: PGHOST
+          valueFrom :
+            secretKeyRef:
+              name: {{ .Values.database.rootSecret }}
+              key: host
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.database.rootSecret }}
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.database.rootSecret }}
+              key: password
+        - name: DB_NAME
+          value: {{ .Values.database.name }}
+        - name: DB_USERNAME
+          value: {{ .Values.database.userName }}
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.database.secret }}
+              key: password
+        volumeMounts:
+        - mountPath: /scripts
+          name: {{ .Chart.Name }}-{{ .Values.database.name }}
+        {{ if .Values.provider.gcp }}
+        - mountPath: /secrets/cloudsql
+          name: cloudsql-instance-credentials
+          readOnly: true
+        {{ end }}
+      volumes:
+      - name: {{ .Chart.Name }}-{{ .Values.database.name }}
+        configMap:
+          name: {{ .Chart.Name }}-{{ .Values.database.name }}
+          defaultMode: 0744
+      {{ if .Values.provider.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      {{ end }}
