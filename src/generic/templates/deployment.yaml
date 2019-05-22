@@ -1,0 +1,166 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "generic.name" . }}
+  labels:
+    app: {{ template "generic.name" . }}
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "generic.name" . }}
+      release: {{ .Release.Name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  {{ if .Values.podAntiAffinity.enabled }}
+  spec:
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - {{ .Chart.Name }}
+          topologyKey: "kubernetes.io/hostname"
+  {{ end }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "generic.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      initContainers:
+      - name: init
+        image: postgres:9.3-alpine
+        command: ['bash', '-c', './scripts/init.sh']
+        env:
+        - name: PGHOST
+          valueFrom :
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: host
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: user
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.db.secret }}
+              key: password
+        - name: DB_USERNAME
+          value: {{ .Values.app.db.user }}
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: database-password
+        - name: DB_NAME
+          value: {{ .Values.app.db.name }}
+        volumeMounts:
+        - mountPath: /scripts
+          name: init-config
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+      containers:
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances={{ .Values.database.instance }}=tcp:5432",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        volumeMounts:
+          - name: cloudsql-instance-credentials
+            mountPath: /secrets/cloudsql
+            readOnly: true
+      - name: {{ .Values.app.name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        args:
+        - {{ .Values.app.command }}
+        ports:
+        - name: app
+          containerPort: {{ .Values.app.port }}
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: app
+            httpHeaders:
+            - name: X-Kubernetes-Health-Check
+              value: livenessProbe
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: app
+            httpHeaders:
+            - name: X-Kubernetes-Health-Check
+              value: readinessProbe
+            - name: Host
+              value: {{ .Values.url }}
+        env:
+        {{- if .Values.extra_env_vars -}}
+        {{- range $key, $value := .Values.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ . | quote }}
+        {{- end -}}
+        {{ end }}
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: {{ .Values.app.name }}-database-password
+        - name: PGUSER
+          value: {{ .Values.app.db.user }}
+        - name: PGPORT
+          value: {{ .Values.app.db.port | default 5432 | quote }}
+        - name: PGHOST
+          value: {{ .Values.app.db.host }}
+        - name: DB_NAME
+          value: {{ .Values.app.db.name }}
+        volumeMounts:
+        {{ if .Values.nginx.enabled }}
+        - mountPath: {{ .Values.app.static_root }}
+          name: static-assets-volume
+        {{ end }}
+      {{ if .Values.nginx.enabled }}
+      - name: nginx
+        image: nginx:stable-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: {{ .Values.app.static_root }}
+          name: static-assets-volume
+        - mountPath: /etc/nginx/conf.d
+          name: nginx-config
+      {{ end }}
+      {{ if .Values.imagePullSecrets.enabled }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets.name }}
+      {{ end }}
+      volumes:
+      {{ if .Values.nginx.enabled }}
+      - name: static-assets-volume
+        emptyDir: {}
+      - name: nginx-config
+        configMap:
+          name: {{ template "generic.name" . }}-nginx-config
+      {{ end }}
+      - name: init-config
+        configMap:
+          name: {{ template "generic.name" . }}-init-pg-config
+          defaultMode: 0744
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      restartPolicy: Always
+
