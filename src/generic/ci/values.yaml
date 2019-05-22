@@ -60,7 +60,9 @@ ingress:
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/cluster-issuer: letsencrypt
     certmanager.k8s.io/acme-challenge-type: dns01
-    certmanager.k8s.io/acme-dns01-provider: route53extra_env_vars: {}
+    certmanager.k8s.io/acme-dns01-provider: route53
+
+extra_env_vars: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
