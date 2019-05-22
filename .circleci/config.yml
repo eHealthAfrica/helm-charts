@@ -31,3 +31,6 @@ jobs:
       - run:
           name: kong
           command: helm lint -f src/kong/ci/values.yaml src/kong/
+      - run:
+          name: generic
+          command: helm lint -f src/generic/values.yaml src/generic/
