@@ -20,5 +20,6 @@ gw:
     baseDomain: 'eha.im'
     baseHost: 'alpha.eha.im'
     internalService: 'keycloak-http'
+    globalPasswordKey: 'admin-password'
   kong:
     internalService: 'kong-kong-admin'
