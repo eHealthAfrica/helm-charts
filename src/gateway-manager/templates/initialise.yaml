@@ -4,47 +4,47 @@ metadata:
   name: aether-initialise
 data:
     initialise.sh: |
-    #!/usr/bin/env bash
-    #
-    # Copyright (C) 2018 by eHealth Africa : http://www.eHealthAfrica.org
-    #
-    # See the NOTICE file distributed with this work for additional information
-    # regarding copyright ownership.
-    #
-    # Licensed under the Apache License, Version 2.0 (the "License");
-    # you may not use this file except in compliance with
-    # the License.  You may obtain a copy of the License at
-    #
-    #   http://www.apache.org/licenses/LICENSE-2.0
-    #
-    # Unless required by applicable law or agreed to in writing,
-    # software distributed under the License is distributed on an
-    # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    # KIND, either express or implied.  See the License for the
-    # specific language governing permissions and limitations
-    # under the License.
-    #
-    set -Eeuo pipefail
+        #!/usr/bin/env bash
+        #
+        # Copyright (C) 2018 by eHealth Africa : http://www.eHealthAfrica.org
+        #
+        # See the NOTICE file distributed with this work for additional information
+        # regarding copyright ownership.
+        #
+        # Licensed under the Apache License, Version 2.0 (the "License");
+        # you may not use this file except in compliance with
+        # the License.  You may obtain a copy of the License at
+        #
+        #   http://www.apache.org/licenses/LICENSE-2.0
+        #
+        # Unless required by applicable law or agreed to in writing,
+        # software distributed under the License is distributed on an
+        # "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+        # KIND, either express or implied.  See the License for the
+        # specific language governing permissions and limitations
+        # under the License.
+        #
+        set -Eeuo pipefail
 
 
-    RUN_AUTH="/code/entrypoint.sh"
+        RUN_AUTH="/code/entrypoint.sh"
 
-    function create_kc_tenant {
-        REALM=$1
-        DESC=${2:-$REALM}
+        function create_kc_tenant {
+            REALM=$1
+            DESC=${2:-$REALM}
 
-        $RUN_AUTH add_realm         $REALM "$DESC"
-        $RUN_AUTH add_aether_client $REALM
-        $RUN_AUTH add_oidc_client   $REALM
+            $RUN_AUTH add_realm         $REALM "$DESC"
+            $RUN_AUTH add_aether_client $REALM
+            $RUN_AUTH add_oidc_client   $REALM
 
-        $RUN_AUTH add_user          $REALM \
-                                    $KEYCLOAK_INITIAL_USER_USERNAME \
-                                    $KEYCLOAK_INITIAL_USER_PASSWORD
+            $RUN_AUTH add_user          $REALM \
+                                        $KEYCLOAK_INITIAL_USER_USERNAME \
+                                        $KEYCLOAK_INITIAL_USER_PASSWORD
 
-        echo_message "Adding [aether] solution in kong..."
-        $RUN_AUTH add_solution aether $REALM
-    }
+            echo_message "Adding [aether] solution in kong..."
+            $RUN_AUTH add_solution aether $REALM
+        }
 
-    echo_message "Creating initial tenants in keycloak..."
-    create_kc_tenant  {{ .Values.gw.env }}  "{{ .Values.gw.env }} development"
-    echo_message ""
+        echo_message "Creating initial tenants in keycloak..."
+        create_kc_tenant  {{ .Values.gw.env }}  "{{ .Values.gw.env }} development"
+        echo_message ""
