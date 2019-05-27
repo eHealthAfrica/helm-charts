@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: kernel-service
 data:
-  ui.json: |
+  kernel.json: |
     {
       "name": "kernel",
       "host": "http://{{ .Values.gw.aether.kernel.internalService }}",

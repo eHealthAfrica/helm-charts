@@ -20,7 +20,10 @@ spec:
     - name: KEYCLOAK_GLOBAL_ADMIN
       value: {{ .Values.gw.keyCloak.globalAdmin }}
     - name: KEYCLOAK_GLOBAL_PASSWORD
-      value: {{ .Values.gw.keyCloak.globalPassword }}
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Values.gw.keyCloak.secret }}
+          key: {{ .Values.gw.keyCloak.secret.globalPasswordKey }}
     - name: KEYCLOAK_KONG_CLIENT
       value: {{ .Values.gw.keyCloak.kongClient }}
     - name: BASE_DOMAIN
@@ -34,8 +37,10 @@ spec:
     volumeMounts:
     {{- range $key, $value := .Values.gw.aether.services }}
     - name: {{ $value }}
-      mountPath: /aether/service.json
+      mountPath: /code/service/
     {{ end }}
+    - name: aether-solution
+      mountPath: /code/solution/
   volumes:
   {{- range $key, $value := .Values.gw.aether.services }}
   - name: {{ $value }}-service
