@@ -22,7 +22,7 @@ spec:
     - name: KEYCLOAK_GLOBAL_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: {{ .Values.gw.keyCloak.secret }}
+          name: {{ .Values.gw.keyCloak.secret.name }}
           key: {{ .Values.gw.keyCloak.secret.globalPasswordKey }}
     - name: KEYCLOAK_KONG_CLIENT
       value: {{ .Values.gw.keyCloak.kongClient }}
