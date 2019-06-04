@@ -7,6 +7,6 @@ data:
     {
       "name": "aether",
       "services": [
-        "odk", "ui", "gather", "kernel"
+        "odk", "kernel", "ui", "gather"
       ]
     }
