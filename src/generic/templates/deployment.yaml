@@ -28,7 +28,7 @@ spec:
             - key: app
               operator: In
               values:
-              - {{ .Chart.Name }}
+              - {{ template "generic.name" . }}
           topologyKey: "kubernetes.io/hostname"
   {{ end }}
   template:
