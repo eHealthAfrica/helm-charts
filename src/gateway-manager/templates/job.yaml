@@ -28,8 +28,10 @@ spec:
             secretKeyRef:
               name: {{ .Values.gw.keyCloak.secret.name }}
               key: {{ .Values.gw.keyCloak.secret.passwordKey }}
-        - name: KEYCLOAK_INITIAL_USER_USERNAME
-          value: {{ .Values.gw.keyCloak.initialUserName }}
+        - name: LOGIN_THEME 
+          value: {{ .Values.gw.logingTheme }}
+        - name: KEYCLOAK_AETHER_CLIENT
+          value: {{ .Values.gw.keyCloak.aetherClient }}
         - name: KEYCLOAK_KONG_CLIENT
           value: {{ .Values.gw.keyCloak.kongClient }}
         - name: BASE_DOMAIN

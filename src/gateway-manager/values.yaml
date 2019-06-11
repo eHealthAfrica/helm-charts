@@ -1,6 +1,7 @@
 pullPolicy: Always
 gw:
   env: dev
+  pullPolicy: 'Always'
   repository: 'ehealthafrica/gateway-manager'
   debug: null
   tag: 'latest'
@@ -18,6 +19,7 @@ gw:
   keyCloak:
     globalAdmin: 'keycloak'
     kongClient: ''
+    aetherClient: 'aether' 
     baseDomain: ''
     baseHost: ''
     internalService: ''

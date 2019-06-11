@@ -27,18 +27,36 @@ data:
         set -Eeuo pipefail
 
 
-        RUN_AUTH="/code/entrypoint.sh"
+        AUTH_RUN="/code/entrypoint.sh"
 
         function create_kc_tenant {
             REALM=$1
             DESC=${2:-$REALM}
 
-            $RUN_AUTH add_realm         $REALM "$DESC"
-            $RUN_AUTH add_aether_client $REALM
-            $RUN_AUTH add_oidc_client   $REALM
+            echo "Adding [$REALM] realm in keycloak..."
+            $AUTH_RUN add_realm \
+                $REALM \
+                "$DESC" \
+                $LOGIN_THEME
 
-            echo "Adding [aether] solution in kong..."
-            $RUN_AUTH add_solution aether $REALM
+            echo "Adding [$KEYCLOAK_AETHER_CLIENT] public client in keycloak realm [$REALM] ..."
+            $AUTH_RUN add_public_client \
+                $REALM \
+                $KEYCLOAK_AETHER_CLIENT
+
+            echo "Adding [$KEYCLOAK_KONG_CLIENT] confidential client in keycloak realm [$REALM] ..."
+            $AUTH_RUN add_confidential_client \
+                $REALM \
+                $KEYCLOAK_KONG_CLIENT
+
+            echo "Adding [$KEYCLOAK_INITIAL_USER_USERNAME] user in keycloak realm [$REALM] ..."
+            $AUTH_RUN add_user \
+                $REALM \
+                $KEYCLOAK_INITIAL_USER_USERNAME \
+                $KEYCLOAK_INITIAL_USER_PASSWORD
+
+            echo_message "Adding [aether] solution in kong..."
+            $AUTH_RUN add_solution aether $REALM $KEYCLOAK_KONG_CLIENT
         }
 
         echo "Creating initial tenants in keycloak..."
