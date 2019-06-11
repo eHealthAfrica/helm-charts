@@ -13,6 +13,7 @@ podAntiAffinity:
 app:
   name:
   db:
+    enabled: false
     secret: database-credentials
     host: 127.0.0.1
     user:

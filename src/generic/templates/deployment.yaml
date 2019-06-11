@@ -37,6 +37,7 @@ spec:
         app: {{ template "generic.name" . }}
         release: {{ .Release.Name }}
     spec:
+      {{ if .Values.app.db.enabled }}
       initContainers:
       - name: init
         image: postgres:9.3-alpine
@@ -72,7 +73,9 @@ spec:
         - name: cloudsql-instance-credentials
           mountPath: /secrets/cloudsql
           readOnly: true
+      {{ end }}
       containers:
+      {{ if .Values.app.db.enabled }}
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         command: ["/cloud_sql_proxy",
@@ -82,6 +85,7 @@ spec:
           - name: cloudsql-instance-credentials
             mountPath: /secrets/cloudsql
             readOnly: true
+      {{ end }}
       - name: {{ .Values.app.name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
@@ -114,6 +118,7 @@ spec:
           value: {{ . | quote }}
         {{- end -}}
         {{ end }}
+        {{ if .Values.app.db.enabled }}
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
@@ -127,8 +132,9 @@ spec:
           value: {{ .Values.app.db.host }}
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
-        volumeMounts:
+        {{ end }}
         {{ if .Values.nginx.enabled }}
+        volumeMounts:
         - mountPath: {{ .Values.app.static_root }}
           name: static-assets-volume
         {{ end }}
@@ -147,14 +153,15 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets.name }}
       {{ end }}
-      volumes:
       {{ if .Values.nginx.enabled }}
+      volumes:
       - name: static-assets-volume
         emptyDir: {}
       - name: nginx-config
         configMap:
           name: {{ template "generic.name" . }}-nginx-config
       {{ end }}
+      {{ if .Values.app.db.enabled }}
       - name: init-config
         configMap:
           name: {{ template "generic.name" . }}-init-pg-config
@@ -162,5 +169,6 @@ spec:
       - name: cloudsql-instance-credentials
         secret:
           secretName: cloudsql-instance-credentials
+      {{ end }}
       restartPolicy: Always
 
