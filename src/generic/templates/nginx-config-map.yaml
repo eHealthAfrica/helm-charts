@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "generic.name" . }}-nginx-config
+  name: {{ template "generic.fullname" . }}-nginx-config
 data:
   default.conf: |
     server {

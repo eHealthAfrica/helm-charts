@@ -19,9 +19,10 @@ app:
     user:
     name:
   secret:
-  name:
   port: 5432
-  command: start
+  arg:
+    enabled: true
+    command: start
   static_root: /var/www/static
   storage:
     bucket:
@@ -41,8 +42,9 @@ nginx:
   enabled: false
 
 service:
-  type: Ingress
-  port: 80
+  type: NodePort
+  externalPort:
+  internalPort:
 
 imagePullSecrets:
   enabled: false
