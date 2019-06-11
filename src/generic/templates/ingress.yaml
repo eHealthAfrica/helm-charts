@@ -1,3 +1,4 @@
+{{ if .Values.ingress.enabled }}
 {{- $serviceName := include "generic.fullname" . -}}
 {{- $servicePort := .Values.service.externalPort -}}
 apiVersion: extensions/v1beta1
@@ -32,3 +33,4 @@ spec:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
     {{- end -}}
+{{ end }}
