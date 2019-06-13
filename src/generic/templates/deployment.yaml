@@ -1,7 +1,7 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "generic.name" . }}
+  name: {{ template "generic.fullname" . }}
   labels:
     app: {{ template "generic.name" . }}
     chart: {{ template "generic.chart" . }}
@@ -89,8 +89,10 @@ spec:
       - name: {{ .Values.app.name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{ if .Values.app.arg.enabled }}
         args:
-        - {{ .Values.app.command }}
+        - {{ .Values.app.arg.command }}
+        {{ end }}
         ports:
         - name: app
           containerPort: {{ .Values.app.port }}
@@ -159,12 +161,12 @@ spec:
         emptyDir: {}
       - name: nginx-config
         configMap:
-          name: {{ template "generic.name" . }}-nginx-config
+          name: {{ template "generic.fullname" . }}-nginx-config
       {{ end }}
       {{ if .Values.app.db.enabled }}
       - name: init-config
         configMap:
-          name: {{ template "generic.name" . }}-init-pg-config
+          name: {{ template "generic.fullname" . }}-init-pg-config
           defaultMode: 0744
       - name: cloudsql-instance-credentials
         secret:
