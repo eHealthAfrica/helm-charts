@@ -22,7 +22,8 @@ app:
   port: 5432
   arg:
     enabled: true
-    command: start
+    command:
+    - start
   static_root: /var/www/static
   storage:
     bucket:
