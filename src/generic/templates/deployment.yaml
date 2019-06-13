@@ -162,8 +162,8 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets.name }}
       {{ end }}
-      {{ if .Values.nginx.enabled }}
       volumes:
+      {{ if .Values.nginx.enabled }}
       - name: static-assets-volume
         emptyDir: {}
       - name: nginx-config
