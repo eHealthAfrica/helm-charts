@@ -115,6 +115,11 @@ spec:
               value: readinessProbe
             - name: Host
               value: {{ .Values.url }}
+        {{ if .Values.env_secrets.enabled }}
+        envFrom:
+        - secretRef:
+          name: {{ .Values.env_secrets.name }}
+        {{ end }}
         env:
         {{- if .Values.extra_env_vars -}}
         {{- range $key, $value := .Values.extra_env_vars }}
