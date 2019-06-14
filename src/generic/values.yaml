@@ -28,6 +28,7 @@ app:
   storage:
     bucket:
       credentialsSecret:
+  probe_path: /health
 
 database:
   instance:

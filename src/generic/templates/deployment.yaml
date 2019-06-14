@@ -64,7 +64,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: database-password
+              key: {{ .Values.app.name }}-database-password
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
         volumeMounts:
@@ -101,14 +101,14 @@ spec:
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: /health
+            path: {{ .Values.app.probe_path }}
             port: app
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
         readinessProbe:
           httpGet:
-            path: /health
+            path: {{ .Values.app.probe_path }}
             port: app
             httpHeaders:
             - name: X-Kubernetes-Health-Check
@@ -118,7 +118,7 @@ spec:
         {{ if .Values.env_secrets.enabled }}
         envFrom:
         - secretRef:
-          name: {{ .Values.env_secrets.name }}
+            name: {{ .Values.env_secrets.name }}
         {{ end }}
         env:
         {{- if .Values.extra_env_vars -}}
