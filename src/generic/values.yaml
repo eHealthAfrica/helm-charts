@@ -36,6 +36,8 @@ database:
 
 url:
 
+gcp: true
+
 image:
   repository:
   tag:
