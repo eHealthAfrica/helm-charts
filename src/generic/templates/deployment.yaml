@@ -37,7 +37,7 @@ spec:
         app: {{ template "generic.name" . }}
         release: {{ .Release.Name }}
     spec:
-      {{ if .Values.app.db.enabled }}
+      {{ if .Values.app.db.create }}
       initContainers:
       - name: init
         image: postgres:9.3-alpine
@@ -70,12 +70,14 @@ spec:
         volumeMounts:
         - mountPath: /scripts
           name: init-config
+        {{ if .Values.gcp }}
         - name: cloudsql-instance-credentials
           mountPath: /secrets/cloudsql
           readOnly: true
+        {{ end }}
       {{ end }}
       containers:
-      {{ if .Values.app.db.enabled }}
+      {{ if and .Values.app.db.enabled .Values.gcp }}
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         command: ["/cloud_sql_proxy",
@@ -101,14 +103,14 @@ spec:
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: /health
+            path: {{ .Values.app.probe_path }}
             port: app
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
         readinessProbe:
           httpGet:
-            path: /health
+            path: {{ .Values.app.probe_path }}
             port: app
             httpHeaders:
             - name: X-Kubernetes-Health-Check
@@ -118,7 +120,7 @@ spec:
         {{ if .Values.env_secrets.enabled }}
         envFrom:
         - secretRef:
-          name: {{ .Values.env_secrets.name }}
+            name: {{ .Values.env_secrets.name }}
         {{ end }}
         env:
         {{- if .Values.extra_env_vars -}}
@@ -132,7 +134,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: {{ .Values.app.name }}-database-password
+              key: database-password
         - name: PGUSER
           value: {{ .Values.app.db.user }}
         - name: PGPORT
@@ -170,11 +172,13 @@ spec:
         configMap:
           name: {{ template "generic.fullname" . }}-nginx-config
       {{ end }}
-      {{ if .Values.app.db.enabled }}
+      {{ if .Values.app.db.create }}
       - name: init-config
         configMap:
           name: {{ template "generic.fullname" . }}-init-pg-config
           defaultMode: 0744
+      {{ end }}
+      {{ if and .Values.app.db.enabled .Values.gcp}}
       - name: cloudsql-instance-credentials
         secret:
           secretName: cloudsql-instance-credentials

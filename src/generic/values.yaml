@@ -13,6 +13,7 @@ podAntiAffinity:
 app:
   name:
   db:
+    create: false
     enabled: false
     secret: database-credentials
     host: 127.0.0.1
@@ -28,11 +29,14 @@ app:
   storage:
     bucket:
       credentialsSecret:
+  probe_path: /health
 
 database:
   instance:
 
 url:
+
+gcp: true
 
 image:
   repository:
