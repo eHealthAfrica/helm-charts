@@ -40,7 +40,7 @@ spec:
       {{ if .Values.app.db.create }}
       initContainers:
       {{- if .Values.extraInitContainers }}
-{{ tpl .Values.extraContainers . | indent 8 }}
+{{ tpl .Values.extraContainers . | indent 6 }}
       {{- end }}
       - name: init
         image: postgres:9.3-alpine
@@ -81,7 +81,7 @@ spec:
       {{ end }}
       containers:
       {{- if .Values.extraContainers }}
-{{ tpl .Values.extraContainers . | indent 8 }}
+{{ tpl .Values.extraContainers . | indent 6 }}
       {{- end }}
       {{ if and .Values.app.db.enabled .Values.gcp }}
       - name: cloudsql-proxy
@@ -190,7 +190,7 @@ spec:
           secretName: cloudsql-instance-credentials
       {{ end }}
       {{- with .Values.extraVolumes }}
-{{ tpl . $ | indent 8 }}
+{{ tpl . $ | indent 6 }}
       {{- end }}
       restartPolicy: Always
 
