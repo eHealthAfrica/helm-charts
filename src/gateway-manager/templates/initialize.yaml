@@ -32,6 +32,7 @@ data:
         function create_kc_tenant {
             REALM=$1
             DESC=${2:-$REALM}
+            $AUTH_RUN setup_auth
 
             echo "Adding [$REALM] realm in keycloak..."
             $AUTH_RUN add_realm \
@@ -49,13 +50,8 @@ data:
                 $REALM \
                 $KEYCLOAK_KONG_CLIENT
 
-            echo "Adding [$KEYCLOAK_INITIAL_USER_USERNAME] user in keycloak realm [$REALM] ..."
-            $AUTH_RUN add_user \
-                $REALM \
-                $KEYCLOAK_INITIAL_USER_USERNAME \
-                $KEYCLOAK_INITIAL_USER_PASSWORD
 
-            echo_message "Adding [aether] solution in kong..."
+            echo "Adding [aether] solution in kong..."
             $AUTH_RUN add_solution aether $REALM $KEYCLOAK_KONG_CLIENT
         }
 
