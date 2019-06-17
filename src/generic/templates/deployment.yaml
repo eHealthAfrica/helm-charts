@@ -39,7 +39,7 @@ spec:
     spec:
       {{ if .Values.app.db.create }}
       initContainers:
-      {{- if .Values.keycloak.extraInitContainers }}
+      {{- if .Values.extraInitContainers }}
 {{ tpl .Values.extraContainers . | indent 8 }}
       {{- end }}
       - name: init
