@@ -1,0 +1,64 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+spec:
+  template:
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+      - name: {{ .Chart.Name }}
+        image:  "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
+        imagePullPolicy: {{ .Values.gw.pullPolicy }}
+        command: {{ .Values.gw.command }}
+        args:
+          - {{ .Values.gw.args }}
+        env:
+        - name: DEBUG
+          value: {{ .Values.gw.debug }}
+        - name: KEYCLOAK_GLOBAL_ADMIN
+          value: {{ .Values.gw.keyCloak.globalAdmin }}
+        - name: KEYCLOAK_GLOBAL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.gw.keyCloak.secret.name }}
+              key: {{ .Values.gw.keyCloak.secret.passwordKey }}
+        - name: LOGIN_THEME 
+          value: {{ .Values.gw.logingTheme }}
+        - name: KEYCLOAK_AETHER_CLIENT
+          value: {{ .Values.gw.keyCloak.aetherClient }}
+        - name: KEYCLOAK_KONG_CLIENT
+          value: {{ .Values.gw.keyCloak.kongClient }}
+        - name: BASE_DOMAIN
+          value: {{ .Values.gw.baseDomain }}
+        - name: BASE_HOST
+          value: {{ .Values.gw.baseHost }}
+        - name: KEYCLOAK_INTERNAL
+          value: {{ .Values.gw.keyCloak.internalService }}
+        - name: KONG_INTERNAL
+          value: {{ .Values.gw.kong.internalService }}
+        volumeMounts:
+        - name: aether-services
+          mountPath: /code/service
+          readOnly: true
+        - name: aether-solution
+          mountPath: /code/solution
+          readOnly: true
+        - name: aether-initialize
+          mountPath: /code/aether
+      volumes:
+      - name: aether-services
+        configMap:
+          name: aether-services
+      - name: aether-solution
+        configMap:
+          name: aether-solution
+      - name: aether-initialize
+        configMap:
+          name: aether-initialize
+          defaultMode: 0755
