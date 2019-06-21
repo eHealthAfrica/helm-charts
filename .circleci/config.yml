@@ -34,3 +34,6 @@ jobs:
       - run:
           name: gateway-manager
           command: helm lint -f src/gateway-manager/ci/values.yaml src/gateway-manager/
+      - run:
+          name: generic
+          command: helm lint -f src/generic/ci/values.yaml src/generic/
