@@ -40,8 +40,18 @@ spec:
           value: {{ .Values.gw.baseHost }}
         - name: KEYCLOAK_INTERNAL
           value: {{ .Values.gw.keyCloak.internalService }}
+        - name: KEYCLOAK_INITIAL_USER_USERNAME
+          value: {{ .Values.gw.keyCloak.initial_user }}
+        - name: KEYCLOAK_INITIAL_USER_PASSWORD
+          value: {{.Values.gw.keyCloak.initial_password}}
         - name: KONG_INTERNAL
           value: {{ .Values.gw.kong.internalService }}
+        - name: KAFKA_SU_USER
+          value: {{ .Values.gw.kafka.kafkaSUUser }}
+        - name: KAFKA_SU_PASSWORD
+          value: {{ .Values.gw.kafka.kafkaSUPassword }}
+        - name: KAFKA_ROOT_USER
+          value: {{ .Values.gw.kafka.kafkaRootUser }}
         volumeMounts:
         - name: aether-services
           mountPath: /code/service
