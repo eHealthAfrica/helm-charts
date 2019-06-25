@@ -18,10 +18,16 @@ gw:
       internalService: ''
   keyCloak:
     globalAdmin: 'keycloak'
-    kongClient: ''
+    kongClient: 'kong'
     aetherClient: 'aether' 
     baseDomain: ''
     baseHost: ''
     internalService: ''
+    initial_user: 'user'
+    initial_password: 'password'
+  kafka:
+    kafkaSUUser: ''
+    kafkaSUPassword: ''
+    kafkaRootUser: ''
   kong:
     internalService: ''
