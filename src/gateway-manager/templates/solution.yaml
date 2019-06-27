@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: aether-solution
 data:
-  aether_service.json: |
+  aether.json: |
     {
       "name": "aether",
       "services": [
