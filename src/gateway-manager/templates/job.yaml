@@ -15,9 +15,8 @@ spec:
       - name: {{ .Chart.Name }}
         image:  "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
         imagePullPolicy: {{ .Values.gw.pullPolicy }}
-        command: {{ .Values.gw.command }}
-        args:
-          - {{ .Values.gw.args }}
+        command: [{{ .Values.gw.command }}]
+        args: [{{ .Values.gw.args }}]
         env:
         - name: DEBUG
           value: {{ .Values.gw.debug }}
@@ -61,6 +60,8 @@ spec:
           readOnly: true
         - name: aether-initialize
           mountPath: /code/aether
+        - name: aether-add-tenant
+          mountPath: /code/aether
       volumes:
       - name: aether-services
         configMap:
@@ -68,6 +69,9 @@ spec:
       - name: aether-solution
         configMap:
           name: aether-solution
+      - name: aether-add-tenant
+        configMap:
+          name: aether-add-tenant 
       - name: aether-initialize
         configMap:
           name: aether-initialize
