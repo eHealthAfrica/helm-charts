@@ -22,14 +22,16 @@ extraVolumes: |
 app:
   name:
   db:
+    type: postgres
     create: false
     enabled: false
     secret: database-credentials
     host: 127.0.0.1
+    port: 5432
     user:
     name:
   secret:
-  port: 5432
+  port:
   arg:
     enabled: true
     command:
@@ -39,6 +41,12 @@ app:
     bucket:
       credentialsSecret:
   probe_path: /health
+  volume:
+    enabled: false
+    mountPath:
+    persist: false
+    accessMode: ReadWriteOnce
+    size: 10Gi
 
 database:
   instance:
