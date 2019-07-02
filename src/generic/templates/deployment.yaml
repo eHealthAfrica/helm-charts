@@ -81,7 +81,7 @@ spec:
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         command: ["/cloud_sql_proxy",
-                  "-instances={{ .Values.database.instance }}=tcp:5432",
+                  "-instances={{ .Values.database.instance }}=tcp:{{ .Values.app.db.port }}",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
         volumeMounts:
           - name: cloudsql-instance-credentials
@@ -117,6 +117,8 @@ spec:
               value: readinessProbe
             - name: Host
               value: {{ .Values.url }}
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
         {{ if .Values.env_secrets.enabled }}
         envFrom:
         - secretRef:
@@ -129,7 +131,7 @@ spec:
           value: {{ . | quote }}
         {{- end -}}
         {{ end }}
-        {{ if .Values.app.db.enabled }}
+        {{ if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") }}
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
@@ -144,10 +146,14 @@ spec:
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
         {{ end }}
-        {{ if .Values.nginx.enabled }}
         volumeMounts:
+        {{ if .Values.nginx.enabled }}
         - mountPath: {{ .Values.app.static_root }}
           name: static-assets-volume
+        {{ end }}
+        {{ if .Values.app.volume.enabled }}
+        - mountPath: {{ .Values.app.volume.mountPath }}
+          name: {{ template "generic.name" . }}-data
         {{ end }}
       {{ if .Values.nginx.enabled }}
       - name: nginx
@@ -182,6 +188,15 @@ spec:
       - name: cloudsql-instance-credentials
         secret:
           secretName: cloudsql-instance-credentials
+      {{ end }}
+      {{ if .Values.app.volume.enabled }}
+      - name: {{ template "generic.name" . }}-data
+        {{ if .Values.app.volume.persist }}
+        persistentVolumeClaim:
+          claimName: {{ template "generic.fullname" . }}
+        {{ else }}
+          emptyDir: {}
+        {{ end }}
       {{ end }}
       restartPolicy: Always
 
