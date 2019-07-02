@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aether-solution
+data:
+  aether.json: |
+    {
+      "name": "aether",
+      "services": [
+        "odk", "kernel", "ui", "gather"
+      ]
+    }

@@ -1,0 +1,27 @@
+pullPolicy: Always
+gw:
+  env: dev
+  repository: 'ehealthafrica/gateway-manager'
+  debug: null
+  tag: 'latest'
+  aether:
+    services: ["odk", "ui", "kernel", "gather"]
+    ui:
+      internalService: 'aether-ui'
+    odk:
+      internalService: 'aether-odk'
+    kernel:
+      internalService: 'aether-kernel'
+    gather:
+      internalService: 'gather'
+  keyCloak:
+    globalAdmin: 'admin'
+    kongClient: 'admin'
+    baseDomain: 'eha.im'
+    baseHost: 'alpha.eha.im'
+    internalService: 'keycloak-http'
+    secret:
+      PasswordKey: 'admin-password'
+      name: 'keycloak'
+  kong:
+    internalService: 'kong-kong-admin'

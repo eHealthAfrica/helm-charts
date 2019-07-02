@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aether-services
+data:
+  gather.json: |
+    {
+      "name": "gather",
+      "host": "http://gather",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "url": "/",
+          "strip_path": "false"
+        }
+      ],
+      "public_endpoints": [
+        {
+          "name": "public",
+          "url": "/-/gather/",
+          "route_path": "/-/gather/",
+          "strip_path": "true"
+        }
+      ]
+    }
+
+  odk.json: |
+    {
+      "name": "odk",
+      "host": "http://aether-odk",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "url": "/",
+          "strip_path": "false"
+        }
+      ],
+      "public_endpoints": [
+        {
+          "name": "public",
+          "url": "/-/odk/",
+          "route_path": "/-/odk/",
+          "strip_path": "true"
+        }
+      ]
+    }
+
+  ui.json: |
+    {
+      "name": "ui",
+      "host": "http://aether-ui",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "url": "/",
+          "strip_path": "false"
+        }
+      ],
+      "public_endpoints": [
+        {
+          "name": "public",
+          "url": "/-/ui/",
+          "route_path": "/-/ui/",
+          "strip_path": "true"
+        }
+      ]
+    }
+
+  kernel.json: |
+    {
+      "name": "kernel",
+      "host": "http://aether-kernel",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "url": "/",
+          "strip_path": "false"
+        }
+      ],
+      "public_endpoints": [
+        {
+          "name": "public",
+          "url": "/-/kernel/",
+          "route_path": "/-/kernel/",
+          "strip_path": "true"
+        }
+      ]
+    }

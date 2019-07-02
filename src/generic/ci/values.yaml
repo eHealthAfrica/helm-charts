@@ -10,6 +10,7 @@ fullnameOverride: aya
 podAntiAffinity:
   enabled: true
 
+
 app:
   name: aya
   db:
@@ -25,6 +26,27 @@ app:
   storage:
     bucket:
       credentialsSecret: "gcs-bucket-credentials"
+
+## Additional sidecar containers
+extraContainers: |
+  - name: openvpn-client 
+    image: ehealthafrica/openvpn-client:3.9.4
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN"]
+    command: ["kano.ovpn"]
+    volumeMounts:
+      - name: kano-vpn
+        mountPath: /etc/openvpn
+        readOnly: true
+      - name: dev-net-tun
+        mountPath: /dev/net/tun
+        readOnly: true
+
+extraVolumes: |
+  - name: vpn-credentials 
+    secret:
+      secretName: vpn-credentials
 
 database:
   instance: development-223016:europe-west1:ehealth-africa-dev
