@@ -195,7 +195,6 @@ spec:
         secret:
           secretName: cloudsql-instance-credentials
       {{ end }}
-<<<<<<< HEAD
       {{ if .Values.app.volume.enabled }}
       - name: {{ template "generic.name" . }}-data
         {{ if .Values.app.volume.persist }}
@@ -205,10 +204,8 @@ spec:
           emptyDir: {}
         {{ end }}
       {{ end }}
-=======
       {{- with .Values.extraVolumes }}
 {{ tpl . $ | indent 6 }}
       {{- end }}
->>>>>>> master
       restartPolicy: Always
 
