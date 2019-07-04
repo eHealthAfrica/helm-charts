@@ -16,7 +16,7 @@ data:
       }
     }
     server {
-      server_name *.{{ .Values.domain }};
+      server_name *.{{ .Values.url }};
       {{- if .Values.debug }}
       error_log   /var/log/nginx/error.log info;
       {{- else }}
