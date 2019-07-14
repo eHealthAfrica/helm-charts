@@ -10,3 +10,8 @@ data:
         "odk", "kernel", "ui", "gather"
       ]
     }
+  gather.json: |
+    {
+      "name": "gather",
+      "services": [ "gather", "odk" ]
+    }
