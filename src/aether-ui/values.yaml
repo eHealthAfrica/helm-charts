@@ -41,11 +41,7 @@ provider:
 kube2iam:
   enabled: false
 ingress:
-  enabled: true
-  ssl:
-    letsencrypt: false
-  hosts:
-    - ui.aether.local
+  enabled: false 
 service:
   name: nginx
   type: NodePort

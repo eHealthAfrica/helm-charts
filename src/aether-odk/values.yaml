@@ -44,11 +44,7 @@ provider:
 kube2iam:
   enabled: false
 ingress:
-  enabled: true
-  ssl:
-    letsencrypt: false
-  hosts:
-    - odk.aether.local
+  enabled: false 
 service:
   name: nginx
   type: NodePort

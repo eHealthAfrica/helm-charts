@@ -1,3 +1,4 @@
+{{ if .Values.ingress.enabled }}
 {{- $serviceName := .Chart.Name -}}
 {{- $servicePort := .Values.service.externalPort -}}
 {{- $servicePath := .Values.service.externalServicePath -}}
@@ -33,3 +34,4 @@ spec:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
     {{- end -}}
+{{ end }}
