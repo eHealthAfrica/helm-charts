@@ -40,7 +40,12 @@ app:
   storage:
     bucket:
       credentialsSecret:
-  probe_path: /health
+  probe:
+    type: request
+    # type: tcp
+    path: /health
+    initialDelaySeconds: 5
+    periodSeconds: 10
   volume:
     enabled: false
     mountPath:

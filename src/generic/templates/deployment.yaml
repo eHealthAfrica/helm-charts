@@ -107,22 +107,40 @@ spec:
         - name: app
           containerPort: {{ .Values.app.port }}
           protocol: TCP
+        {{ if eq .Values.app.probe.type "request" }}
         livenessProbe:
           httpGet:
-            path: {{ .Values.app.probe_path }}
+            path: {{ .Values.app.probe.path }}
             port: app
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
+          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.probe.periodSeconds }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.app.probe_path }}
+            path: {{ .Values.app.probe.path }}
             port: app
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: readinessProbe
             - name: Host
               value: {{ .Values.url }}
+          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.probe.periodSeconds }}
+        {{ end }}
+        {{ if eq .Values.app.probe.type "tcp" }}
+        livenessProbe:
+          tcpSocket:
+            port: app
+          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.probe.periodSeconds }}
+        readinessProbe:
+          tcpSocket:
+            port: app
+          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.probe.periodSeconds }}
+        {{ end }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
         {{ if .Values.env_secrets.enabled }}
