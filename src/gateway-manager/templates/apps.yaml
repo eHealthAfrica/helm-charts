@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aether-apps
+data:
+  keycloak.json: |
+    {
+      "name": "keycloak",
+      "host": "{{ .Values.gw.keyCloak.internalHost }}",
+      "paths": [ "/auth/" ]
+    }

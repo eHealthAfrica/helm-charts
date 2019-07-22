@@ -15,11 +15,13 @@ spec:
       - name: {{ .Chart.Name }}
         image:  "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
         imagePullPolicy: {{ .Values.gw.pullPolicy }}
-        command: [{{ .Values.gw.command }}]
-        args: [{{ .Values.gw.args }}]
+        # command: [{{ .Values.gw.command }}]
+        # args: [{{ .Values.gw.args }}]
+        command: ["sleep"]
+        args: ["300000"]
         env:
         - name: DEBUG
-          value: {{ .Values.gw.debug }}
+          value: "{{ .Values.gw.debug }}"
         - name: KEYCLOAK_GLOBAL_ADMIN
           value: {{ .Values.gw.keyCloak.globalAdmin }}
         - name: KEYCLOAK_GLOBAL_PASSWORD
@@ -27,7 +29,7 @@ spec:
             secretKeyRef:
               name: {{ .Values.gw.keyCloak.secret.name }}
               key: {{ .Values.gw.keyCloak.secret.passwordKey }}
-        - name: LOGIN_THEME 
+        - name: LOGIN_THEME
           value: {{ .Values.gw.logingTheme }}
         - name: KEYCLOAK_AETHER_CLIENT
           value: {{ .Values.gw.keyCloak.aetherClient }}
@@ -39,6 +41,8 @@ spec:
           value: {{ .Values.gw.baseHost }}
         - name: KEYCLOAK_INTERNAL
           value: {{ .Values.gw.keyCloak.internalService }}
+        - name: KEYCLOAK_HOST
+          value: {{ .Values.gw.keyCloak.host }}
         - name: KEYCLOAK_INITIAL_USER_USERNAME
           value: {{ .Values.gw.keyCloak.initial_user }}
         - name: KEYCLOAK_INITIAL_USER_PASSWORD
@@ -51,28 +55,35 @@ spec:
           value: {{ .Values.gw.kafka.kafkaSUPassword }}
         - name: KAFKA_ROOT_USER
           value: {{ .Values.gw.kafka.kafkaRootUser }}
+        - name: REALM
+          value: {{ .Values.gw.keyCloak.realm }}
         volumeMounts:
         - name: aether-services
           mountPath: /code/service
-          readOnly: true
         - name: aether-solution
           mountPath: /code/solution
-          readOnly: true
-        - name: aether-initialize
-          mountPath: /code/aether
-        - name: aether-add-tenant
-          mountPath: /code/aether
+        - name: aether-apps
+          mountPath: /code/app
+        - name: aether-scripts
+          mountPath: /code/scripts
+        - name: aether-templates
+          mountPath: /code/templates/oidc_template.json
+          subPath: oidc_template.json
       volumes:
       - name: aether-services
         configMap:
           name: aether-services
+      - name: aether-apps
+        configMap:
+          name: aether-apps
       - name: aether-solution
         configMap:
           name: aether-solution
-      - name: aether-add-tenant
+      - name: aether-scripts
         configMap:
-          name: aether-add-tenant 
-      - name: aether-initialize
-        configMap:
-          name: aether-initialize
+          name: aether-scripts
           defaultMode: 0755
+      - name: aether-templates
+        configMap:
+          name: aether-templates
+

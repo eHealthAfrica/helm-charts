@@ -10,16 +10,17 @@ data:
       "oidc_endpoints": [
         {
           "name": "protected",
-          "url": "/",
-          "strip_path": "false"
+          "paths": [
+            "/{realm}/{name}/"
+          ]
         }
       ],
       "public_endpoints": [
         {
           "name": "public",
-          "url": "/-/gather/",
-          "route_path": "/-/gather/",
-          "strip_path": "true"
+          "paths": [
+            "/{public_realm}/{name}/"
+          ]
         }
       ]
     }
@@ -31,35 +32,21 @@ data:
       "oidc_endpoints": [
         {
           "name": "protected",
-          "url": "/",
-          "strip_path": "false"
+          "paths": [
+            "/{realm}/{name}/"
+          ]
         }
       ],
       "public_endpoints": [
         {
           "name": "public",
-          "url": "/-/odk/",
-          "route_path": "/-/odk/"
-        },
-        {
-          "name": "formlist",
-          "url": "/{realm}/odk/formList",
-          "template_path": "/{realm}/odk/formList"
-        },
-        {
-          "name": "forms",
-          "url": "/{realm}/odk/forms",
-          "template_path": "/{realm}/odk/forms"
-        },
-        {
-          "name": "media",
-          "url": "/{realm}/odk/media-file/",
-          "template_path": "/{realm}/odk/media-file/"
-        },
-        {
-          "name": "submission",
-          "url": "/{realm}/odk/submission",
-          "template_path": "/{realm}/odk/submission"
+          "paths": [
+            "/{public_realm}/{name}/",
+            "/{realm}/{name}/formList",
+            "/{realm}/{name}/forms",
+            "/{realm}/{name}/media-file/",
+            "/{realm}/{name}/submission"
+          ]
         }
       ]
     }
@@ -71,20 +58,21 @@ data:
       "oidc_endpoints": [
         {
           "name": "protected",
-          "url": "/",
-          "strip_path": "false"
+          "paths": [
+            "/{realm}/{name}/"
+          ]
         }
       ],
       "public_endpoints": [
         {
           "name": "public",
-          "url": "/-/ui/",
-          "route_path": "/-/ui/",
-          "strip_path": "true"
+          "paths": [
+            "/{public_realm}/{name}/"
+          ]
         }
       ]
     }
-
+ 
   kernel.json: |
     {
       "name": "kernel",
@@ -92,16 +80,18 @@ data:
       "oidc_endpoints": [
         {
           "name": "protected",
-          "url": "/",
-          "strip_path": "false"
+          "paths": [
+            "/{realm}/{name}/"
+          ]
         }
       ],
       "public_endpoints": [
         {
           "name": "public",
-          "url": "/-/kernel/",
-          "route_path": "/-/kernel/",
-          "strip_path": "true"
+          "paths": [
+            "/{public_realm}/{name}/"
+          ]
         }
       ]
-    }
+    }     
+
