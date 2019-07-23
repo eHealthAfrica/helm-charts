@@ -3,62 +3,13 @@ kind: ConfigMap
 metadata:
   name: aether-scripts
 data:
-    initialize.sh: |
-        #!/usr/bin/env bash
-
-        set -Eeuo pipefail
-
-        source ./scripts/aether_functions.sh
-
-        AUTH_RUN="/code/entrypoint.sh"
-
-        $AUTH_RUN add_app keycloak
-        echo_message "Creating tenants/realms in keycloak..."
-        create_kc_tenant $REALM $REALM  
-        add_gather_tenant $REALM 
-    aether_functions.sh: |
-        #!/usr/bin/env bash
-        
-        set -Eeuo pipefail
-
-        LINE=`printf -v row "%${COLUMNS:-$(tput cols)}s"; echo ${row// /=}`
-        AUTH_RUN=/code/entrypoint.sh
-
-        function echo_message {
-            if [ -z "$1" ]; then
-                echo "$LINE"
-            else
-                msg=" $1 "
-                echo "${LINE:${#msg}}$msg"
-            fi
-        }
-
-        function create_kc_tenant {
-            REALM=$1
-            DESC=${2:-$REALM}
-
-            $AUTH_RUN add_realm \
-                $REALM \
-                "$DESC" \
-                $LOGIN_THEME
-
-            $AUTH_RUN add_public_client \
-                $REALM \
-                $KEYCLOAK_AETHER_CLIENT
-
-            $AUTH_RUN add_oidc_client \
-                $REALM \
-                $KEYCLOAK_KONG_CLIENT
-
-            $AUTH_RUN add_user \
-                $REALM \
-                $KEYCLOAK_INITIAL_USER_USERNAME \
-                $KEYCLOAK_INITIAL_USER_PASSWORD
-
-            $AUTH_RUN add_solution aether $REALM $KEYCLOAK_KONG_CLIENT
-        }
-
-        function add_gather_tenant {
-            REALM=$1
-            $AUTH_RUN add_solution gather $REALM $KEYCLOAK_KONG_CLIENT
-        }
+  initialize.sh: |
+    #!/usr/bin/env bash
+    set -Eeuo pipefail
+    gwm="/code/entrypoint.sh"
+    $gwm add_app keycloak
+    $gwm add_realm $REALM "Tenant: $REALM" $LOGIN_THEME
+    $gwm add_public_client $REALM $KEYCLOAK_AETHER_CLIENT
+    $gwm add_oidc_client $REALM $KEYCLOAK_KONG_CLIENT
+    $gwm add_user $REALM $KEYCLOAK_INITIAL_USER_USERNAME $KEYCLOAK_INITIAL_USER_PASSWORD
+    $gwm add_solution aether-gather $REALM $KEYCLOAK_KONG_CLIENT    
