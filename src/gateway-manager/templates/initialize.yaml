@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: aether-scripts
+  name: aether-initialize
 data:
   initialize.sh: |
     #!/usr/bin/env bash
