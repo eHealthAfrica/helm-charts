@@ -22,6 +22,10 @@ data:
         alias /var/www/static/;
       }
 
+      if ($http_x_forwarded_proto != 'https') {
+       return 301 https://$host$request_uri;
+      }
+
       # Protected media
       location /media-internal/ {
         internal;  # Cannot be accessed from external calls
