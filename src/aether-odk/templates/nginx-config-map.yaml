@@ -18,12 +18,12 @@ data:
       # Max upload size
       client_max_body_size 75M;   # adjust to taste
 
-      location /static/ {
-        alias /var/www/static/;
-      }
-
       if ($http_x_forwarded_proto != 'https') {
        return 301 https://$host$request_uri;
+      }
+
+      location /static/ {
+        alias /var/www/static/;
       }
 
       # Protected media
