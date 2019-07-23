@@ -15,10 +15,8 @@ spec:
       - name: {{ .Chart.Name }}
         image:  "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
         imagePullPolicy: {{ .Values.gw.pullPolicy }}
-        # command: [{{ .Values.gw.command }}]
-        # args: [{{ .Values.gw.args }}]
-        command: ["sleep"]
-        args: ["300000"]
+        command: [{{ .Values.gw.command }}]
+        args: [{{ .Values.gw.args }}]
         env:
         - name: DEBUG
           value: "{{ .Values.gw.debug }}"
