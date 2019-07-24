@@ -76,7 +76,7 @@ spec:
           name: aether-apps
       - name: aether-gather-solution
         configMap:
-          name: aether-solution
+          name: aether-gather-solution
       - name: aether-initialize
         configMap:
           name: aether-initialize

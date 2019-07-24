@@ -3,7 +3,7 @@ gw:
   env: dev
   pullPolicy: 'Always'
   repository: 'ehealthafrica/gateway-manager'
-  debug: '' 
+  debug: ''
   tag: 'latest'
   command: ["/code/aether/initialize.sh"]
   aether:
@@ -19,7 +19,7 @@ gw:
   keyCloak:
     globalAdmin: 'keycloak'
     kongClient: 'kong'
-    aetherClient: 'aether' 
+    aetherClient: 'aether'
     baseDomain: ''
     baseHost: ''
     internalService: ''
