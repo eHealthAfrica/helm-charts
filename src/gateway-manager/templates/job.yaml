@@ -62,7 +62,7 @@ spec:
           mountPath: /code/solution
         - name: aether-apps
           mountPath: /code/app
-        - name: aether-scripts
+        - name: aether-initialize
           mountPath: /code/scripts
         - name: aether-templates
           mountPath: /code/templates/oidc_template.json
@@ -77,9 +77,9 @@ spec:
       - name: aether-solution
         configMap:
           name: aether-solution
-      - name: aether-scripts
+      - name: aether-initialize
         configMap:
-          name: aether-scripts
+          name: aether-initialize
           defaultMode: 0755
       - name: aether-templates
         configMap:
