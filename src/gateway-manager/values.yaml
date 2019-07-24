@@ -3,7 +3,7 @@ gw:
   env: dev
   pullPolicy: 'Always'
   repository: 'ehealthafrica/gateway-manager'
-  debug: null
+  debug: '' 
   tag: 'latest'
   command: ["/code/aether/initialize.sh"]
   aether:

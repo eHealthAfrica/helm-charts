@@ -7,101 +7,58 @@ data:
     {
       "name": "gather",
       "host": "http://gather",
+      "paths": ["/{public_realm}/{name}"],
       "oidc_endpoints": [
         {
           "name": "protected",
-          "url": "/",
-          "strip_path": "false"
-        }
-      ],
-      "public_endpoints": [
-        {
-          "name": "public",
-          "url": "/-/gather/",
-          "route_path": "/-/gather/",
-          "strip_path": "true"
+          "paths": ["/{realm}/{name}"]
         }
       ]
     }
-
   odk.json: |
     {
       "name": "odk",
       "host": "http://aether-odk",
+      "paths": ["/{public_realm}/{name}"],
       "oidc_endpoints": [
         {
           "name": "protected",
-          "url": "/",
-          "strip_path": "false"
+          "paths": ["/{realm}/{name}"]
         }
       ],
       "public_endpoints": [
         {
           "name": "public",
-          "url": "/-/odk/",
-          "route_path": "/-/odk/"
-        },
-        {
-          "name": "formlist",
-          "url": "/{realm}/odk/formList",
-          "template_path": "/{realm}/odk/formList"
-        },
-        {
-          "name": "forms",
-          "url": "/{realm}/odk/forms",
-          "template_path": "/{realm}/odk/forms"
-        },
-        {
-          "name": "media",
-          "url": "/{realm}/odk/media-file/",
-          "template_path": "/{realm}/odk/media-file/"
-        },
-        {
-          "name": "submission",
-          "url": "/{realm}/odk/submission",
-          "template_path": "/{realm}/odk/submission"
+          "paths": [
+            "/{realm}/{name}/formList",
+            "/{realm}/{name}/forms",
+            "/{realm}/{name}/media-file/",
+            "/{realm}/{name}/submission"
+          ]
         }
       ]
     }
-
   ui.json: |
     {
       "name": "ui",
       "host": "http://aether-ui",
+      "paths": ["/{public_realm}/{name}"],
       "oidc_endpoints": [
         {
           "name": "protected",
-          "url": "/",
-          "strip_path": "false"
-        }
-      ],
-      "public_endpoints": [
-        {
-          "name": "public",
-          "url": "/-/ui/",
-          "route_path": "/-/ui/",
-          "strip_path": "true"
+          "paths": ["/{realm}/{name}"]
         }
       ]
     }
-
   kernel.json: |
     {
       "name": "kernel",
       "host": "http://aether-kernel",
+      "paths": ["/{public_realm}/{name}"],
       "oidc_endpoints": [
         {
           "name": "protected",
-          "url": "/",
-          "strip_path": "false"
-        }
-      ],
-      "public_endpoints": [
-        {
-          "name": "public",
-          "url": "/-/kernel/",
-          "route_path": "/-/kernel/",
-          "strip_path": "true"
+          "paths": ["/{realm}/{name}"]
         }
       ]
     }
