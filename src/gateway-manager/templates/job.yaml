@@ -64,9 +64,6 @@ spec:
           mountPath: /code/app
         - name: aether-initialize
           mountPath: /code/scripts
-        - name: aether-templates
-          mountPath: /code/templates/oidc_template.json
-          subPath: oidc_template.json
       volumes:
       - name: aether-services
         configMap:
