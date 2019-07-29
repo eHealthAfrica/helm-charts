@@ -28,6 +28,12 @@ app:
   secret: gather-secrets
   db:
     host: 127.0.0.1
+  gateWay:
+    serviceId: gather
+    publicRealm: "-"
+  keycloak:
+    externalUrL: http://aether.local/auth/realms
+    clientId: aether
 provider:
   aws: false
   gcp: false

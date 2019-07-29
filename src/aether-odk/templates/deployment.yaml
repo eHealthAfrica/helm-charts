@@ -148,6 +148,16 @@ spec:
               name: {{ .Values.app.secret }}
               key: sentry-dsn
         {{ end }}
+        - name: GATEWAY_SERVICE_ID
+          value: {{ .Values.app.gateWay.serviceId }}
+        - name: GATEWAY_PUBLIC_REALM
+          value: "{{ .Values.app.gateWay.publicRealm }}"
+        - name: PUBLIC_REALM
+          value: "{{ .Values.app.gateWay.publicRealm }}"
+        - name: KEYCLOAK_SERVER_URL
+          value: {{ .Values.app.keycloak.externalUrl }}
+        - name: KEYCLOAK_CLIENT_ID
+          value: {{ .Values.app.keycloak.clientId }}
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN

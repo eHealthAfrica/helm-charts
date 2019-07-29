@@ -321,7 +321,7 @@ spec:
           value: "{{ .Values.app.gateWay.publicRealm }}"
         - name: KEYCLOAK_SERVER_URL
           value: {{ .Values.app.keycloak.externalUrl }}
-        - name:  KEYCLOAK_CLIENT_ID
+        - name: KEYCLOAK_CLIENT_ID
           value: {{ .Values.app.keycloak.clientId }}
         - name: CAS_SERVER_URL
           value: {{ .Values.ums_url }}
