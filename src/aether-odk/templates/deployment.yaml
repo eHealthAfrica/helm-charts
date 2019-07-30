@@ -151,7 +151,7 @@ spec:
         - name: GATEWAY_SERVICE_ID
           value: {{ .Values.app.gateWay.serviceId }}
         - name: GATEWAY_PUBLIC_REALM
-          value: "{{ .Values.app.gateWay.publicRealm }}"
+          value: "{{ .Values.app.gateWay.gatewayPublicRealm }}"
         - name: PUBLIC_REALM
           value: "{{ .Values.app.gateWay.publicRealm }}"
         - name: KEYCLOAK_SERVER_URL

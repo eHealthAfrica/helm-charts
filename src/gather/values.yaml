@@ -31,6 +31,8 @@ app:
   gateWay:
     serviceId: gather
     publicRealm: "-"
+    gatewayPublicRealm: "-"
+    defaultRealm: "master"
   keycloak:
     externalUrL: http://aether.local/auth/realms
     clientId: aether

@@ -42,6 +42,7 @@ app:
   gateWay:
     serviceId: odk
     publicRealm: "-"
+    gatewayPublicRealm: "master"
   keycloak:
     externalUrL: http://aether.local/auth/realms
     clientId: aether
