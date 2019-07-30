@@ -15,8 +15,8 @@ spec:
       - name: {{ .Chart.Name }}
         image:  "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
         imagePullPolicy: {{ .Values.gw.pullPolicy }}
-        command: [{{ .Values.gw.command }}]
-        args: [{{ .Values.gw.args }}]
+        command: ["{{ .Values.gw.command }}"]
+        args: ["{{ .Values.gw.args }}"]
         env:
         - name: DEBUG
           value: "{{ .Values.gw.debug }}"
@@ -58,15 +58,12 @@ spec:
         volumeMounts:
         - name: aether-services
           mountPath: /code/service
-        - name: aether-solution
+        - name: aether-gather-solution
           mountPath: /code/solution
         - name: aether-apps
           mountPath: /code/app
         - name: aether-initialize
           mountPath: /code/scripts
-        - name: aether-templates
-          mountPath: /code/templates/oidc_template.json
-          subPath: oidc_template.json
       volumes:
       - name: aether-services
         configMap:
@@ -74,9 +71,9 @@ spec:
       - name: aether-apps
         configMap:
           name: aether-apps
-      - name: aether-solution
+      - name: aether-gather-solution
         configMap:
-          name: aether-solution
+          name: aether-gather-solution
       - name: aether-initialize
         configMap:
           name: aether-initialize

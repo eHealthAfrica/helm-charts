@@ -139,6 +139,16 @@ spec:
               secretKeyRef:
                 name: {{ .Values.app.secrets }}
                 key: ui-database-password
+          - name: GATEWAY_SERVICE_ID
+            value: {{ .Values.app.gateWay.serviceId }}
+          - name: GATEWAY_PUBLIC_REALM
+            value: "{{ .Values.app.gateWay.gatewayPublicRealm }}"
+          - name: DEFAULT_REALM
+            value: "{{ .Values.app.gateWay.defaultRealm }}"
+          - name: KEYCLOAK_SERVER_URL
+            value: {{ .Values.app.keycloak.externalUrl }}
+          - name: KEYCLOAK_CLIENT_ID
+            value: {{ .Values.app.keycloak.clientId }}
           - name: PGHOST
             value: {{ .Values.app.db.host }}
           - name: PGUSER

@@ -39,12 +39,19 @@ app:
   kernel:
     secret: kernel-secrets
     url: http://kernel.aether.local
+  gateWay:
+    serviceId: odk
+    defaultRealm: "master"
+    gatewayPublicRealm: "-"
+  keycloak:
+    externalUrL: http://aether.local/auth/realms
+    clientId: aether
 provider:
   aws: false
 kube2iam:
   enabled: false
 ingress:
-  enabled: false 
+  enabled: false
 service:
   name: nginx
   type: NodePort

@@ -26,6 +26,13 @@ app:
     readonly_user: readonlyuser
     create_ro_user: readonlyuser
   url: http://kernel.aether.local
+  gateWay:
+    serviceId: kernel
+    defaultReam: "master"
+    gatewayPublicRealm: "-"
+  keycloak:
+    externalUrL: http://aether.local/auth/realms
+    clientId: aether
 ingress:
   enabled: false
 kube2iam:

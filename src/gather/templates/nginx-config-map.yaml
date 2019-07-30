@@ -18,14 +18,8 @@ data:
       # Max upload size
       client_max_body_size 75M;   # adjust to taste
 
-      location /static/ {
+      location /-/gather/static/ {
         alias /var/www/static/;
-      }
-
-      # Protected media
-      location /media-internal/ {
-        internal;  # Cannot be accessed from external calls
-        alias /media/;
       }
 
       # Finally, send all non-media requests to the Django server.

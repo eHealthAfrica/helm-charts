@@ -24,11 +24,7 @@ data:
       access_log off;
       {{- end }}
 
-      if ($http_x_forwarded_proto != 'https') {
-       return 301 https://$host$request_uri;
-      }
-
-      location /static/ {
+      location /-/kernel/static/ {
         alias /var/www/static/;
       }
 

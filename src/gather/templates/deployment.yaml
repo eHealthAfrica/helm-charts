@@ -116,8 +116,6 @@ spec:
               value: {{ .Values.url }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         env:
-        - name: CAS_SERVER_URL
-          value: {{ .Values.ums_url }}
         - name: CSRF_COOKIE_DOMAIN
           value: {{ .Values.domain }}
         - name: CSRF_TRUSTED_ORIGINS
@@ -126,6 +124,16 @@ spec:
           value: {{ .Values.domain }}
         - name: INSTANCE_NAME
           value: "Gather 3"
+        - name: GATEWAY_SERVICE_ID
+          value: {{ .Values.app.gateWay.serviceId }}
+        - name: GATEWAY_PUBLIC_REALM
+          value: "{{ .Values.app.gateWay.gatewayPublicRealm }}"
+        - name: KEYCLOAK_SERVER_URL
+          value: {{ .Values.app.keycloak.externalUrl }}
+        - name: KEYCLOAK_CLIENT_ID
+          value: {{ .Values.app.keycloak.clientId }}
+        - name: DEFAULT_REALM
+          value: {{ .Values.app.gateWay.defaultRealm }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -161,8 +169,8 @@ spec:
           value: {{ .Values.aether.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
           value: {{ .Values.aether.kernel.urlTest }}
-        - name: AETHER_MODULES
-          value: {{ .Values.aether.modules }}
+        - name: EXTERNAL_APPS
+          value: {{ .Values.external.apps }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
