@@ -29,7 +29,7 @@ app:
   gateWay:
     serviceId: kernel
     defaultReam: "master"
-    gatewayPublicRealm: "master"
+    gatewayPublicRealm: "-"
   keycloak:
     externalUrL: http://aether.local/auth/realms
     clientId: aether
