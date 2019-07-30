@@ -22,12 +22,6 @@ data:
         alias /var/www/static/;
       }
 
-      # Protected media
-      location /media-internal/ {
-        internal;  # Cannot be accessed from external calls
-        alias /media/;
-      }
-
       # Finally, send all non-media requests to the Django server.
       location / {
         proxy_pass http://127.0.0.1:{{ .Values.app.port }};
