@@ -38,7 +38,6 @@ app:
     url: http://kernel.aether.local
   gateWay:
     serviceId: ui
-    publicRealm: "-"
     gatewayPublicRealm: "-"
     defaultRealm: "master"
   keycloak:
