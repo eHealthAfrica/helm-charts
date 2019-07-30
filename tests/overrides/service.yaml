@@ -10,6 +10,8 @@ sentry:
   enabled: false
 app:
   secret: secrets
+  external:
+    app: aether-odk,aether-kernel
   db:
     host: 127.0.0.1
     user: test_user
