@@ -134,6 +134,8 @@ spec:
           value: {{ .Values.app.keycloak.externalUrl }}
         - name: KEYCLOAK_CLIENT_ID
           value: {{ .Values.app.keycloak.clientId }}
+        - name: DEFAULT_REALM
+          value: {{ .Values.app.gateWay.defaultRealm }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
@@ -196,6 +198,8 @@ spec:
           value: "{{ .Values.app.gateWay.publicRealm }}"
         - name: PUBLIC_REALM
           value: "{{ .Values.app.gateWay.publicRealm }}"
+        - name: DEFAULT_REALM
+          value: "{{ .Values.app.gateWay.defaultRealm }}"
         - name: KEYCLOAK_SERVER_URL
           value: {{ .Values.app.keycloak.externalUrl }}
         - name: KEYCLOAK_CLIENT_ID

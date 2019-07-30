@@ -319,6 +319,8 @@ spec:
           value: "{{ .Values.app.gateWay.gatewayPublicRealm }}"
         - name: PUBLIC_REALM
           value: "{{ .Values.app.gateWay.publicRealm }}"
+        - name: DEFAULT_REALM
+          value: "{{ .Values.app.gateWay.defaultRealm }}"
         - name: KEYCLOAK_SERVER_URL
           value: {{ .Values.app.keycloak.externalUrl }}
         - name: KEYCLOAK_CLIENT_ID
