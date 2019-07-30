@@ -190,16 +190,6 @@ spec:
           value: {{ .Values.app.db.name }}
         - name: PGDATABASE
           value: {{ .Values.app.db.name }}
-        - name: GATEWAY_SERVICE_ID
-          value: {{ .Values.app.gateWay.serviceId }}
-        - name: GATEWAY_PUBLIC_REALM
-          value: "{{ .Values.app.gateWay.publicRealm }}"
-        - name: DEFAULT_REALM
-          value: "{{ .Values.app.gateWay.defaultRealm }}"
-        - name: KEYCLOAK_SERVER_URL
-          value: {{ .Values.app.keycloak.externalUrl }}
-        - name: KEYCLOAK_CLIENT_ID
-          value: {{ .Values.app.keycloak.clientId }}
         # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
         # which are using different ports in different environments. Once all
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
