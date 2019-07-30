@@ -8,10 +8,10 @@ domain: ehealthafrica.org
 trusted_origins: .ehealthafrica.org
 sentry:
   enabled: false
+external:
+  apps: aether-odk,aether-kernel
 app:
   secret: secrets
-  external:
-    app: aether-odk,aether-kernel
   db:
     host: 127.0.0.1
     user: test_user
