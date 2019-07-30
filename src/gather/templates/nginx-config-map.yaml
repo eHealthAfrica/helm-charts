@@ -18,7 +18,11 @@ data:
       # Max upload size
       client_max_body_size 75M;   # adjust to taste
 
+<<<<<<< HEAD
       location /-/gather/static/ {
+=======
+      location /static/ {
+>>>>>>> master
         alias /var/www/static/;
       }
 
