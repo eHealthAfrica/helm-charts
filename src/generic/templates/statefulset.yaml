@@ -1,6 +1,6 @@
-{{ if eq .Values.resourceType "deployment" }}
-apiVersion: apps/v1beta2
-kind: Deployment
+{{ if eq .Values.resourceType "statefulset" }}
+apiVersion: apps/v1beta1
+kind: StatefulSet
 metadata:
   name: {{ template "generic.fullname" . }}
   labels:
@@ -9,29 +9,12 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  serviceName: {{ template "generic.name" . }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "generic.name" . }}
       release: {{ .Release.Name }}
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  {{ if .Values.podAntiAffinity.enabled }}
-  spec:
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app
-              operator: In
-              values:
-              - {{ template "generic.name" . }}
-          topologyKey: "kubernetes.io/hostname"
-  {{ end }}
   template:
     metadata:
       labels:
