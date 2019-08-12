@@ -5,6 +5,9 @@ metadata:
 data:
   aether-gather.json: |
     {
-      "name": "aether-gather",
       "services": ["kernel", "ui", "gather", "odk"]
+    }
+  planfeld.json: |
+    {
+      "services": [ "analytics", "monitor", "planner", "ui" ]
     }

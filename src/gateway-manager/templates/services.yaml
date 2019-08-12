@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: aether-services
+  name: services
 data:
   gather.json: |
     {
@@ -15,7 +15,7 @@ data:
         }
       ]
     }
-  odk.json: |
+  aether-odk.json: |
     {
       "name": "odk",
       "host": "http://aether-odk",
@@ -38,7 +38,7 @@ data:
         }
       ]
     }
-  ui.json: |
+  aether-kernel-ui.json: |
     {
       "name": "ui",
       "host": "http://aether-ui",
@@ -50,7 +50,7 @@ data:
         }
       ]
     }
-  kernel.json: |
+  aether-kernel.json: |
     {
       "name": "kernel",
       "host": "http://aether-kernel",
@@ -59,6 +59,57 @@ data:
         {
           "name": "protected",
           "paths": ["/{realm}/{name}"]
+        }
+      ]
+    }
+  planfeld-analytics.json: |
+    {
+      "name": "analytics",
+      "host": "http://planfeld-analytics",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  planfeld-monitor.json: |
+    {
+      "name": "monitor",
+      "host": "http://planfeld-monitor",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  planfeld-planner.json: |
+    {
+      "name": "planner",
+      "host": "http://planfeld-planner",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  planfeld-ui.json: |
+    {
+      "name": "ui",
+      "host": "http://planfeld-ui",
+      "paths": ["/static/"],
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}"],
+          "oidc_override": {
+            "config.app_login_redirect_url": "${host}/${realm}/"
+          }
         }
       ]
     }
