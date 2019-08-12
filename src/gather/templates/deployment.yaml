@@ -124,6 +124,13 @@ spec:
           value: {{ .Values.domain }}
         - name: INSTANCE_NAME
           value: "Gather 3"
+        {{ if .Values.sentry.enabled }}
+        - name: SENTRY_DSN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: sentry-dsn
+        {{ end }}
         - name: GATEWAY_SERVICE_ID
           value: {{ .Values.app.gateWay.serviceId }}
         - name: GATEWAY_PUBLIC_REALM
