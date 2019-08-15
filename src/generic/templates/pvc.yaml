@@ -1,8 +1,7 @@
-{{ if .Values.app.volume.persist }}
+{{ if and .Values.app.volume.persist (eq .Values.resourceType "deployment") }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ template "generic.fullname" . }}
   labels:
     app: {{ template "generic.name" . }}
     chart: {{ template "generic.chart" . }}
