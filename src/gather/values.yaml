@@ -7,6 +7,8 @@ gather:
   # Use `--set image.tag` in the command line to overwrite the version
 ingress:
   enabled: false
+sentry:
+  enabled: false
 service:
   name: nginx
   type: NodePort
