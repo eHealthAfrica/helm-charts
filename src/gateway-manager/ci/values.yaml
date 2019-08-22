@@ -14,6 +14,8 @@ gw:
       internalService: 'aether-kernel'
     gather:
       internalService: 'gather'
+  kafka:
+    clusterName: 'dev'
   keyCloak:
     globalAdmin: 'admin'
     kongClient: 'admin'
@@ -25,3 +27,5 @@ gw:
       name: 'keycloak'
   kong:
     internalService: 'kong-kong-admin'
+  zookeeper:
+    host: 'localhost:2181'

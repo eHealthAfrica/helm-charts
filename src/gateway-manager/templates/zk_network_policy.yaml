@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app: zoo-entrance
+  name: zoo-entrance
+spec:
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: zoo-entrance
+    ports:
+    - port: 2181
+      protocol: TCP
+  podSelector:
+    matchLabels:
+      strimzi.io/name: {{ .Values.gw.kafka.clusterName }}-zookeeper
+  policyTypes:
+  - Ingress
