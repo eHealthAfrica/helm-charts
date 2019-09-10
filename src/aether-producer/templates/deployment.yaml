@@ -107,8 +107,6 @@ spec:
                 key: offset-db-password
           - name: OFFSET_DB_USER
             value: {{ .Values.app.db.user }}
-          - name: KAFKA_URL
-            value: {{ .Values.app.kafkaUrl }}
           - name: KERNEL_URL
             value: {{ .Values.app.kernel.url }}
           - name: KERNEL_USERNAME
@@ -125,6 +123,21 @@ spec:
               secretKeyRef:
                 name: {{ .Values.app.secret }}
                 key: admin-password
+          - name: KAFKA_URL
+            value: {{ .Values.app.kafkaUrl }}
+          - name: KAFKA_SU_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: kafka-su-username
+          - name: KAFKA_SU_PW
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: kafka-su-password
+          - name: KAFKA_SECURITY
+            value: {{ .Values.app.kafkaSecurity }}
+
           livenessProbe:
             initialDelaySeconds: 5
             periodSeconds: 10

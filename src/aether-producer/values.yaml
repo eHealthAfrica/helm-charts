@@ -19,6 +19,7 @@ app:
   command: start
   repository: ehealthafrica/aether-producer
   adminUser: admin
+  kafkaSecurity: SASL_SSL
   db:
     secret: database-credentials
     port: 5432
