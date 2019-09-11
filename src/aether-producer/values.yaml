@@ -18,6 +18,7 @@ app:
   secrets: producer-secrets
   command: start
   repository: ehealthafrica/aether-producer
+  tag: 1.5.2
   adminUser: admin
   kafkaSecurity: SASL_SSL
   db:
