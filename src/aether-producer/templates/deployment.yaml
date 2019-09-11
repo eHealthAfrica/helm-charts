@@ -107,15 +107,6 @@ spec:
                 key: offset-db-password
           - name: OFFSET_DB_USER
             value: {{ .Values.app.db.user }}
-          - name: KERNEL_URL
-            value: {{ .Values.app.kernel.url }}
-          - name: KERNEL_USERNAME
-            value: {{ .Values.app.kernel.adminUser }}
-          - name: KERNEL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.app.kernel.secret }}
-                key: kernel-django-admin-password
           - name: PRODUCER_ADMIN_USER
             value: {{ .Values.app.adminUser }}
           - name: PRODUCER_ADMIN_PW
