@@ -26,9 +26,7 @@ app:
     port: 5432
     host: 127.0.0.1
   kernel:
-    url: http://kernel
     secret: kernel-secrets
-    adminUser: admin
     readonly_user: kernel-ro
 ingress:
   enabled: false
