@@ -38,5 +38,5 @@ jobs:
           name: generic
           command: helm lint -f src/generic/ci/values.yaml src/generic/
       - run:
-          name: opendisto-es 
-          command: helm lint src/opendisto-es/
+          name: opendistro-es 
+          command: helm lint src/opendistro-es/
