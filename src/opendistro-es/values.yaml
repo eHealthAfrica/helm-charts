@@ -1,0 +1,287 @@
+kibana:
+  enabled: true
+  image: amazon/opendistro-for-elasticsearch-kibana
+  #image: ehealthafrica/flask
+  imageTag: 1.1.0
+  #imageTag: latest
+  replicas: 1
+  port: 5601
+  externalPort: 5601
+  resources:
+    limits:
+      cpu: 2500m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  readinessProbe: []
+  livenessProbe: []
+
+  elasticsearchAccount:
+    secret: ""
+    keyPassphrase:
+      enabled: false
+
+  extraEnvs: []
+
+  ssl:
+    kibana:
+      enabled: false
+      existingCertSecret:
+    elasticsearch:
+      enabled: true
+      existingCertSecret: elasticsearch-certificates
+  ingress:
+    enabled: false
+
+  configDirectory: "/usr/share/kibana/config"
+  certsDirectory: "/usr/share/kibana/certs"
+
+  service:
+    type: ClusterIP
+    annotations: {}
+
+  config:
+    # Default Kibana configuration from kibana-docker.
+    server.basePath: "/kibana-app"
+    server.rewriteBasePath: true
+    elasticsearch.preserveHost: false
+    opendistro_security.auth.type: "proxy"
+    opendistro_security.multitenancy.enabled: true
+    elasticsearch.requestHeadersWhitelist:
+      - securitytenant
+      - Authorization
+      - x-forwarded-for
+      - x-forwarded-by
+      - x-oauth-preferred_username
+      - x-oauth-realm
+    opendistro_security.multitenancy.tenants.enable_private: false
+    opendistro_security.multitenancy.tenants.enable_global: false
+
+    ## Replace with Elasticsearch DNS name picked during Service deployment
+    elasticsearch.hosts: ["http://opendistro-es-client-service:9200"]
+    elasticsearch.requestTimeout: 360000
+    elasticsearch.username: admin
+    elasticsearch.password: admin
+    server.host: "0.0.0.0"
+
+    ## Kibana TLS Config
+    # server.ssl.enabled: true
+    # server.ssl.key: /usr/share/kibana/certs/kibana-key.pem
+    # server.ssl.certificate: /usr/share/kibana/certs/kibana-crt.pem
+    # elasticsearch.ssl.certificateAuthorities: /usr/share/kibana/certs/kibana-root-ca.pem
+
+    # opendistro_security.cookie.secure: true
+    # opendistro_security.cookie.password: ${COOKIE_PASS}
+
+
+
+  ## Node labels for pod assignment
+  ## ref: https://kubernetes.io/docs/user-guide/node-selection/
+  #
+  nodeSelector: {}
+
+  ## Tolerations for pod assignment
+  ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  ##
+  tolerations: []
+
+
+  serviceAccount:
+    # Specifies whether a ServiceAccount should be created
+    create: true
+    # The name of the ServiceAccount to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+
+global:
+  clusterName: elasticsearch
+
+  psp:
+    create: true
+
+  rbac:
+    enabled: true
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  # imagePullSecrets:
+  #   - myRegistryKeySecretName
+
+
+elasticsearch:
+  ## Used when deploying hot/warm architecture. Allows second aliased deployment to find cluster.
+  ## Default {{ template opendistro-es.fullname }}-discovery.
+  discoveryOverride: ""
+  securityConfig:
+    enabled: true
+    path: "/usr/share/elasticsearch/plugins/opendistro_security/securityconfig"
+    actionGroupsSecret:
+    configSecret:
+    internalUsersSecret:
+    rolesSecret:
+    rolesMappingSecret:
+    tenantsSecret:
+
+  extraEnvs: []
+
+  initContainer:
+    image: busybox
+    imageTag: 1.27.2
+
+  ssl:
+    transport:
+      enabled: true
+      existingCertSecret: elasticsearch-certificates
+    rest:
+      enabled: true 
+      existingCertSecret: elasticsearch-certificates
+    admin:
+      enabled: true 
+      existingCertSecret: elasticsearch-certificates
+
+  master:
+    enabled: true
+    replicas: 3
+    updateStrategy: "RollingUpdate"
+    nodeAffinity: {}
+    storageClassName: standard
+    storage: 50Gi
+    resources:
+      limits:
+        cpu: 1
+        memory: 1024Mi
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+    javaOpts: "-Xms512m -Xmx512m"
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    tolerations: []
+    readinessProbe: []
+    livenessProbe:
+      tcpSocket:
+        port: transport
+      initialDelaySeconds: 60
+      periodSeconds: 10
+    nodeSelector: {}
+
+  data:
+    enabled: true
+    replicas: 3
+    updateStrategy: "RollingUpdate"
+    nodeAffinity: {}
+    storageClassName: standard
+    storage: 100Gi
+    resources:
+      limits:
+        cpu: 1
+        memory: 1024Mi
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+    javaOpts: "-Xms512m -Xmx512m"
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    tolerations: []
+    readinessProbe: []
+    livenessProbe:
+      tcpSocket:
+        port: transport
+      initialDelaySeconds: 60
+      periodSeconds: 10
+    nodeSelector: {}
+
+  client:
+    enabled: true
+    service:
+      type: ClusterIP
+      annotations: {}
+    replicas: 2
+    javaOpts: "-Xms512m -Xmx512m"
+    nodeAffinity: {}
+    ingress:
+      enabled: false
+      limits:
+        cpu: 1
+        memory: 1024Mi
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+    podDisruptionBudget:
+      enabled: false
+      minAvailable: 1
+    tolerations: []
+    readinessProbe: []
+    livenessProbe:
+      tcpSocket:
+        port: transport
+      initialDelaySeconds: 60
+      periodSeconds: 10
+    nodeSelector: {}
+
+
+  config:
+    opendistro_security.allow_unsafe_democertificates: false
+
+    # TLS Configuration Transport Layer
+    opendistro_security.ssl.transport.pemcert_filepath: transport-crt.pem
+    opendistro_security.ssl.transport.pemkey_filepath: transport-key.pem
+    opendistro_security.ssl.transport.pemtrustedcas_filepath: transport-root-ca.pem
+    opendistro_security.ssl.transport.enforce_hostname_verification: false
+    opendistro_security.restapi.roles_enabled: ["all_access", "security_rest_api_access"]
+
+    # TLS Configuration REST Layer
+    opendistro_security.ssl.http.pemcert_filepath: elk-rest-crt.pem
+    opendistro_security.ssl.http.pemkey_filepath: elk-rest-key.pem
+    opendistro_security.ssl.http.pemtrustedcas_filepath: elk-rest-root-ca.pem
+
+    opendistro_security.nodes_dn: 'CN=opendistro-es-*,OU=eha,O=eha,L=Berlin,ST=Berlin,C=DE'
+    opendistro_security.authcz.admin_dn: 
+      - 'CN=admin,OU=eha,O=eha,L=Berlin,ST=Berlin,C=DE'
+  log4jConfig: ""
+
+  loggingConfig:
+    ## Default config
+    # you can override this using by setting a system property, for example -Des.logger.level=DEBUG
+    es.logger.level: DEBUG
+    rootLogger: ${es.logger.level}, console
+    logger:
+      # log action execution errors for easier debugging
+      action: DEBUG
+      # reduce the logging for aws, too much is logged under the default INFO
+      com.amazonaws: WARN
+    appender:
+      console:
+        type: console
+        layout:
+          type: consolePattern
+          conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+  transportKeyPassphrase:
+    enabled: false
+    passPhrase:
+
+  sslKeyPassphrase:
+    enabled: false
+    passPhrase:
+
+  maxMapCount: 262144
+
+  image: amazon/opendistro-for-elasticsearch
+  imageTag: 1.1.0
+
+  configDirectory: /usr/share/elasticsearch/config
+
+  serviceAccount:
+    # Specifies whether a ServiceAccount should be created
+    create: true
+    # The name of the ServiceAccount to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name:
+
+
+nameOverride: ""
+fullnameOverride: ""
