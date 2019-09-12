@@ -1,0 +1,10 @@
+appVersion: 1.0.0
+description: 'Opendistro Elasticsearch'
+engine: gotpl
+kubeVersion: ^1.10.0-0
+maintainers:
+   - name: OpenDistro ES Maintainers
+name: opendistro-es
+sources:
+- https://pages.git.viasat.com/ATG/charts
+version: 1.0.0
