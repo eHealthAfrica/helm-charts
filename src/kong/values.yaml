@@ -102,6 +102,9 @@ env:
   admin_access_log: /dev/stdout
   proxy_error_log: /dev/stderr
   admin_error_log: /dev/stderr
+  nginx_proxy_large_client_header_buffers: 16 128k
+  nginx_proxy_proxy_buffers: 16 128k
+  nginx_proxy_proxy_buffer_size: 128k
 
 # If you want to specify resources, uncomment the following
 # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
