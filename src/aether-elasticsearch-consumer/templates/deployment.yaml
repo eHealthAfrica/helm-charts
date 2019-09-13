@@ -46,12 +46,56 @@ spec:
                 value: readinessProbe
           env:
           - name: ELASTICSEARCH_URL
-            value: {{ .Values.app.elasticSearchUrl }}
+            value: {{ .Values.app.elasticsearch.url }}
+          - name: ELASTICSEARCH_PORT
+            value: "9200"
+          - name: ELASTICSEARCH_USER
+            value: {{ .Values.app.elasticsearch.user }}
+          - name: ELASTICSEARCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: elasticsearch-password 
+          - name: KIBANA_URL 
+            value: {{ .Values.app.kibana.url }}
           - name: KAFKA_URL
-            value: {{ .Values.app.kafkaUrl }}
+            value: {{ .Values.app.kafka.url }}
           - name: CONSUMER_PORT
             value: "9009"
           - name: ES_CONSUMER_CONFIG_PATH
             value: {{ .Values.app.esConsumerConfigPath }}
           - name: ES_CONSUMER_KAFKA_CONFIG_PATH
             value: {{ .Values.app.esConsumerKafkaConfigPath }}
+          - name: KAFKA_CONSUMER_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: kafka-su-username
+          - name: KAFKA_CONSUMER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: kafka-su-password
+          volumeMounts:
+          - name: consumer-kafka-config
+            mountPath: /code/conf/consumer/kafka.json
+            subPath: kafka.json
+          - name: consumer-config
+            mountPath: /code/conf/consumer/consumer.json
+            subPath: consumer.json
+      volumes:
+      - name: consumer-kafka-config
+        configMap:
+          name: consumer-kafka-config
+          defaultMode: 0744
+          items:
+          - key: kafka.json
+            path: kafka.json
+      - name: consumer-config
+        configMap:
+          name: consumer-config
+          defaultMode: 0744
+          items:
+          - key: consumer.json
+            path: consumer.json
+

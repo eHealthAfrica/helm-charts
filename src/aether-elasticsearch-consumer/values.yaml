@@ -11,3 +11,12 @@ app:
   esConsumerKafkaConfigPath: "/code/conf/consumer/kafka.json"
   command: "start"
   port: "9009"
+  secret: consumer-secrets
+
+kafka:
+  url: 
+  user: admin
+
+elasticsearch:
+  url:
+  user: admin

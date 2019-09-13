@@ -128,7 +128,6 @@ spec:
                 key: kafka-su-password
           - name: KAFKA_SECURITY
             value: {{ .Values.app.kafkaSecurity }}
-
           livenessProbe:
             initialDelaySeconds: 5
             periodSeconds: 10
