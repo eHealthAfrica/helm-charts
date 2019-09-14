@@ -14,8 +14,8 @@ app:
   secret: consumer-secrets
 
 kafka:
-  url: 
+  url:  
     
 elasticsearch:
-  url:
+  url: http://127.0.0.1:9200
   user: admin
