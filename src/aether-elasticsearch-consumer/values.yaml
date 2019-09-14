@@ -15,8 +15,7 @@ app:
 
 kafka:
   url: 
-  user: admin
-
+    
 elasticsearch:
   url:
   user: admin
