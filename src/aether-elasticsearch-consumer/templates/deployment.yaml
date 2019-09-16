@@ -84,13 +84,9 @@ spec:
             mountPath: /code/conf/consumer/consumer.json
             subPath: consumer.json
       volumes:
-      - name: consumer-kafka-config
-        configMap:
-          name: consumer-kafka-config
-          defaultMode: 0744
-          items:
-          - key: kafka.json
-            path: kafka.json
+      - name: consumer-kafka-config 
+        secret:
+          secretName: consumer-kafka-config
       - name: consumer-config
         configMap:
           name: consumer-config
