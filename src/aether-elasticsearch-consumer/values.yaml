@@ -13,9 +13,12 @@ app:
   port: "9009"
   secret: consumer-secrets
 
-kafka:
-  url:  
-    
-elasticsearch:
-  url: http://127.0.0.1:9200
-  user: admin
+  kibana:
+    url: "http://127.0.0.1:5601"
+
+  kafka:
+    url: "127.0.0.1:2181"
+      
+  elasticsearch:
+    url: "http://127.0.0.1:9200"
+    user: admin
