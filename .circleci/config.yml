@@ -24,7 +24,7 @@ jobs:
           command: helm lint -f tests/overrides/service.yaml src/aether-ui/
       - run:
           name: aether-elasticsearch-consumer
-          command: helm lint -f tests/overrides/service.yaml src/aether-elasticsearch-consumer/
+          command: helm lint -f src/aether-elasticsearch-consumer/values.yaml src/aether-elasticsearch-consumer/
       - run:
           name: database-provisioner
           command: helm lint -f tests/overrides/service.yaml src/database-provisioner/
