@@ -15,6 +15,51 @@ data:
         }
       ]
     }
+
+  elasticsearch.json: |
+    {
+      "name": "elasticsearch",
+      "host": "{{ .Values.gw.elasticsearch.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": [
+            "/{realm}/{name}"
+          ],
+          "strip_path": "true",
+          "oidc_override": {
+            "config.user_keys": [
+              "preferred_username",
+              "email",
+              "groups"
+            ]
+          }
+        }
+      ]
+    }
+
+  kibana.json: |
+    {
+      "name": "kibana",
+      "host": "{{ .Values.gw.kibana.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": [
+            "/{realm}/{name}"
+          ],
+          "strip_path": "true",
+          "oidc_override": {
+            "config.user_keys": [
+              "preferred_username",
+              "email",
+              "groups"
+            ]
+          }
+        }
+      ]
+    }
+
   odk.json: |
     {
       "name": "odk",

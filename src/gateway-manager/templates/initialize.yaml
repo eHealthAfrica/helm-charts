@@ -14,5 +14,7 @@ data:
     $gwm add_user $REALM $KEYCLOAK_INITIAL_USER_USERNAME $KEYCLOAK_INITIAL_USER_PASSWORD
     $gwm add_solution aether-gather $REALM $KEYCLOAK_KONG_CLIENT
 
-    # Kafka
-    $gwm add_kafka_tenant "$REALM"
+    # Elasticsearch & Kibana
+    $gwm add_service elasticsearch       "$1" $KEYCLOAK_KONG_CLIENT
+    $gwm add_service kibana              "$1" $KEYCLOAK_KONG_CLIENT
+    $gwm add_elasticsearch_tenant        "$1" 7

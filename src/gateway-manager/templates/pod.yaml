@@ -46,8 +46,15 @@ spec:
       value: {{ .Values.gw.kong.internalService }}
     - name: REALM
       value: {{ .Values.gw.keyCloak.realm }}
-    - name: ZK_HOST
-      valie: {{ .Values.gw.zookeeper.host }}
+    - name: ELASTICSEARCH_HOST
+      value: {{ .Values.gw.elasticsearch.internalService }}
+    - name: ELASTICSEARCH_USER  
+      value: {{ .Values.gw.elasticsearch.user }}      
+    - name: ELASTICSEARCH_PW
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Values.gw.elasticsearch.secret.name }}
+          key: {{ .Values.gw.elasticsearch.secret.passwordKey }}
     volumeMounts:
     - name: aether-services
       mountPath: /code/service
@@ -57,43 +64,6 @@ spec:
       mountPath: /code/app
     - name: aether-initialize
       mountPath: /code/scripts
-  - name: tls-sidecar
-    image: 'docker.io/scholzj/zoo-entrance-stunnel:latest'
-    ports:
-      - containerPort: 2181
-        name: zoo
-        protocol: TCP
-    env:
-      - name: TLS_SIDECAR_LOG_LEVEL
-        value: notice
-      - name: STRIMZI_ZOOKEEPER_CONNECT
-        value: '{{ .Values.gw.kafka.clusterName }}-zookeeper-client:2181'
-    imagePullPolicy: Always
-    livenessProbe:
-      exec:
-        command:
-          - /opt/stunnel/stunnel_healthcheck.sh
-          - '2181'
-      failureThreshold: 3
-      initialDelaySeconds: 15
-      periodSeconds: 10
-      successThreshold: 1
-      timeoutSeconds: 5
-    readinessProbe:
-      exec:
-        command:
-          - /opt/stunnel/stunnel_healthcheck.sh
-          - '2181'
-      failureThreshold: 3
-      initialDelaySeconds: 15
-      periodSeconds: 10
-      successThreshold: 1
-      timeoutSeconds: 5
-    volumeMounts:
-      - mountPath: /etc/tls-sidecar/eo-certs/
-        name: eo-certs
-      - mountPath: /etc/tls-sidecar/cluster-ca-certs/
-        name: cluster-ca-certs
   volumes:
   - name: aether-services
     configMap:
@@ -111,12 +81,3 @@ spec:
   - name: aether-templates
     configMap:
       name: aether-templates
-  - name: eo-certs
-    secret:
-      defaultMode: 288
-      secretName: {{ .Values.gw.kafka.clusterName }}-entity-operator-certs
-  - name: cluster-ca-certs
-    secret:
-      defaultMode: 288
-      secretName: {{ .Values.gw.kafka.clusterName }}-cluster-ca-cert
-
