@@ -15,7 +15,7 @@ data:
     PROXY_PID=$!
     sleep 5
 
-    python ./sql/create_readonly_user.py
+    python ./sql/create_readonly_user.py $KERNEL_READONLY_DB_USERNAME $KERNEL_READONLY_DB_PASSWORD
 
     sleep 5
 
@@ -26,5 +26,5 @@ data:
   create_ro_user.sh: |
     #!/bin/sh
 
-    python ./sql/create_readonly_user.py
+    python ./sql/create_readonly_user.py $KERNEL_READONLY_DB_USERNAME $KERNEL_READONLY_DB_PASSWORD
 {{- end -}}
