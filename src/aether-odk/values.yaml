@@ -26,7 +26,11 @@ app:
   admin_user: admin
   port: 8000
   uwsgi:
+<<<<<<< HEAD
     threads: 0
+=======
+    threads: "%k * 3"
+>>>>>>> master
   kernel:
     url: http://kernel
     kernel_url_test: http://kernel

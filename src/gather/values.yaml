@@ -29,13 +29,19 @@ app:
   admin_user: admin
   secret: gather-secrets
   uwsgi:
+<<<<<<< HEAD
     threads: 0 
+=======
+    threads: "%k * 3"
+>>>>>>> master
   db:
     host: 127.0.0.1
   gateWay:
     serviceId: gather
     defaultRealm: "master"
     gatewayPublicRealm: "-"
+  external:
+    apps: "aether-odk,aether-kernel"
   keycloak:
     externalUrL: http://aether.local/auth/realms
     clientId: aether
@@ -49,3 +55,9 @@ aether:
   kernel:
     secret: kernel-secrets
   modules: kernel,odk
+aether:
+  odk:
+    enabled: true
+  kernel:
+    url: https://kernel.aether.local
+odk_url: https://odk.aether.local
