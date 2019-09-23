@@ -25,6 +25,8 @@ app:
   secret: odk-secrets
   admin_user: admin
   port: 8000
+  uwsgi:
+    threads: 0
   kernel:
     url: http://kernel
     kernel_url_test: http://kernel
