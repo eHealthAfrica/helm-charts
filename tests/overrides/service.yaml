@@ -18,6 +18,9 @@ app:
     name: test
     readonly_user: test_ro
     secret: database-credentials
+  app:
+    uwsgi:
+      threads: "%k * 3"
   storage:
     backend: gcs
     bucket:
