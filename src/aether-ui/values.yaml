@@ -25,11 +25,8 @@ app:
   secret: ui-secrets
   admin_user: admin
   port: 8000
-<<<<<<< Updated upstream
-=======
   uwsgi:
     threads: 0
->>>>>>> Stashed changes
   storage:
     backend:
     bucket:
