@@ -37,6 +37,7 @@ gw:
     internalService: ''
   elasticsearch:
     internalService: ''
+    user: 'admin'
     secret:
-      name: ''
-      passwordKey: '' 
+      name: 'elasticsearch-credentials'
+      passwordKey: 'password' 
