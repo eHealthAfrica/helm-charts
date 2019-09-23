@@ -15,7 +15,7 @@ app:
   repository: "ehealthafrica/aether-kernel"
   tag:
   uwsgi:
-    threads: "%k * 3"
+    threads: 0
   port: 8000
   storage:
     backend:

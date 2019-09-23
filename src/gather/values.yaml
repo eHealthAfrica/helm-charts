@@ -29,7 +29,7 @@ app:
   admin_user: admin
   secret: gather-secrets
   uwsgi:
-    threads: "%k * 3"
+    threads: 0 
   db:
     host: 127.0.0.1
   gateWay:
