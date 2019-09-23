@@ -14,6 +14,8 @@ app:
   admin_user: admin
   repository: "ehealthafrica/aether-kernel"
   tag:
+  uwsgi:
+    threads: "%k * 3"
   port: 8000
   storage:
     backend:

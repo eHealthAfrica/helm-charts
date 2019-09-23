@@ -25,6 +25,8 @@ app:
   secret: ui-secrets
   admin_user: admin
   port: 8000
+  uwsgi:
+    threads: "%k * 3"
   storage:
     backend:
     bucket:

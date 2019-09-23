@@ -9,7 +9,7 @@ jobs:
 
       - run:
           name: gather
-          command: helm lint -f tests/overrides/service.yaml src/gather/
+          command: helm lint src/gather/
       - run:
           name: aether-kernel
           command: helm lint -f tests/overrides/service.yaml src/aether-kernel/
