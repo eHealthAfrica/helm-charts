@@ -203,6 +203,8 @@ spec:
         # can be removed.
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.webserverPort }}
+        - name: UWSGI_THREADS
+          value: {{ .Values.app.uwsgi.threads }}
         {{- if .Values.app.extra_env_vars -}}
         {{- range $key, $value := .Values.app.extra_env_vars }}
         - name: {{ $key }}
