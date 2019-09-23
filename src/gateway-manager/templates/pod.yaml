@@ -78,6 +78,3 @@ spec:
     configMap:
       name: aether-initialize
       defaultMode: 0755
-  - name: aether-templates
-    configMap:
-      name: aether-templates

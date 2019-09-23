@@ -15,6 +15,6 @@ data:
     $gwm add_solution aether-gather $REALM $KEYCLOAK_KONG_CLIENT
 
     # Elasticsearch & Kibana
-    $gwm add_service elasticsearch       "$1" $KEYCLOAK_KONG_CLIENT
-    $gwm add_service kibana              "$1" $KEYCLOAK_KONG_CLIENT
-    $gwm add_elasticsearch_tenant        "$1" 7
+    $gwm add_service elasticsearch       "$REALM" $KEYCLOAK_KONG_CLIENT
+    $gwm add_service kibana              "$REALM" $KEYCLOAK_KONG_CLIENT
+    $gwm add_elasticsearch_tenant        "$REALM" 7
