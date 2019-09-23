@@ -177,7 +177,7 @@ spec:
         - name: AETHER_KERNEL_URL_TEST
           value: {{ .Values.aether.kernel.urlTest }}
         - name: EXTERNAL_APPS
-          value: {{ .Values.external.apps }}
+          value: {{ .Values.app.external.apps }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
@@ -204,7 +204,7 @@ spec:
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.webserverPort }}
         - name: UWSGI_THREADS
-          value: {{ .Values.app.uwsgi.threads }}
+          value: {{ .Values.app.uwsgi.threads | quote }}
         {{- if .Values.app.extra_env_vars -}}
         {{- range $key, $value := .Values.app.extra_env_vars }}
         - name: {{ $key }}

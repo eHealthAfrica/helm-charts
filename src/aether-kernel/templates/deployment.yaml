@@ -403,7 +403,7 @@ spec:
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.app.port }}
         - name: UWSGI_THREADS
-          value: {{ .Values.app.uwsgi.threads }}
+          value: {{ .Values.app.uwsgi.threads | quote }}
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume

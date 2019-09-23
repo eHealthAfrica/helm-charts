@@ -3,6 +3,8 @@ replicaCount: 2
 aether:
   kernel:
     url: https://kernel.aether.local
+  odk:
+    enabled: true
 odk_url: https://odk.aether.local
 domain: ehealthafrica.org
 trusted_origins: .ehealthafrica.org
