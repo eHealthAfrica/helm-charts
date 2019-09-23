@@ -201,7 +201,6 @@ spec:
 {{ tpl . $ | indent 6 }}
       {{- end }}
       restartPolicy: Always
-{{ end }}
   {{ if .Values.app.volume.enabled }}
   volumeClaimTemplates:
     - metadata:
@@ -213,3 +212,4 @@ spec:
           requests:
             storage: {{ .Values.app.volume.size | quote }}
   {{ end }}
+{{ end }}

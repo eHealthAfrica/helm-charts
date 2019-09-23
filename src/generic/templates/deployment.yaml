@@ -220,7 +220,7 @@ spec:
         persistentVolumeClaim:
           claimName: {{ template "generic.fullname" . }}
         {{ else }}
-          emptyDir: {}
+        emptyDir: {}
         {{ end }}
       {{ end }}
       {{- with .Values.extraVolumes }}
