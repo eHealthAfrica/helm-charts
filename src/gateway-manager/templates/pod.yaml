@@ -50,31 +50,33 @@ spec:
       value: {{ .Values.gw.elasticsearch.internalService }}
     - name: ELASTICSEARCH_USER  
       value: {{ .Values.gw.elasticsearch.user }}      
+    - name: SOLUTIONS
+      value: ({{ .Values.gw.solutions }})
     - name: ELASTICSEARCH_PW
       valueFrom:
         secretKeyRef:
           name: {{ .Values.gw.elasticsearch.secret.name }}
           key: {{ .Values.gw.elasticsearch.secret.passwordKey }}
     volumeMounts:
-    - name: aether-services
+    - name: services
       mountPath: /code/service
-    - name: aether-gather-solution
+    - name: solutions
       mountPath: /code/solution
-    - name: aether-apps
+    - name: apps
       mountPath: /code/app
-    - name: aether-initialize
+    - name: initialize
       mountPath: /code/scripts
   volumes:
-  - name: aether-services
+  - name: services
     configMap:
-      name: aether-services
-  - name: aether-apps
+      name: services
+  - name: apps
     configMap:
-      name: aether-apps
-  - name: aether-gather-solution
+      name: apps
+  - name: solutions
     configMap:
-      name: aether-gather-solution
-  - name: aether-initialize
+      name: solutions
+  - name: initialize
     configMap:
-      name: aether-initialize
+      name: initialize
       defaultMode: 0755

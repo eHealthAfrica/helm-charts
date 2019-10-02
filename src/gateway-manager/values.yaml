@@ -6,6 +6,7 @@ gw:
   debug: ''
   tag: 'latest'
   command: '/code/scripts/initialize.sh'
+  solution: 'aether-gather planfeld'
   aether:
     services: ["odk", "ui", "kernel", "gather"]
     ui:

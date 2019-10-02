@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: aether-initialize
+  name: initialize
 data:
   initialize.sh: |
     #!/usr/bin/env bash
@@ -12,7 +12,11 @@ data:
     $gwm add_public_client $REALM $KEYCLOAK_AETHER_CLIENT
     $gwm add_oidc_client $REALM $KEYCLOAK_KONG_CLIENT
     $gwm add_user $REALM $KEYCLOAK_INITIAL_USER_USERNAME $KEYCLOAK_INITIAL_USER_PASSWORD
-    $gwm add_solution aether-gather $REALM $KEYCLOAK_KONG_CLIENT
+
+    for solution in "${SOLUTIONS[@]}"
+    do
+        $gwm add_solution $solution $REALM $KEYCLOAK_KONG_CLIENT
+    done
 
     # Elasticsearch & Kibana
     $gwm add_service elasticsearch       "$REALM" $KEYCLOAK_KONG_CLIENT
