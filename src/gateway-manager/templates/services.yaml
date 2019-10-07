@@ -144,12 +144,14 @@ data:
     {
       "name": "planfeld",
       "host": "http://planfeld-ui:3000",
+      "paths": ["/{public_realm}/{name}"],
+      "strip_path": "true",
       "oidc_endpoints": [
         {
           "name": "protected",
-          "paths": ["/{realm}"],
+          "paths": ["/{realm}/planfeld"],
           "oidc_override": {
-            "config.app_login_redirect_url": "${host}/${realm}/${name}"
+            "config.app_login_redirect_url": "${host}/${realm}/"
           }
         }
       ]

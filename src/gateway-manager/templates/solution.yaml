@@ -10,6 +10,7 @@ data:
     }
   planfeld.json: |
     {
+      "name": "planfeld",
       "services": [
         "analytics",
         "monitor",
