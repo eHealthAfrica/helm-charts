@@ -15,6 +15,7 @@ data:
         "analytics",
         "monitor",
         "planner",
-        "planfeld"
+        "planfeld",
+        "planfeld-static"
       ]
     }
