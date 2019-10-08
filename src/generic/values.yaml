@@ -89,6 +89,7 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/tls-acme: "true"
     certmanager.k8s.io/issuer: letsencrypt
+    monitor.stakater.com/enabled: "true"
   path: /
   hosts:
     - chart-example.local
