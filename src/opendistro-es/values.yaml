@@ -43,26 +43,11 @@ kibana:
 
   config:
     # Default Kibana configuration from kibana-docker.
-    server.basePath: "/kibana-app"
-    server.rewriteBasePath: true
-    elasticsearch.preserveHost: false
-    opendistro_security.auth.type: "proxy"
-    opendistro_security.multitenancy.enabled: true
-    elasticsearch.requestHeadersWhitelist:
-      - securitytenant
-      - Authorization
-      - x-forwarded-for
-      - x-forwarded-by
-      - x-oauth-preferred_username
-      - x-oauth-realm
-    opendistro_security.multitenancy.tenants.enable_private: false
-    opendistro_security.multitenancy.tenants.enable_global: false
-
     ## Replace with Elasticsearch DNS name picked during Service deployment
     elasticsearch.hosts: ["http://opendistro-es-client-service:9200"]
     elasticsearch.requestTimeout: 360000
     elasticsearch.username: admin
-    elasticsearch.password: admin
+    elasticsearch.password: uFoo6xei9diu 
     server.host: "0.0.0.0"
 
     ## Kibana TLS Config

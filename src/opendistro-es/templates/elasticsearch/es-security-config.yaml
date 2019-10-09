@@ -11,14 +11,10 @@ data:
     config:
       dynamic:
         kibana:
-          multitenancy_enabled: true
+          multitenancy_enabled: false 
           server_username: admin
         http:
           anonymous_auth_enabled: false
-          xff:
-            enabled: true
-            internalProxies: '.*' # trust all internal proxies, regex pattern
-            remoteIpHeader:  'x-forwarded-for'
 
         authc:
           basic_internal_auth_domain:
@@ -27,7 +23,7 @@ data:
             order: 0
             http_authenticator:
               type: basic
-              challenge: false
+              challenge: true 
             authentication_backend:
               type: intern
 
