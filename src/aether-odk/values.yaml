@@ -25,6 +25,7 @@ app:
   secret: odk-secrets
   admin_user: admin
   port: 8000
+  tag: 1.5.5
   uwsgi:
     threads: 0
   kernel:
