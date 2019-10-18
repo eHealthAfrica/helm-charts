@@ -182,7 +182,7 @@ spec:
         {{ end }}
         {{ if .Values.app.db.ssl }}
         - name: postgres-ssl
-          mountPath: {{ .Values.app.db.ssl.path }}
+          mountPath: {{ .Values.app.db.ssl.certPath }}
           readOnly: true
         {{ end }}
       {{ if .Values.nginx.enabled }}
