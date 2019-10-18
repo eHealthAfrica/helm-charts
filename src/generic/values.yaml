@@ -29,6 +29,8 @@ app:
     create: false
     enabled: false
     secret: database-credentials
+    ssl:
+      enabled: false
     host: 127.0.0.1
     port: 5432
     user:
@@ -91,7 +93,7 @@ ingress:
     certmanager.k8s.io/issuer: letsencrypt
     monitor.stakater.com/enabled: "true"
     statuscake.monitor.stakater.com/contact-group: "DevOps"
-    
+
   path: /
   hosts:
     - chart-example.local
