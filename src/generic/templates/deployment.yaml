@@ -180,6 +180,11 @@ spec:
         - mountPath: {{ .Values.app.volume.mountPath }}
           name: {{ template "generic.name" . }}-data
         {{ end }}
+        {{ if .Values.app.db.ssl }}
+        - name: postgres-ssl
+          mountPath: {{ .Values.app.db.ssl.certPath }}
+          readOnly: true
+        {{ end }}
       {{ if .Values.nginx.enabled }}
       - name: nginx
         image: nginx:stable-alpine
@@ -208,6 +213,11 @@ spec:
         configMap:
           name: {{ template "generic.fullname" . }}-init-pg-config
           defaultMode: 0744
+      {{ end }}
+      {{ if and .Values.app.db.enabled .Values.app.db.ssl }}
+      - name: postgres-ssl
+        secret:
+          secretName: postgres-ssl-certificate
       {{ end }}
       {{ if and .Values.app.db.enabled .Values.gcp}}
       - name: cloudsql-instance-credentials
