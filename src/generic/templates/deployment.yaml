@@ -142,6 +142,35 @@ spec:
           initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.app.probe.periodSeconds }}
         {{ end }}
+        {{ if eq .Values.app.probe.type "exec" }}
+        livenessProbe:
+          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.probe.periodSeconds }}
+          exec:
+            command:
+            - sh
+            - -c
+            - {{ .Values.app.probe.livenessProbeScriptName }} {{ .Values.app.probe.periodSeconds }}
+        readinessProbe:
+          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.probe.periodSeconds }}
+          exec:
+            command:
+            - sh
+            - -c
+            - {{ .Values.app.probe.readinessProbeScriptName }} {{ .Values.app.probe.periodSeconds }}
+        {{ end }}
+        livenessProbe:
+          tcpSocket:
+            port: app
+          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.probe.periodSeconds }}
+        readinessProbe:
+          tcpSocket:
+            port: app
+          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.probe.periodSeconds }}
+        {{ end }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
         {{ if .Values.env_secrets.enabled }}
