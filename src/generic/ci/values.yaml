@@ -12,6 +12,14 @@ podAntiAffinity:
 
 
 app:
+  probe:
+    type: exec
+    livenessProbeScriptName: liveness.sh
+    livenessProbeScript: |
+      echo "test test"
+    readinessProbeScriptName: readiness.sh
+    readinessProbeScript: |
+      echo "test test"
   name: aya
   db:
     secret: database-credentials
@@ -29,7 +37,7 @@ app:
 
 ## Additional sidecar containers
 extraContainers: |
-  - name: openvpn-client 
+  - name: openvpn-client
     image: ehealthafrica/openvpn-client:3.9.4
     securityContext:
       capabilities:
@@ -44,7 +52,7 @@ extraContainers: |
         readOnly: true
 
 extraVolumes: |
-  - name: vpn-credentials 
+  - name: vpn-credentials
     secret:
       secretName: vpn-credentials
 
