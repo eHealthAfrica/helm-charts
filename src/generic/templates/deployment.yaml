@@ -160,17 +160,6 @@ spec:
             - -c
             - {{ .Values.app.probe.readinessProbeScriptName }} {{ .Values.app.probe.periodSeconds }}
         {{ end }}
-        livenessProbe:
-          tcpSocket:
-            port: app
-          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.app.probe.periodSeconds }}
-        readinessProbe:
-          tcpSocket:
-            port: app
-          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.app.probe.periodSeconds }}
-        {{ end }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
         {{ if .Values.env_secrets.enabled }}
