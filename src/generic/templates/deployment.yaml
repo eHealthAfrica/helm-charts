@@ -255,13 +255,13 @@ spec:
         emptyDir: {}
         {{ end }}
       {{ end }}
-      {{- with .Values.extraVolumes }}
       {{ if eq .Values.app.probe.type "exec" }}
       - name: {{ template "generic.fullname" . }}-health
         configMap:
           name: {{ template "generic.fullname" . }}-health
           defaultMode: 0744
       {{ end }}
+      {{- with .Values.extraVolumes }}
 {{ tpl . $ | indent 6 }}
       {{- end }}
       restartPolicy: Always
