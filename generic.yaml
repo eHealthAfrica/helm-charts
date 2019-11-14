@@ -11,11 +11,11 @@ metadata:
     release: release-name
     heritage: Tiller
 data:
-  liveness.sh: |-
-echo "test test"
+liveness.sh: |
+  echo "test test"
 
-  readiness.sh: |-
-echo "test test"
+readiness.sh: |
+  echo "test test"
 
 
 ---
@@ -159,7 +159,7 @@ spec:
             command:
             - sh
             - -c
-            - liveness.sh 10
+            - /tmp/liveness.sh 10
         readinessProbe:
           initialDelaySeconds: 5
           periodSeconds: 10
@@ -167,7 +167,7 @@ spec:
             command:
             - sh
             - -c
-            - readiness.sh 10
+            - /tmp/readiness.sh 10
         
         resources:
             {}
@@ -181,6 +181,10 @@ spec:
           name: static-assets-volume
         
         
+        
+        
+        - name: aya-health
+          mountPath: /tmp
         
       
       - name: nginx
@@ -208,6 +212,12 @@ spec:
       
       
       
+      
+      
+      - name: aya-health
+        configMap:
+          name: aya-health
+          defaultMode: 0744
       
       - name: vpn-credentials
         secret:
