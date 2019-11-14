@@ -150,7 +150,7 @@ spec:
             command:
             - sh
             - -c
-            - {{ .Values.app.probe.livenessProbeScriptName }} {{ .Values.app.probe.periodSeconds }}
+            - "{{ .Values.app.probe.path }}/{{ .Values.app.probe.livenessProbeScriptName }}" {{ .Values.app.probe.periodSeconds }}
         readinessProbe:
           initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.app.probe.periodSeconds }}
@@ -158,7 +158,7 @@ spec:
             command:
             - sh
             - -c
-            - {{ .Values.app.probe.readinessProbeScriptName }} {{ .Values.app.probe.periodSeconds }}
+            - "{{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }}" {{ .Values.app.probe.periodSeconds }}
         {{ end }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
@@ -202,6 +202,10 @@ spec:
         - name: postgres-ssl
           mountPath: {{ .Values.app.db.ssl.certPath }}
           readOnly: true
+        {{ end }}
+        {{ if eq .Values.app.probe.type "exec" }}
+        - name: {{ template "generic.fullname" . }}-health
+          mountPath: {{ .Values.app.probe.path }}
         {{ end }}
       {{ if .Values.nginx.enabled }}
       - name: nginx
@@ -252,6 +256,12 @@ spec:
         {{ end }}
       {{ end }}
       {{- with .Values.extraVolumes }}
+      {{ if eq .Values.app.probe.type "exec" }}
+      - name: {{ template "generic.fullname" . }}-health
+        configMap:
+          name: {{ template "generic.fullname" . }}-health
+          defaultMode: 0744
+      {{ end }}
 {{ tpl . $ | indent 6 }}
       {{- end }}
       restartPolicy: Always

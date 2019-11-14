@@ -11,6 +11,6 @@ metadata:
 data:
   {{ .Values.app.probe.livenessProbeScriptName}}: |-
 {{ .Values.app.probe.livenessProbeScript }}
-  {{ .Values.app.probe.readinessProbeScriptName }}: |-
+  {{ .Values.app.probe.readinessProbeScriptName}}: |-
 {{ .Values.app.probe.readinessProbeScript }}
 {{ end }}

@@ -20,6 +20,7 @@ app:
     readinessProbeScriptName: readiness.sh
     readinessProbeScript: |
       echo "test test"
+    path: '/tmp'
   name: aya
   db:
     secret: database-credentials
