@@ -1,10 +1,8 @@
 kibana:
   enabled: true
   image: amazon/opendistro-for-elasticsearch-kibana
-  #image: ehealthafrica/flask
-  imageTag: 1.1.0
-  #imageTag: latest
-  replicas: 1
+  imageTag: 1.2.0
+  replicas: 3
   port: 5601
   externalPort: 5601
   resources:
@@ -86,6 +84,16 @@ kibana:
   ##
   tolerations: []
 
+  podSecurityContext:
+    fsGroup: 1000
+
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    # readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
 
   serviceAccount:
     # Specifies whether a ServiceAccount should be created
@@ -134,10 +142,10 @@ elasticsearch:
       enabled: true
       existingCertSecret: elasticsearch-certificates
     rest:
-      enabled: true 
+      enabled: true
       existingCertSecret: elasticsearch-certificates
     admin:
-      enabled: true 
+      enabled: true
       existingCertSecret: elasticsearch-certificates
 
   master:
@@ -239,7 +247,7 @@ elasticsearch:
     opendistro_security.ssl.http.pemtrustedcas_filepath: elk-rest-root-ca.pem
 
     opendistro_security.nodes_dn: 'CN=opendistro-es-*,OU=eha,O=eha,L=Berlin,ST=Berlin,C=DE'
-    opendistro_security.authcz.admin_dn: 
+    opendistro_security.authcz.admin_dn:
       - 'CN=admin,OU=eha,O=eha,L=Berlin,ST=Berlin,C=DE'
   log4jConfig: ""
 
@@ -271,7 +279,7 @@ elasticsearch:
   maxMapCount: 262144
 
   image: amazon/opendistro-for-elasticsearch
-  imageTag: 1.1.0
+  imageTag: 1.2.0
 
   configDirectory: /usr/share/elasticsearch/config
 
