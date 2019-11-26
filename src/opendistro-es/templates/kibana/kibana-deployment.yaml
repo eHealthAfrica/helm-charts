@@ -18,6 +18,8 @@ spec:
         checksum/config: {{ include (print .Template.BasePath "/kibana/kibana-config.yaml") . | sha256sum | trunc 63 }}
         {{- end }}
     spec:
+      securityContext:
+        {{ toYaml .Values.kibana.podSecurityContext | indent 8 }}
 {{- include "opendistro-es.imagePullSecrets" . | indent 6 }}
       containers:
       - env:
@@ -27,7 +29,7 @@ spec:
         - name: ELASTICSEARCH_HOSTS
           value: http://{{ template "opendistro-es.fullname" . }}-client-service:9200
         - name: ELASTICSEARCH_USERNAME
-          value: admin 
+          value: admin
         - name: ELASTICSEARCH_PASSWORD
           value: admin
         {{- if .Values.kibana.elasticsearchAccount.secret }}
@@ -69,6 +71,8 @@ spec:
     {{- end }}
         resources:
 {{ toYaml .Values.kibana.resources | indent 12 }}
+        securityContext:
+{{ toYaml .Values.kibana.securityContext | indent 10 }}
         name: {{ template "opendistro-es.fullname" . }}-kibana
         volumeMounts:
          {{- if .Values.kibana.config }}
