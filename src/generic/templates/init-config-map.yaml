@@ -16,18 +16,18 @@ data:
     PROXY_PID=$!
     sleep 5
 
-    psql -c "CREATE DATABASE $DB_NAME;"
-    psql -c "CREATE USER $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
+    psql -c "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+    psql -c "CREATE USER IF NOT EXISTS $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
     psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
     psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USERNAME;"
     psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
     echo "sql executed.."
 
     # create database extensions
-    {{ if .Values.app.db.extensions }} 
+    {{ if .Values.app.db.extensions }}
     {{- range .Values.app.db.extensions }}
     echo "creating Postgres database extensions"
-    psql -d $DB_NAME -c 'CREATE EXTENSION IF NOT EXISTS {{ . | quote }} ;' 
+    psql -d $DB_NAME -c 'CREATE EXTENSION IF NOT EXISTS {{ . | quote }} ;'
     {{- end }}
     {{ end }}
 
