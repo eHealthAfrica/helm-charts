@@ -21,7 +21,7 @@ data:
     cmd="psql -t -c \"$database\""
     db_exists=`eval $cmd`
 
-    if [ $db_exists -eq 0 ] ; then
+    if [ $db_exists -eq 0 ]; then
         psql -c "CREATE DATABASE $DB_NAME;"
         psql -c "CREATE USER IF NOT EXISTS $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
         psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
