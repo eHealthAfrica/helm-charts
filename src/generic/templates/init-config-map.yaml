@@ -16,12 +16,19 @@ data:
     PROXY_PID=$!
     sleep 5
 
-    psql -c "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
-    psql -c "CREATE USER IF NOT EXISTS $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
-    psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
-    psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USERNAME;"
-    psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
-    echo "sql executed.."
+    # check to see if database exists
+    database="select count(*) from pg_catalog.pg_database where datname = '$DB_NAME'"
+    cmd="psql -t -c \"$database\""
+    db_exists=`eval $cmd`
+
+    if [ $db_exists -eq 0 ]; then
+        psql -c "CREATE DATABASE $DB_NAME;"
+        psql -c "CREATE USER IF NOT EXISTS $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
+        psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
+        psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USERNAME;"
+        psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
+        echo "sql executed.."
+    fi
 
     # create database extensions
     {{ if .Values.app.db.extensions }}
