@@ -9,8 +9,8 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 data:
-{{ .Values.app.probe.livenessProbeScriptName}}: |
-  {{ .Values.app.probe.livenessProbeScript }}
-{{ .Values.app.probe.readinessProbeScriptName}}: |
-  {{ .Values.app.probe.readinessProbeScript }}
-{{ end }}
+  {{ .Values.app.probe.livenessProbeScriptName}}: |
+    "{{ .Values.app.probe.livenessProbeScript | indent 4 }}"
+  {{ .Values.app.probe.readinessProbeScriptName}}: |
+    "{{ .Values.app.probe.readinessProbeScript | indent 4 }}"
+  {{ end }}
