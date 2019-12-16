@@ -147,18 +147,12 @@ spec:
           initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.app.probe.periodSeconds }}
           exec:
-            command:
-            - sh
-            - -c
-            - {{ .Values.app.probe.path }}/{{ .Values.app.probe.livenessProbeScriptName }} {{ .Values.app.probe.periodSeconds }}
+            command: ['bash', '-c', '{{ .Values.app.probe.path }}/{{ .Values.app.probe.livenessProbeScriptName }}', '{{ .Values.app.probe.timeout }}']
         readinessProbe:
           initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.app.probe.periodSeconds }}
           exec:
-            command:
-            - sh
-            - -c
-            - {{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }} {{ .Values.app.probe.periodSeconds }}
+            command: ['bash', '-c', '{{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }}', '{{ .Values.app.probe.timeout }}']
         {{ end }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
@@ -205,7 +199,11 @@ spec:
         {{ end }}
         {{ if eq .Values.app.probe.type "exec" }}
         - name: {{ template "generic.fullname" . }}-health
-          mountPath: {{ .Values.app.probe.path }}
+          mountPath: {{ .Values.app.probe.path }}/{{ .Values.app.probe.livenessProbeScriptName }}
+          subPath: {{ .Values.app.probe.livenessProbeScriptName }}
+        - name: {{ template "generic.fullname" . }}-health
+          mountPath: {{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }}
+          subPath: {{ .Values.app.probe.readinessProbeScriptName }}
         {{ end }}
       {{ if .Values.nginx.enabled }}
       - name: nginx

@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 data:
   {{ .Values.app.probe.livenessProbeScriptName}}: |
-    "{{ .Values.app.probe.livenessProbeScript | indent 4 }}"
+{{ .Values.app.probe.livenessProbeScript | indent 4 }}
   {{ .Values.app.probe.readinessProbeScriptName}}: |
-    "{{ .Values.app.probe.readinessProbeScript | indent 4 }}"
-  {{ end }}
+{{ .Values.app.probe.readinessProbeScript | indent 4 }}
+{{ end }}
