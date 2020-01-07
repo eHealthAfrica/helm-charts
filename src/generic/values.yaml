@@ -71,7 +71,7 @@ image:
   pullPolicy: Always
 
 nginx:
-  enabled: true
+  enabled: false
   config: |
     server {
       {{- if .Values.debug }}
