@@ -41,7 +41,7 @@ data:
   es-consumer.json: |
     {
       "name": "es-consumer",
-      "host": "{{ .Values.gw.aether-elasticsearch-consumer.internalService }}",
+      "host": "{{ .Values.gw.aetherElasticsearchConsumer.internalService }}",
       "oidc_endpoints": [
         {
           "name": "protected",
