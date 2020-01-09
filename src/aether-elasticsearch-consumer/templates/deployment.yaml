@@ -45,17 +45,17 @@ spec:
               - name: X-Kubernetes-Health-Check
                 value: readinessProbe
           env:
-            - name: REDIS_DB
+          - name: REDIS_DB
             value: {{ .Values.app.redis.db }}
-            - name: REDIS_HOST
+          - name: REDIS_HOST
             value: {{ .Values.app.redis.host }}
-            - name: REDIS_PORT
+          - name: REDIS_PORT
             value: {{ .Values.app.redis.port }}
-            - name: REDIS_PASSWORD
+          - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.secret }}
-                key: redis-password 
+                key: redis-password
           - name: ELASTICSEARCH_URL
             value: {{ .Values.app.elasticsearch.url }}
           - name: ELASTICSEARCH_USER

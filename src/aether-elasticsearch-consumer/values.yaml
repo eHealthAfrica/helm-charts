@@ -23,7 +23,7 @@ app:
 
   kafka:
     url: "127.0.0.1:2181"
-      
+
   elasticsearch:
     url: "http://127.0.0.1:9200"
     user: admin
