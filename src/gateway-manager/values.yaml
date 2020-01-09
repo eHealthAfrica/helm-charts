@@ -35,6 +35,8 @@ gw:
     internalService: ''
   kibana:
     internalService: ''
+  aetherElasticsearchConsumer:
+    internalService: ''
   elasticsearch:
     internalService: ''
     user: 'admin'
