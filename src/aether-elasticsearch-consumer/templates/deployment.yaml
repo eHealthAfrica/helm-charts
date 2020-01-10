@@ -46,11 +46,11 @@ spec:
                 value: readinessProbe
           env:
           - name: REDIS_DB
-            value: {{ .Values.app.redis.db }}
+            value: {{ .Values.app.redis.db | quote }}
           - name: REDIS_HOST
             value: {{ .Values.app.redis.host }}
           - name: REDIS_PORT
-            value: {{ .Values.app.redis.port }}
+            value: {{ .Values.app.redis.port | quote }}
           - name: REDIS_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -64,8 +64,8 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.secret }}
-                key: elasticsearch-password 
-          - name: KIBANA_URL 
+                key: elasticsearch-password
+          - name: KIBANA_URL
             value: {{ .Values.app.kibana.url }}
           - name: KAFKA_URL
             value: {{ .Values.app.kafka.url }}
@@ -78,7 +78,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.secret }}
-                key: kafka-su-password  
+                key: kafka-su-password
           - name: TENANCY_HEADER
             value: {{ .Values.app.tenancyHeader }}
           - name: CONSUMER_NAME
@@ -101,7 +101,7 @@ spec:
             mountPath: /code/conf/consumer/consumer.json
             subPath: consumer.json
       volumes:
-      - name: consumer-kafka-config 
+      - name: consumer-kafka-config
         secret:
           secretName: consumer-kafka-config
       - name: consumer-config
