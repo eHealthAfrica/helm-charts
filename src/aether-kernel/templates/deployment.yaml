@@ -355,7 +355,7 @@ spec:
         - name: REDIS_PORT
           value: {{ .Values.app.exm.redis.port | quote }}
         - name: WRITE_ENTITIES_TO_REDIS
-          value: false
+          value: "false"
         {{ end }}
         {{ if .Values.sentry.enabled }}
         - name: SENTRY_DSN
