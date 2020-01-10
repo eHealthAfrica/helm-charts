@@ -20,7 +20,7 @@ spec:
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: consumer
+        - name: es-consumer
           # This default allows us to overwrite '.Chart.Version' through the command line
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.Version }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
@@ -45,10 +45,19 @@ spec:
               - name: X-Kubernetes-Health-Check
                 value: readinessProbe
           env:
+          - name: REDIS_DB
+            value: {{ .Values.app.redis.db }}
+          - name: REDIS_HOST
+            value: {{ .Values.app.redis.host }}
+          - name: REDIS_PORT
+            value: {{ .Values.app.redis.port }}
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: redis-password
           - name: ELASTICSEARCH_URL
             value: {{ .Values.app.elasticsearch.url }}
-          - name: ELASTICSEARCH_PORT
-            value: "9200"
           - name: ELASTICSEARCH_USER
             value: {{ .Values.app.elasticsearch.user }}
           - name: ELASTICSEARCH_PASSWORD
@@ -60,12 +69,6 @@ spec:
             value: {{ .Values.app.kibana.url }}
           - name: KAFKA_URL
             value: {{ .Values.app.kafka.url }}
-          - name: CONSUMER_PORT
-            value: "9009"
-          - name: ES_CONSUMER_CONFIG_PATH
-            value: {{ .Values.app.esConsumerConfigPath }}
-          - name: ES_CONSUMER_KAFKA_CONFIG_PATH
-            value: {{ .Values.app.esConsumerKafkaConfigPath }}
           - name: KAFKA_CONSUMER_USER
             valueFrom:
               secretKeyRef:
@@ -75,7 +78,21 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.secret }}
-                key: kafka-su-password
+                key: kafka-su-password  
+          - name: TENANCY_HEADER
+            value: {{ .Values.app.tenancyHeader }}
+          - name: CONSUMER_NAME
+            value: {{ .Values.app.consumerName }}
+          - name: ES_CONSUMER_CONFIG_PATH
+            value: {{ .Values.app.esConsumerConfigPath }}
+          - name: ES_CONSUMER_KAFKA_CONFIG_PATH
+            value: {{ .Values.app.esConsumerKafkaConfigPath }}
+          - name: EXPOSE_PORT
+            value: {{ .Values.app.port }}
+          - name: STACKDRIVER_LOGGING
+            value: {{ .Values.app.stackDriverLogging }}
+          - name: LOG_LEVEL
+            value: {{ .Values.app.logLevel }}
           volumeMounts:
           - name: consumer-kafka-config
             mountPath: /code/conf/consumer/kafka.json
