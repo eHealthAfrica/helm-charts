@@ -341,6 +341,22 @@ spec:
         - name: AWS_DEFAULT_ACL
           value: {{ .Values.app.storage.bucket.default_acl }}
         {{ end }}
+        {{ if .Values.app.caching.enabled }}
+        - name: DJANGO_USE_CACHE
+          value: "true"
+        - name: REDIS_DB_CACHEOPS
+          value: 1
+        {{ end }}
+        {{ if .Values.app.exm.enabled }}
+        - name: REDIS_DB
+          value: 0
+        - name: REDIS_HOST
+          value: {{ .Values.app.exm.redis.service }}
+        - name: REDIS_PORT
+          value: {{ .Values.app.exm.redis.port }}
+        - name: WRITE_ENTITIES_TO_REDIS
+          value: false
+        {{ end }}
         {{ if .Values.sentry.enabled }}
         - name: SENTRY_DSN
           valueFrom:
