@@ -345,11 +345,11 @@ spec:
         - name: DJANGO_USE_CACHE
           value: "true"
         - name: REDIS_DB_CACHEOPS
-          value: 1
+          value: "1"
         {{ end }}
         {{ if .Values.app.exm.enabled }}
         - name: REDIS_DB
-          value: 0
+          value: "0"
         - name: REDIS_HOST
           value: {{ .Values.app.exm.redis.service }}
         - name: REDIS_PORT
