@@ -88,11 +88,11 @@ spec:
           - name: ES_CONSUMER_KAFKA_CONFIG_PATH
             value: {{ .Values.app.esConsumerKafkaConfigPath }}
           - name: EXPOSE_PORT
-            value: {{ .Values.app.port }}
+            value: {{ .Values.app.port | quote }}
           - name: STACKDRIVER_LOGGING
-            value: {{ .Values.app.stackDriverLogging | quote }}
+            value: {{ .Values.app.stackDriverLogging }}
           - name: LOG_LEVEL
-            value: {{ .Values.app.logLevel | quote }}
+            value: {{ .Values.app.logLevel }}
           volumeMounts:
           - name: consumer-kafka-config
             mountPath: /code/conf/consumer/kafka.json
