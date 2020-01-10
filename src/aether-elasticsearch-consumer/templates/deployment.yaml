@@ -32,7 +32,7 @@ spec:
             protocol: TCP
           livenessProbe:
             httpGet:
-              path: /healthcheck
+              path: /health
               port: http
               httpHeaders:
               - name: X-Kubernetes-Health-Check
