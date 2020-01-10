@@ -90,9 +90,9 @@ spec:
           - name: EXPOSE_PORT
             value: {{ .Values.app.port }}
           - name: STACKDRIVER_LOGGING
-            value: {{ .Values.app.stackDriverLogging }}
+            value: {{ .Values.app.stackDriverLogging | quote }}
           - name: LOG_LEVEL
-            value: {{ .Values.app.logLevel }}
+            value: {{ .Values.app.logLevel | quote }}
           volumeMounts:
           - name: consumer-kafka-config
             mountPath: /code/conf/consumer/kafka.json

@@ -353,7 +353,7 @@ spec:
         - name: REDIS_HOST
           value: {{ .Values.app.exm.redis.service }}
         - name: REDIS_PORT
-          value: {{ .Values.app.exm.redis.port }}
+          value: {{ .Values.app.exm.redis.port | quote }}
         - name: WRITE_ENTITIES_TO_REDIS
           value: false
         {{ end }}
