@@ -21,10 +21,17 @@ data:
     cmd="psql -t -c \"$database\""
     db_exists=`eval $cmd`
 
+    # check to see if user exists
+    user_exists=$(psql -t -c "select count(*) from pg_roles where rolname='$db_username'")
+
     if [ $db_exists -eq 0 ]; then
         psql -c "CREATE DATABASE $DB_NAME;"
-        psql -c "CREATE USER IF NOT EXISTS $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
-        psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
+
+        if [ $user_exists -eq 0 ]; then
+          psql -c "CREATE USER $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
+        fi
+
+        psql -c "GRANT $DB_USERNAME TO $PGUSER;"
         psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USERNAME;"
         psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
         echo "sql executed.."
