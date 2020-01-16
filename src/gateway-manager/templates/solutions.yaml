@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: solutions
+data:
+  aether-gather.json: |
+    {
+      "name": "aether-gather",
+      "services": ["kernel", "kernel-ui", "gather", "odk"]
+    }
+  planfeld.json: |
+    {
+      "name": "planfeld",
+      "services": ["monitor", "analytics", "planner", "ui", "ui-static"]
+    }

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: aether-services
+  name: services
 data:
   gather.json: |
     {
@@ -105,9 +105,9 @@ data:
         }
       ]
     }
-  ui.json: |
+  kernel-ui.json: |
     {
-      "name": "ui",
+      "name": "kernel-ui",
       "host": "http://aether-ui",
       "paths": ["/{public_realm}/{name}"],
       "oidc_endpoints": [
@@ -126,6 +126,62 @@ data:
         {
           "name": "protected",
           "paths": ["/{realm}/{name}"]
+        }
+      ]
+    }
+
+  planner.json: |
+    {
+      "name": "planner",
+      "host": "http://planfeld-planner",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  monitor.json: |
+    {
+      "name": "monitor",
+      "host": "http://planfeld-monitor",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  ui.json: |
+    {
+      "name": "ui",
+      "host": "http://planfeld-ui",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  ui-static.json: |
+    {
+      "name": "planfeld-static",
+      "host": "http://planfeld-ui/static",
+      "paths": ["/-/planfeld/static", "/static"],
+      "strip_path": "true"
+    }
+  analytics.json: |
+    {
+      "name": "analytics",
+      "host": "http://planfeld-analytics",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
         }
       ]
     }
