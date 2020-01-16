@@ -16,6 +16,7 @@ gw:
       internalService: ''
     gather:
       internalService: ''
+  solutions: "(aether-gather planfeld)"
   keyCloak:
     globalAdmin: 'keycloak'
     kongClient: 'kong'
@@ -42,4 +43,4 @@ gw:
     user: 'admin'
     secret:
       name: 'elasticsearch-credentials'
-      passwordKey: 'password' 
+      passwordKey: 'password'
