@@ -19,6 +19,8 @@ namespace:
   create: false
 podAntiAffinity:
   enabled: true
+imagePullSecrets:
+  enabled: true
 app:
   repository: "ehealthafrica/aether-ui"
   command: start

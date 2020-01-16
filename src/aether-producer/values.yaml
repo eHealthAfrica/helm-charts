@@ -14,6 +14,8 @@ service:
   port: 9005
 kernel_url: http://kernel
 kernel_admin_username: admin
+imagePullSecrets:
+  enabled: false
 app:
   secrets: producer-secrets
   command: start

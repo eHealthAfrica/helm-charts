@@ -19,6 +19,8 @@ namespace:
   create: false
 podAntiAffinity:
   enabled: true
+imagePullSecrets:
+  enabled: false
 app:
   repository: "ehealthafrica/aether-odk"
   command: start

@@ -179,6 +179,10 @@ spec:
           volumeMounts:
           - mountPath: /var/www/static
             name: static-assets-volume
+          {{ if .Values.imagePullSecrets.enabled }}
+          imagePullSecrets:
+            - name: {{ .Values.imagePullSecrets.name }}
+          {{ end }}
       volumes:
       - name: {{ .Chart.Name }}
       - name: static-assets-volume

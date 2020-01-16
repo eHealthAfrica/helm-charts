@@ -23,6 +23,8 @@ debug: false
 testing: false
 podAntiAffinity:
   enabled: true
+imagePullSecrets:
+  enabled: false
 namespace:
   create: false
 app:
@@ -30,7 +32,7 @@ app:
   admin_user: admin
   secret: gather-secrets
   uwsgi:
-    threads: 0 
+    threads: 0
   db:
     host: 127.0.0.1
   gateWay:
