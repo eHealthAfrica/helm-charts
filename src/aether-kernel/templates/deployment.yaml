@@ -428,6 +428,10 @@ spec:
           name: google-bucket-credentials
           readOnly: true
         {{ end }}
+        {{ if .Values.imagePullSecrets.enabled }}
+        imagePullSecrets:
+          - name: {{ .Values.imagePullSecrets.name }}
+        {{ end }}
       volumes:
       - name: static-assets-volume
         emptyDir: {}

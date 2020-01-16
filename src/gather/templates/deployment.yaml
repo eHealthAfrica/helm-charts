@@ -225,6 +225,10 @@ spec:
           name: gather-nginx-config
       imagePullSecrets:
       - name: regsecret
+      {{ if .Values.imagePullSecrets.enabled }}
+      imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets.name }}
+      {{ end }}
       volumes:
       - name: static-assets-volume
         emptyDir: {}

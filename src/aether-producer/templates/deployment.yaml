@@ -159,6 +159,10 @@ spec:
             - name: producer-config
               mountPath: /etc/producer
               readOnly: true
+          {{ if .Values.imagePullSecrets.enabled }}
+          imagePullSecrets:
+            - name: {{ .Values.imagePullSecrets.name }}
+          {{ end }}
       volumes:
       - name: producer-config
         configMap:

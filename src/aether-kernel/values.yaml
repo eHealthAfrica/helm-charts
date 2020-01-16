@@ -7,6 +7,8 @@ ingress:
 provider:
   aws:
   gcp:
+imagePullSecrets:
+  enabled: false
 app:
   command: start
   setup_command: setup

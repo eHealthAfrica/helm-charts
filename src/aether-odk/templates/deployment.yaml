@@ -237,7 +237,10 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: odk-nginx-config
+      {{ if .Values.imagePullSecrets.enabled }}
       imagePullSecrets:
+        - name: {{ .Values.imagePullSecrets.name }}
+      {{ end }}
       volumes:
       - name: static-assets-volume
         emptyDir: {}
