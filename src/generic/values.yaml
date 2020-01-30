@@ -37,9 +37,8 @@ app:
     name:
   secret:
   port:
-  arg:
-    enabled: true
-    command:
+  args: []
+  command:
     - start
   static_root: /var/www/static
   storage:

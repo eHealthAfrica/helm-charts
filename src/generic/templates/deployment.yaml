@@ -98,12 +98,10 @@ spec:
       - name: {{ .Values.app.name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        {{ if .Values.app.arg.enabled }}
         args:
-          {{- range .Values.app.arg.command }}
+          {{- range .Values.app.args }}
           - {{ . | quote }}
           {{- end }}
-        {{ end }}
         ports:
         - name: app
           containerPort: {{ .Values.app.port }}
