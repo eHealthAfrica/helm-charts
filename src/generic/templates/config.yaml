@@ -1,0 +1,9 @@
+{{ if .Values.app.config.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "generic.fullname" . }}-config
+data:
+  {{ .Values.app.config.name }}: |
+{{ tpl .Values.app.config.data . | indent 4 }}
+{{ end }}
