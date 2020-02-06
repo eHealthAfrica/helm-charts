@@ -122,10 +122,16 @@ spec:
           value: .{{ .Values.domain }}
         - name: HOSTNAME
           value: {{ .Values.app.url }}
-        - name: DJANGO_STORAGE_BACKEND
-          value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
+        - name: STATIC_URL
+          value: {{ .Values.app.static.url }}
+        - name: COLLECT_STATIC_FILES_ON_STORAGE
+          value: {{ .Values.app.static.collect }}
+        - name: COLLECT_STATIC_FILES_VERSIONED
+          value: {{ .Values.app.static.versioned }}
+        - name: DJANGO_STORAGE_BACKEND
+          value: {{ .Values.app.static.backend }}
         {{ if .Values.provider.aws }}
         - name: AWS_S3_REGION_NAME
           value: {{ .Values.app.storage.bucket.region }}
