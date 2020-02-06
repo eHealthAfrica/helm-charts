@@ -122,6 +122,8 @@ spec:
           value: .{{ .Values.domain }}
         - name: HOSTNAME
           value: {{ .Values.app.url }}
+        - name: DJANGO_STORAGE_BACKEND
+          value: {{ .Values.app.storage.backend }}
         - name: BUCKET_NAME
           value: {{ .Values.app.storage.bucket.name }}
         {{ if .Values.provider.aws }}
