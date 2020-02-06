@@ -186,7 +186,7 @@ spec:
         - mountPath: {{ .Values.app.static_root }}
           name: static-assets-volume
         {{ end }}
-        {{ if .Values.config.enabled }}
+        {{ if .Values.app.config.enabled }}
         - mountPath: {{ .Values.app.config.path }}
           name: {{ template "generic.fullname" . }}-config
         {{ end }}
