@@ -29,7 +29,6 @@ If release name contains chart name it will be used as a full name.
 Define standard labels for frequently used metadata.
 */}}
 {{- define "opendistro-es.labels.standard" -}}
-app: {{ template "opendistro-es.fullname" . }}
 chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
 release: "{{ .Release.Name }}"
 heritage: "{{ .Release.Service }}"
