@@ -13,6 +13,6 @@ spec:
     port: {{ .Values.kibana.externalPort }}
     targetPort: {{ .Values.kibana.port }}
   selector:
-    app: {{ template "opendistro-es.fullname" . }}-kibana
+    name: {{ template "opendistro-es.fullname" . }}-kibana
   type: {{ .Values.kibana.service.type }}
 {{- end }}

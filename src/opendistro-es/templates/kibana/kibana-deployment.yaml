@@ -11,7 +11,7 @@ spec:
     metadata:
       labels:
 {{ include "opendistro-es.labels.standard" . | indent 8 }}
-        app: {{ template "opendistro-es.fullname" . }}-kibana
+        name: {{ template "opendistro-es.fullname" . }}-kibana
       annotations:
         {{/* This forces a restart if the secret config has changed */}}
         {{- if .Values.kibana.config }}
