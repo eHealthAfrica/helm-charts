@@ -29,6 +29,18 @@ app:
   port: 8000
   uwsgi:
     threads: 0
+  livenessProbe:
+    path: /health
+    initialDelaySeconds: 120
+    periodSeconds: 5
+    successThreshold: 3
+    timeoutSeconds: 10
+  readinessProbe:
+    path: /health
+    initialDelaySeconds: 120
+    periodSeconds: 5
+    successThreshold: 3
+    timeoutSeconds: 10
   storage:
     backend:
     bucket:
