@@ -15,7 +15,7 @@ jobs:
           CT_CHART_DIRS: src
         uses: helm/chart-testing-action@v1.0.0-alpha.3
         with:
-          command: lint --all --chart-dirs src
+          command: lint
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.0.0-alpha.3
@@ -29,4 +29,4 @@ jobs:
         env:
           CT_CHART_DIRS: src
         with:
-          command: install --all --chart-dirs src
+          command: install
