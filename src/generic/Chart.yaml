@@ -3,4 +3,4 @@ appVersion: "1.0"
 description: A Generic Helm chart for Kubernetes
 name: generic
 version: 0.2.9
-home: https://www.ehealthafrica.org/aether
+home: https://www.ehealthafrica.org
