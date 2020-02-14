@@ -36,6 +36,8 @@ app:
     user:
     name:
   secret:
+  config:
+    enabled: false
   port:
   args: []
   static_root: /var/www/static
