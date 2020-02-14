@@ -4,3 +4,4 @@ description: A Generic Helm chart for Kubernetes
 name: generic
 version: 0.2.9
 home: https://www.ehealthafrica.org
+maintainers: devops@ehealthafrica.org
