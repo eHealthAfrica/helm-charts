@@ -173,10 +173,10 @@ data:
       "paths": ["/-/planfeld/static", "/static"],
       "strip_path": "true"
     }
-  analytics.json: |
+  planfeld.json: |
     {
-      "name": "analytics",
-      "host": "http://planfeld-analytics",
+      "name": "planfeld",
+      "host": "http://planfeld",
       "oidc_endpoints": [
         {
           "name": "protected",

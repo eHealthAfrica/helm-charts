@@ -11,5 +11,5 @@ data:
   planfeld.json: |
     {
       "name": "planfeld",
-      "services": ["monitor", "analytics", "planner", "ui", "ui-static"]
+      "services": ["monitor", "planfeld", "planner", "ui", "ui-static"]
     }
