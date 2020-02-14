@@ -4,3 +4,4 @@ name: aether-kernel
 version: 1.2.1
 appVersion: 1.5.5
 home: https://www.ehealthafrica.org/aether
+maintainers: devops@ehealthafrica.org
