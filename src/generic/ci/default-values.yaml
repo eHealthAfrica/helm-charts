@@ -10,7 +10,6 @@ fullnameOverride: aya
 podAntiAffinity:
   enabled: true
 
-
 app:
   probe:
     type: exec
@@ -35,7 +34,6 @@ app:
     user: aya_user
     name: aya
   secret: aya-secret
-  name: aya
   port: 5432
   command: start
   static_root: /var/www/static
