@@ -3,4 +3,4 @@ description: The Elasticsearch consumer module for Aether, an open source develo
 name: aether-elasticsearch-consumer
 version: 1.2.0
 home: https://www.ehealthafrica.org/aether
-maintainers: devops@ehealthafrica.org
+maintainers: "devops@ehealthafrica.org"

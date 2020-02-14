@@ -3,4 +3,4 @@ description: The CouchDB Sync module for Aether, an open source development plat
 name: aether-couchdb-sync
 version: 1.2.0
 home: https://www.ehealthafrica.org/aether
-maintainers: devops@ehealthafrica.org
+maintainers: "devops@ehealthafrica.org"
