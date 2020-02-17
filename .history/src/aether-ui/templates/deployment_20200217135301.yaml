@@ -173,7 +173,7 @@ spec:
           - name: DEBUG
             value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
           - name: WEB_SERVER_PORT
-            value: {{ .Values.app.port | quote }}
+            value: {{ quote .Values.app.port }}
           - name: UWSGI_THREADS
             value: {{ .Values.app.uwsgi.threads | quote }}
           volumeMounts:

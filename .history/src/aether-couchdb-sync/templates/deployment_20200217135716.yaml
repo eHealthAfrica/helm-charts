@@ -238,7 +238,7 @@ spec:
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
         - name: WEB_SERVER_PORT
-          value: {{ .Values.app.port | quote }}
+          value: {{ quote .Values.app.port }}
         - name: COUCHDB_URL
           value: {{ .Values.app.couchdb.url }}
         - name: COUCHDB_USER

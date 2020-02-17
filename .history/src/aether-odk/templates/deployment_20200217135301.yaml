@@ -217,7 +217,7 @@ spec:
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
         # can be removed.
         - name: WEB_SERVER_PORT
-          value: {{ .Values.app.port | quote }}
+          value: {{ quote .Values.app.port }}
         - name: UWSGI_THREADS
           value: {{ .Values.app.uwsgi.threads | quote }}
         volumeMounts:

@@ -4,21 +4,10 @@ metadata:
   name: {{ .Chart.Name }}
   labels:
     app: {{ .Chart.Name }}
-    chart: {{ template "odk.chart" . }}
-    release: {{ .Release.Name }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Chart.Version }}
     heritage: {{ .Release.Service }}
 spec:
-  progressDeadlineSeconds: 180
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app: {{ .Chart.Name }}
-      release: {{ .Release.Name }}
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
   {{ if .Values.podAntiAffinity.enabled }}
   spec:
     affinity:
@@ -32,15 +21,18 @@ spec:
               - {{ .Chart.Name }}
           topologyKey: "kubernetes.io/hostname"
   {{ end }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  progressDeadlineSeconds: 180
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      {{ if .Values.kube2iam.enabled }}
-      annotations:
-        iam.amazonaws.com/role: {{ .Values.app.iam.role }}
-      {{ end }}
       labels:
         app: {{ .Chart.Name }}
-        release: {{ .Release.Name }}
+        release: {{ .Chart.Version }}
     spec:
       initContainers:
       - name: init
@@ -48,10 +40,7 @@ spec:
         command: ['bash', '-c', './scripts/init.sh']
         env:
         - name: PGHOST
-          valueFrom :
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: host
+          value: {{ .Values.app.db.host }}
         - name: PGUSER
           valueFrom:
             secretKeyRef:
@@ -63,17 +52,23 @@ spec:
               name: {{ .Values.app.db.secret }}
               key: password
         - name: DB_USERNAME
-          value: {{ .Values.app.db.user }}
+          value:  {{ .Values.app.db.user }}
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-database-password
+              key: gather-database-password
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
+        {{- if .Values.app.extra_env_vars -}}
+        {{- range $key, $value := .Values.app.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ . | quote }}
+        {{- end -}}
+        {{ end }}
         volumeMounts:
         - mountPath: /scripts
-          name: odk-init
+          name: gather-init
         {{ if .Values.provider.gcp }}
         - name: cloudsql-instance-credentials
           mountPath: /secrets/cloudsql
@@ -91,12 +86,12 @@ spec:
             mountPath: /secrets/cloudsql
             readOnly: true
       {{ end }}
-      - name: odk
-        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.gather.repository }}:{{ .Values.gather.tag | default .Chart.Version }}"
         ports:
         - containerPort: 8000
         args:
-        - {{ .Values.app.command }}
+          - {{ .Values.app.command }}
         livenessProbe:
           initialDelaySeconds: 5
           periodSeconds: 10
@@ -106,6 +101,8 @@ spec:
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
+            - name: Host
+              value: {{ .Values.url }}
         readinessProbe:
           initialDelaySeconds: 5
           periodSeconds: 10
@@ -119,28 +116,14 @@ spec:
               value: {{ .Values.url }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         env:
-        {{- if .Values.extra_env_vars -}}
-        {{- range $key, $value := .Values.extra_env_vars }}
-        - name: {{ $key }}
-          value: {{ . | quote }}
-        {{- end -}}
-        {{ end }}
-        - name: DJANGO_STORAGE_BACKEND
-          value: {{ .Values.app.storage.backend }}
-        - name: BUCKET_NAME
-          value: {{ .Values.app.storage.bucket.name }}
-        {{ if .Values.provider.aws }}
-        - name: AWS_S3_REGION_NAME
-          value: {{ .Values.app.storage.bucket.region }}
-        - name: AWS_S3_ENDPOINT_URL
-          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
-        - name: AWS_DEFAULT_ACL
-          value: {{ .Values.app.storage.bucket.default_acl }}
-        {{ end }}
-        {{ if .Values.provider.gcp }}
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: {{ .Values.app.storage.bucket.credentialsPath }}
-        {{ end }}
+        - name: CSRF_COOKIE_DOMAIN
+          value: {{ .Values.domain }}
+        - name: CSRF_TRUSTED_ORIGINS
+          value: .{{ .Values.domain }}
+        - name: HOSTNAME
+          value: {{ .Values.domain }}
+        - name: INSTANCE_NAME
+          value: "Gather 3"
         {{ if .Values.sentry.enabled }}
         - name: SENTRY_DSN
           valueFrom:
@@ -152,46 +135,49 @@ spec:
           value: {{ .Values.app.gateWay.serviceId }}
         - name: GATEWAY_PUBLIC_REALM
           value: "{{ .Values.app.gateWay.gatewayPublicRealm }}"
-        - name: DEFAULT_REALM
-          value: "{{ .Values.app.gateWay.defaultRealm }}"
         - name: KEYCLOAK_SERVER_URL
           value: {{ .Values.app.keycloak.externalUrl }}
         - name: KEYCLOAK_CLIENT_ID
           value: {{ .Values.app.keycloak.clientId }}
-        - name: CAS_SERVER_URL
-          value: {{ .Values.ums_url }}
-        - name: CSRF_COOKIE_DOMAIN
-          value: {{ .Values.domain }}
-        - name: CSRF_TRUSTED_ORIGINS
-          value: .{{ .Values.domain }}
-        - name: HOSTNAME
-          value: "{{ .Values.app.url }}"
+        - name: DEFAULT_REALM
+          value: {{ .Values.app.gateWay.defaultRealm }}
         - name: DJANGO_SECRET_KEY
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-django-secret-key
+              key: gather-django-secret-key
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
         - name: ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-django-admin-password
+              key: gather-django-admin-password
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
+              key: gather-django-admin-token
+        {{ if .Values.aether.odk.enabled }}
+        - name: AETHER_ODK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.aether.odk.secret }}
               key: odk-django-admin-token
+        - name: AETHER_ODK_URL
+          value: {{ .Values.aether.odk.url }}
+         {{ end }}
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.app.kernel.secret }}
+              name: {{ .Values.aether.kernel.secret }}
               key: kernel-django-admin-token
         - name: AETHER_KERNEL_URL
-          value: {{ .Values.app.kernel.url }}
+          value: {{ .Values.aether.kernel.url }}
         - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.app.kernel.url_test }}
+          value: {{ .Values.aether.kernel.urlTest }}
+        - name: EXTERNAL_APPS
+          value: {{ .Values.app.external.apps }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING
@@ -199,35 +185,35 @@ spec:
         - name: PGUSER
           value: {{ .Values.app.db.user }}
         - name: PGPORT
-          value: {{ .Values.app.db.port | default 5432 | quote }}
+          value: "5432"
         - name: PGHOST
-          valueFrom :
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: host
+          value: {{ .Values.app.db.host }}
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: odk-database-password
+              key: gather-database-password
         - name: DB_NAME
+          value: {{ .Values.app.db.name }}
+        - name: PGDATABASE
           value: {{ .Values.app.db.name }}
         # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
         # which are using different ports in different environments. Once all
         # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
         # can be removed.
         - name: WEB_SERVER_PORT
-          value: {{ .Values.app.port | quote }}
+          value: {{ quote .Values.webserverPort }}
         - name: UWSGI_THREADS
           value: {{ .Values.app.uwsgi.threads | quote }}
+        {{- if .Values.app.extra_env_vars -}}
+        {{- range $key, $value := .Values.app.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ . | quote }}
+        {{- end -}}
+        {{ end }}
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
-        {{ if .Values.provider.gcp }}
-        - mountPath: /secrets/gcp
-          name: google-bucket-credentials
-          readOnly: true
-        {{ end }}
       - name: nginx
         image: nginx:stable-alpine
         ports:
@@ -236,7 +222,9 @@ spec:
         - mountPath: /var/www/static
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
-          name: odk-nginx-config
+          name: gather-nginx-config
+      imagePullSecrets:
+      - name: regsecret
       {{ if .Values.imagePullSecrets.enabled }}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets.name }}
@@ -244,19 +232,16 @@ spec:
       volumes:
       - name: static-assets-volume
         emptyDir: {}
-      - name: odk-nginx-config
+      - name: gather-nginx-config
         configMap:
-          name: {{ .Chart.Name }}-nginx-config
-      - name: odk-init
+          name: gather-nginx-config
+      - name: gather-init
         configMap:
-          name: {{ .Chart.Name }}-init
+          name: gather-init
           defaultMode: 0744
       {{ if .Values.provider.gcp }}
       - name: cloudsql-instance-credentials
         secret:
           secretName: cloudsql-instance-credentials
-      - name: google-bucket-credentials
-        secret:
-          secretName: {{ .Values.app.storage.bucket.credentialsSecret }}
       {{ end }}
       restartPolicy: Always

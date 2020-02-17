@@ -82,11 +82,11 @@ spec:
           - name: DEBUG
             value:  {{ .Values.debug | quote }}
           - name: PRODUCER_SETTINGS_FILE
-            value:  {{ .Values.application.config | quote }}
+            value:  {{ quote .Values.application.config }}
           - name: POSTGRES_USER
             value: {{ .Values.app.kernel.readonly_user }}
           - name: POSTGRES_HOST
-            value: {{ .Values.app.db.host | quote }}
+            value: {{ quote .Values.app.db.host }}
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -99,7 +99,7 @@ spec:
           - name: OFFSET_DB_NAME
             value: {{ .Values.app.db.name }}
           - name: OFFSET_DB_PORT
-            value: {{ .Values.app.db.port | quote }}
+            value: {{ quote .Values.app.db.port }}
           - name: OFFSET_DB_PASSWORD
             valueFrom:
               secretKeyRef:

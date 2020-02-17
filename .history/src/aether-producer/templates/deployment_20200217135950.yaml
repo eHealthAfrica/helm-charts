@@ -99,7 +99,7 @@ spec:
           - name: OFFSET_DB_NAME
             value: {{ .Values.app.db.name }}
           - name: OFFSET_DB_PORT
-            value: {{ .Values.app.db.port | quote }}
+            value: {{ quote .Values.app.db.port }}
           - name: OFFSET_DB_PASSWORD
             valueFrom:
               secretKeyRef:
