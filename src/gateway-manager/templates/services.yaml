@@ -3,19 +3,6 @@ kind: ConfigMap
 metadata:
   name: services
 data:
-  gather.json: |
-    {
-      "name": "gather",
-      "host": "http://gather",
-      "paths": ["/{public_realm}/{name}"],
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}"]
-        }
-      ]
-    }
-
   elasticsearch.json: |
     {
       "name": "elasticsearch",
@@ -37,7 +24,6 @@ data:
         }
       ]
     }
-
   es-consumer.json: |
     {
       "name": "es-consumer",
@@ -59,7 +45,6 @@ data:
         }
       ]
     }
-
   kibana.json: |
     {
       "name": "kibana",
@@ -82,6 +67,18 @@ data:
       ]
     }
 
+  gather.json: |
+    {
+      "name": "gather",
+      "host": "http://gather",
+      "paths": ["/{public_realm}/{name}"],
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"]
+        }
+      ]
+    }
   odk.json: |
     {
       "name": "odk",
@@ -142,6 +139,20 @@ data:
         }
       ]
     }
+  planner-health.json: |
+    {
+      "name": "planner-health",
+      "host": "http://planfeld-planner/health",
+      "paths": ["/{public_realm}/planner/health"],
+      "strip_path": "true",
+      "public_endpoints": [
+        {
+          "name": "public",
+          "paths": ["/{realm}/planner/health"],
+          "strip_path": "true"
+        }
+      ]
+    }
   monitor.json: |
     {
       "name": "monitor",
@@ -150,6 +161,46 @@ data:
         {
           "name": "protected",
           "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  monitor-health.json: |
+    {
+      "name": "monitor-health",
+      "host": "http://planfeld-monitor/health",
+      "paths": ["/{public_realm}/monitor/health"],
+      "strip_path": "true",
+      "public_endpoints": [
+        {
+          "name": "public",
+          "paths": ["/{realm}/monitor/health"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  planfeld.json: |
+    {
+      "name": "planfeld",
+      "host": "http://planfeld-planfeld",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  planfeld-health.json: |
+    {
+      "name": "planfeld-health",
+      "host": "http://planfeld-planfeld/health",
+      "paths": ["/{public_realm}/planfeld/health"],
+      "strip_path": "true",
+      "public_endpoints": [
+        {
+          "name": "public",
+          "paths": ["/{realm}/planfeld/health"],
           "strip_path": "true"
         }
       ]
@@ -170,18 +221,6 @@ data:
     {
       "name": "planfeld-static",
       "host": "http://planfeld-ui/static",
-      "paths": ["/-/planfeld/static", "/static"],
+      "paths": ["/{public_realm}/planfeld/static", "/static"],
       "strip_path": "true"
-    }
-  analytics.json: |
-    {
-      "name": "analytics",
-      "host": "http://planfeld-analytics",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}"],
-          "strip_path": "true"
-        }
-      ]
     }
