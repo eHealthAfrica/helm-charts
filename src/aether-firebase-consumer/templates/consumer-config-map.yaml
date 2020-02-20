@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consumer-config
+data:
+    consumer.json: |
+        {
+          "latitude_fields": [
+            "lat",
+            "latitude"
+          ],
+          "longitude_fields": [
+            "lon",
+            "lng",
+            "long",
+            "longitude"
+          ]
+        }
