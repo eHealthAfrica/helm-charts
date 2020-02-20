@@ -38,6 +38,8 @@ gw:
     internalService: ''
   aetherElasticsearchConsumer:
     internalService: ''
+  aetherFirebaseConsumer:
+    internalService: ''
   elasticsearch:
     internalService: ''
     user: 'admin'
