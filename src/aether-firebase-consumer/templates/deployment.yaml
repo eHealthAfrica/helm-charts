@@ -51,11 +51,6 @@ spec:
             value: {{ .Values.app.redis.host }}
           - name: REDIS_PORT
             value: {{ .Values.app.redis.port | quote }}
-          - name: REDIS_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.app.secret }}
-                key: redis-password
           - name: KAFKA_CONSUMER_USER
             valueFrom:
               secretKeyRef:
@@ -77,21 +72,24 @@ spec:
           - name: LOG_LEVEL
             value: {{ .Values.app.logLevel }}
           volumeMounts:
-          - name: consumer-kafka-config
+          - name: kafka-config
             mountPath: /code/conf/consumer/kafka.json
             subPath: kafka.json
-          - name: consumer-config
+          - name: firebase-consumer-config
             mountPath: /code/conf/consumer/consumer.json
             subPath: consumer.json
       volumes:
-      - name: consumer-kafka-config
-        secret:
-          secretName: consumer-kafka-config
-      - name: consumer-config
+      - name: kafka-config
         configMap:
-          name: consumer-config
+          name: firebase-consumer-kafka-config
+          defaultMode: 0744
+          items:
+          - key: kafka.json
+            path: kafka.json
+      - name: firebase-consumer-config
+        configMap:
+          name: firebase-consumer-config
           defaultMode: 0744
           items:
           - key: consumer.json
             path: consumer.json
-
