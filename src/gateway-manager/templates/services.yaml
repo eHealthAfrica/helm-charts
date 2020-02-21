@@ -151,7 +151,7 @@ data:
   planner.json: |
     {
       "name": "planner",
-      "host": "http://planfeld-planner",
+      "host": "http://planfeld",
       "oidc_endpoints": [
         {
           "name": "protected",
