@@ -242,6 +242,6 @@ data:
     {
       "name": "planfeld-static",
       "host": "http://planfeld-ui/static",
-      "paths": ["/{public_realm}/planfeld/static", "/static"],
+      "paths": ["/{public_realm}/ui/static", "/static"],
       "strip_path": "true"
     }
