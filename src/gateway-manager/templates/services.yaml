@@ -203,7 +203,7 @@ data:
   planfeld.json: |
     {
       "name": "planfeld",
-      "host": "http://planfeld-planfeld",
+      "host": "http://planfeld",
       "oidc_endpoints": [
         {
           "name": "protected",
@@ -215,7 +215,7 @@ data:
   planfeld-health.json: |
     {
       "name": "planfeld-health",
-      "host": "http://planfeld-planfeld/health",
+      "host": "http://planfeld/health",
       "paths": ["/{public_realm}/planfeld/health"],
       "strip_path": "true",
       "public_endpoints": [
