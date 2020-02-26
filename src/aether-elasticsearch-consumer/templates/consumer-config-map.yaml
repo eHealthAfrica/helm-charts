@@ -5,6 +5,8 @@ metadata:
 data:
     consumer.json: |
         {
+          "startup_connection_retry": 3,
+          "connect_retry_wait": 1,
           "latitude_fields": [
             "lat",
             "latitude"

@@ -31,6 +31,7 @@ spec:
             containerPort: {{ .Values.app.port }}
             protocol: TCP
           livenessProbe:
+            initialDelaySeconds: 300
             httpGet:
               path: /health
               port: http
@@ -38,6 +39,7 @@ spec:
               - name: X-Kubernetes-Health-Check
                 value: livenessProbe
           readinessProbe:
+            initialDelaySeconds: 300
             httpGet:
               path: /health
               port: http
@@ -93,6 +95,8 @@ spec:
             value: {{ .Values.app.stackDriverLogging | quote }}
           - name: LOG_LEVEL
             value: {{ .Values.app.logLevel }}
+          - name: CONSUMER_PORT
+            value: {{ .Values.app.port | quote }}
           volumeMounts:
           - name: consumer-kafka-config
             mountPath: /code/conf/consumer/kafka.json
@@ -102,13 +106,11 @@ spec:
             subPath: consumer.json
       volumes:
       - name: consumer-kafka-config
-        secret:
-          secretName: consumer-kafka-config
+        configMap:
+          name: consumer-kafka-config
+          defaultMode: 0744
       - name: consumer-config
         configMap:
           name: consumer-config
           defaultMode: 0744
-          items:
-          - key: consumer.json
-            path: consumer.json
 
