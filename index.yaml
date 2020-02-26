@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   aether-couchdb-sync:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.570317Z
+    created: 2020-02-26T15:15:57.632737Z
     description: The CouchDB Sync module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: 780a0b092342f8983a62e81120c436e267f567a73f71148a46babe31fc9bdf2b
@@ -12,16 +12,16 @@ entries:
     version: 1.2.0
   aether-elasticsearch-consumer:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.571288Z
+    created: 2020-02-26T15:15:57.634113Z
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
-    digest: fc1d951fb2d1b7b35b0655e8543e1a9bf835a36eb56f3e40f26b0b5bd41b83d5
+    digest: 00906e62384270dca84a6dba4f7ae930a228e24274e663aecddcf382140588e0
     name: aether-elasticsearch-consumer
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.571044Z
+    created: 2020-02-26T15:15:57.633753Z
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: 52c624bc9a2921b0cce002e9380f603776ebaeef1cdc7e204e6d0554801e7fb4
@@ -30,7 +30,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.570846Z
+    created: 2020-02-26T15:15:57.633477Z
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: bfa0363936f7d10b2731e8b490e608c746eb36f7b28a93a19ebc61827629eb3f
@@ -39,7 +39,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.570553Z
+    created: 2020-02-26T15:15:57.633084Z
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: 2263bd3b2649e1fcf4d396def564f9061a5c46032dea8e7a0d074b5b08e829b8
@@ -49,26 +49,26 @@ entries:
     version: 0.9.5
   aether-firebase-consumer:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.571521Z
+    created: 2020-02-26T15:15:57.634498Z
     description: The Firebase module for Aether, an open source development platform
       for data curation, exchange, and publication
-    digest: 0da921bca9688e35f34b0d6236d20170157362db1d84ddd27882f339090d48e3
+    digest: c32ba01966d8f538edd46862bdb3de66938f3f15709e629cc3600f15d3260f0e
     name: aether-firebase-consumer
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-firebase-consumer-1.2.0.tgz
     version: 1.2.0
   aether-kernel:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.575637Z
+    created: 2020-02-26T15:15:57.638199Z
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
-    digest: 1fbb7e6b35020c087894c83070c365d43625641d8cfa3ab09f5eaeee173b1be7
+    digest: 591ec0599ef1670d481941673d2373772ec292d99234750187366727729f2c69
     name: aether-kernel
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.575225Z
+    created: 2020-02-26T15:15:57.637779Z
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: d7c95baf7552f4133b0f81f30b07fb6734c8ec9f18d71441a1059e2868252ee1
@@ -77,7 +77,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.1.0-rc.tgz
     version: 1.1.0-rc
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.574878Z
+    created: 2020-02-26T15:15:57.637425Z
     description: The Kernel Module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: ccbf850c14f8efd003a3133be4fcd34ad5b28d05537e500d18d02eb474e38194
@@ -86,7 +86,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.574562Z
+    created: 2020-02-26T15:15:57.637103Z
     description: The Kernel Module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: e6facf338f4b803dc8d6550511d6d5e2865e28a91b804a5894ccde013d67159a
@@ -95,7 +95,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.574246Z
+    created: 2020-02-26T15:15:57.636786Z
     description: The Kernel Module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: c4183534ac5a6da3fb3c70923134d356494b657586ec3f957981f5983b0e4523
@@ -104,7 +104,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.573869Z
+    created: 2020-02-26T15:15:57.636443Z
     description: The Kernel Module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: 1d671e05fe64190130c40fc7148625e3587369247468f43eb0bb02a5920ef399
@@ -114,7 +114,7 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 0.11.0-rc
-    created: 2020-02-26T15:15:34.573284Z
+    created: 2020-02-26T15:15:57.636119Z
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: 338000692872311424fe09083417664bbd22c0c330f8760297f7e553fffb61e3
     name: aether-kernel
@@ -123,7 +123,7 @@ entries:
     version: 0.0.5
   - apiVersion: v1
     appVersion: 0.9.2
-    created: 2020-02-26T15:15:34.572947Z
+    created: 2020-02-26T15:15:57.635804Z
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: fd36bfaae42eb64a88ca1d3cce4a6c40b69dd798ee0f409e926d70dea58e1514
     name: aether-kernel
@@ -132,7 +132,7 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 0.9.2
-    created: 2020-02-26T15:15:34.572447Z
+    created: 2020-02-26T15:15:57.635499Z
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: bfcf122c043c12f5b391b9c0bffa40847cab734219f802195393f100491768e1
     name: aether-kernel
@@ -141,7 +141,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2020-02-26T15:15:34.572095Z
+    created: 2020-02-26T15:15:57.635187Z
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: 689538d9d86148f2c4b66cf355461b47bc130ba78687927d8fb6273841ea3e99
     name: aether-kernel
@@ -150,7 +150,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2020-02-26T15:15:34.57179Z
+    created: 2020-02-26T15:15:57.634861Z
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: bcd9fe832ba6c7c7d17c20aef07ee952cde881ae481b094144b90bc1dc963517
     name: aether-kernel
@@ -159,16 +159,16 @@ entries:
     version: 0.0.1
   aether-odk:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.58003Z
+    created: 2020-02-26T15:15:57.642448Z
     description: The ODK Module for Aether, an open source development platform for
       data curation & dissemination
-    digest: 1c67ad53406b65d4479e7fc727001f13c7cf6c7729bbfd4d2e17d427a71417fb
+    digest: 735820fa21cb71f8e475375e4cb2d33ed6fd56919f3efcb843a42ceb4123beee
     name: aether-odk
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.579717Z
+    created: 2020-02-26T15:15:57.642134Z
     description: The ODK Module for Aether, an open source development platform for
       data curation & dissemination
     digest: f132f514f3ad4e084c61dd2c7dca3cdd3e64a6aab755b8c18df172e77e1b8982
@@ -177,7 +177,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.1.0-rc.tgz
     version: 1.1.0-rc
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.579328Z
+    created: 2020-02-26T15:15:57.641866Z
     description: The ODK Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 9900cd517cb0beb7a19b9a22af3fb6ad0df85e67e107fc75b56420372f38eefa
@@ -186,7 +186,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.578883Z
+    created: 2020-02-26T15:15:57.641572Z
     description: The ODK Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 003334a83866fed32328916734c9ea1d83e36181dd688af5a161fef02dde5cfc
@@ -195,7 +195,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.57773Z
+    created: 2020-02-26T15:15:57.64119Z
     description: The ODK Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 117b9317595787d18fa1a880a690752da5338f45406565ba70fc49cf50c4e5fb
@@ -204,7 +204,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.577396Z
+    created: 2020-02-26T15:15:57.640828Z
     description: The ODK Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 2d362ff592a0a9492bc9f1d7af747013865d96bd2c75df5f89daedf5c819632a
@@ -214,7 +214,7 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 0.11.0-rc
-    created: 2020-02-26T15:15:34.577053Z
+    created: 2020-02-26T15:15:57.640486Z
     description: eHealthAfrica's ODK Helm chart
     digest: 082de03cf723a9d1532752d39dd12cac84b71d4d7d4bfe459969c361694a36c3
     name: aether-odk
@@ -223,7 +223,7 @@ entries:
     version: 0.0.5
   - apiVersion: v1
     appVersion: 0.9.2
-    created: 2020-02-26T15:15:34.576668Z
+    created: 2020-02-26T15:15:57.639219Z
     description: eHealthAfrica's ODK Helm chart
     digest: 22e4c30eeb84a3c21c114a2044a08f1364d18b66172c0c9c8d0a331410715a76
     name: aether-odk
@@ -232,7 +232,7 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 0.9.2
-    created: 2020-02-26T15:15:34.576324Z
+    created: 2020-02-26T15:15:57.638883Z
     description: eHealthAfrica's ODK Helm chart
     digest: 3112005dc5a7032a3486b8d3b50dfac9189d9c0029107391522d85a304c4184f
     name: aether-odk
@@ -241,7 +241,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 0.9.1
-    created: 2020-02-26T15:15:34.575991Z
+    created: 2020-02-26T15:15:57.63854Z
     description: eHealthAfrica's ODK Helm chart
     digest: 6f0d4940df82a8a661cd793f79b8748455ff45452139f0dd520bd7f0857e9fb7
     name: aether-odk
@@ -250,16 +250,16 @@ entries:
     version: 0.0.1
   aether-producer:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.581592Z
+    created: 2020-02-26T15:15:57.644029Z
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
-    digest: 14ace1b78ef176bbeaec0d4abe37a2d907a74293ea1fb6c35075bdc2544a2c64
+    digest: 92145ac1fdee803ebbeb63870f9d10f83e5e0bdfbfa0ccbcdd424eaec00e1be3
     name: aether-producer
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.581321Z
+    created: 2020-02-26T15:15:57.643761Z
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: 2061b69e6ebaf206a26830bd9ab556becb831a8310ae09f4ce0f7e5a218edaab
@@ -268,7 +268,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.1.0-rc.tgz
     version: 1.1.0-rc
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.581044Z
+    created: 2020-02-26T15:15:57.643502Z
     description: The Producer module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: 6995330b5dc1a54b67016b882fadc02b939d5acc5550df0c61bca8f6fe5a0c4d
@@ -277,7 +277,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.580762Z
+    created: 2020-02-26T15:15:57.643239Z
     description: The Producer module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: fd4dafa986ab369404bf8350a9aac41ca60420619474195ec5b330ed49920d7b
@@ -286,7 +286,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.0.2.tgz
     version: 1.0.2
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.580511Z
+    created: 2020-02-26T15:15:57.642973Z
     description: The Producer module for Aether, an open source development platform
     digest: 27e75aab7b1bd93494b94262ae438c316189c7e5b5d5315a501deb7d077f5da7
     name: aether-producer
@@ -295,7 +295,7 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: 1.0.0
-    created: 2020-02-26T15:15:34.580276Z
+    created: 2020-02-26T15:15:57.642681Z
     description: The Producer module for Aether, an open source development platform
     digest: 32a9433e4e8bf2536c13c039848627ef453a3c58220833af00793c712945590a
     name: aether-producer
@@ -304,16 +304,16 @@ entries:
     version: 1.0.0
   aether-ui:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.583717Z
+    created: 2020-02-26T15:15:57.646077Z
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
-    digest: 748c9b2f2f65119974541cee866d083a93ceb54a99a0c4d013d3f43d724554ba
+    digest: 69269139734302fcb5dcc2e96860e7aff6373468b58c2e69449897e58dbc8882
     name: aether-ui
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.583396Z
+    created: 2020-02-26T15:15:57.645745Z
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 10b53ce4917eeee61a6301f18de92dfa0ee4f7ec0a872e0520344b29db418e59
@@ -322,7 +322,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.583115Z
+    created: 2020-02-26T15:15:57.645463Z
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: e5ee4cc31bbb8157da294a1324438bdb2d7a6eb88c162c70282d759733c2cc3c
@@ -331,7 +331,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.58283Z
+    created: 2020-02-26T15:15:57.645182Z
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: e99ebde223326081c5d1c3226e8f5619dacab2d1c2e43d1fd6681b3f64acfcee
@@ -340,7 +340,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.582549Z
+    created: 2020-02-26T15:15:57.644893Z
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: e5535ca9bfee5799bd928bf3c86a44930e92bdb81d55b6bac4f7d5e4706aa48c
@@ -350,7 +350,7 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 0.11.0-rc
-    created: 2020-02-26T15:15:34.582259Z
+    created: 2020-02-26T15:15:57.644596Z
     description: eHealthAfrica's Aether-UI Helm chart
     digest: f40c96e43e19f039db85160a409ae76d80bd525af1862300ed8bf96eaf1b8acf
     name: aether-ui
@@ -359,7 +359,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.8.0
-    created: 2020-02-26T15:15:34.581892Z
+    created: 2020-02-26T15:15:57.644316Z
     description: eHealthAfrica's Aether-UI Helm chart
     digest: b895cefc859ee579790bf5ef85f0576c7462fa105f5036b2629a43df806434a0
     name: aether-ui
@@ -368,33 +368,33 @@ entries:
     version: 0.0.1
   couchdb-backup:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.583918Z
+    created: 2020-02-26T15:15:57.646295Z
     description: A Helm chart for automating CouchDB backups
-    digest: 004215c037d660fb44b57d7edd7c524b62730f6a0e57c8edb66d6d9d41c620e4
+    digest: dcda24dd1e7315e19b27a058984b2c61ac31dbefcc152001caaed38d04eae49a
     name: couchdb-backup
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/couchdb-backup-1.0.0.tgz
     version: 1.0.0
   database-provisioner:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.584124Z
+    created: 2020-02-26T15:15:57.64654Z
     description: A Helm chart for provisioning databases
-    digest: 552876b31cbfa757bf13b4ffa534482b1138ba4f8fbab6d2fc3af2fc06d528b1
+    digest: e5fa090898303c1d19467342a439643bca2f3348006d3b4c411f87b2579cac8b
     name: database-provisioner
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/database-provisioner-1.0.0.tgz
     version: 1.0.0
   gateway-manager:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.585415Z
+    created: 2020-02-26T15:15:57.648818Z
     description: A Helm chart for gateway-manager
-    digest: dac42c6679264d0553a6718b500d43543f327e619c3df3b64fd47ae5baf9daac
+    digest: 786d834c39e264faab33a8ea35e7f384bbeea47042a74fef7b5f01a135228e5d
     name: gateway-manager
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.4.tgz
     version: 1.0.4
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.585152Z
+    created: 2020-02-26T15:15:57.647786Z
     description: A Helm chart for gateway-manager
     digest: 9c827d142d60cfc2f70436b5cf326ded3fcecdc0d96b0407d59a7d99ffef6353
     name: gateway-manager
@@ -402,7 +402,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.584884Z
+    created: 2020-02-26T15:15:57.647473Z
     description: A Helm chart for gateway-manager
     digest: eb3ad5ec552802b37ac21c9ffeb1dc7e63ba840326d37730abdb7166fb420f54
     name: gateway-manager
@@ -410,7 +410,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.2.tgz
     version: 1.0.2
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.58464Z
+    created: 2020-02-26T15:15:57.647108Z
     description: A Helm chart for gateway-manager
     digest: 416af89664ed176ef6d990346681ee030c6dff79c337bbd141853fed0eeccd92
     name: gateway-manager
@@ -418,7 +418,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.584374Z
+    created: 2020-02-26T15:15:57.646829Z
     description: A Helm chart for gateway-manager
     digest: d8b628d6cf145663e7d9ed8f8c97383d8053fe510cfe4434a2723afd7a6bca20
     name: gateway-manager
@@ -427,15 +427,15 @@ entries:
     version: 1.0.0
   gather:
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.587654Z
+    created: 2020-02-26T15:15:57.650697Z
     description: An open source data collection tool
-    digest: 42596f639543a23090b25b857d828c79d0199599fdd3201afea378142bb1a689
+    digest: 999cef0a53d20d28c89f1f68bcb283578ab9bc670de776b90c7b94dee2116902
     name: gather
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/gather-3.1.0.tgz
     version: 3.1.0
   - apiVersion: v1
-    created: 2020-02-26T15:15:34.58737Z
+    created: 2020-02-26T15:15:57.650413Z
     description: An open source data collection tool
     digest: 2c1296c63f0c697f35cd481e3cf911c7209f0c981709c7de75e91ffcbf4bb903
     name: gather
@@ -444,7 +444,7 @@ entries:
     version: 3.0.0
   - apiVersion: v1
     appVersion: 3.0.0-rc
-    created: 2020-02-26T15:15:34.587066Z
+    created: 2020-02-26T15:15:57.650124Z
     description: eHealthAfrica's Gather Helm chart
     digest: c816f630ec1828a2367446280578f93a48de214e20340a1d6f7f686080e82f5c
     name: gather
@@ -453,7 +453,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 3.0.0-rc
-    created: 2020-02-26T15:15:34.585774Z
+    created: 2020-02-26T15:15:57.649707Z
     description: eHealthAfrica's Gather Helm chart
     digest: 4e776878df05ab243a98c97cdc21e6a4a4ebfa4bc9b103730e0cb4d14ddc32ea
     name: gather
@@ -463,16 +463,16 @@ entries:
   generic:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.594102Z
+    created: 2020-02-26T15:15:57.658117Z
     description: A Generic Helm chart for Kubernetes
-    digest: be0939f61eaaae7d3b2ee0de2e2bb031da7c8f5dda43cb83b3d8178602bd3569
+    digest: 9a5a03db36b39f9a2eecf98e6599f9c16fb045354e67258d867ec3b860c61f60
     name: generic
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/generic-0.2.9.tgz
     version: 0.2.9
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.593696Z
+    created: 2020-02-26T15:15:57.6566Z
     description: A Generic Helm chart for Kubernetes
     digest: df7a5b7c5d5e0cc8a2d9939bfee881bba25a5872bdfdb2da98ea3683f0a419e5
     name: generic
@@ -481,7 +481,7 @@ entries:
     version: 0.2.8
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.593319Z
+    created: 2020-02-26T15:15:57.656132Z
     description: A Generic Helm chart for Kubernetes
     digest: f4b0038768002679ebbd7fbe875b76636bdf4115e4f28c46feb1e59000ee10ec
     name: generic
@@ -490,7 +490,7 @@ entries:
     version: 0.2.7
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.59295Z
+    created: 2020-02-26T15:15:57.655717Z
     description: A Generic Helm chart for Kubernetes
     digest: 9bb082c417843a293274c4fbb9f983bcd0b4e0ee7b99d44ef55b1de5d2486368
     name: generic
@@ -499,7 +499,7 @@ entries:
     version: 0.2.6
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.592587Z
+    created: 2020-02-26T15:15:57.65531Z
     description: A Generic Helm chart for Kubernetes
     digest: f529e036dc23b30e83b2f0eca6f38a091bb060ce4b16440d32c7442fb9916192
     name: generic
@@ -508,7 +508,7 @@ entries:
     version: 0.2.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.592229Z
+    created: 2020-02-26T15:15:57.654927Z
     description: A Generic Helm chart for Kubernetes
     digest: fcdaf734d2fe928a32585c97b4d8cb6bce3a31f9b203f50b1fba44949a22b7ee
     name: generic
@@ -517,7 +517,7 @@ entries:
     version: 0.2.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.591844Z
+    created: 2020-02-26T15:15:57.654586Z
     description: A Generic Helm chart for Kubernetes
     digest: c6d061ca74d2b518f2273ce4bad400846e5fa5d4bb5199a7cc35dc114205f1b6
     name: generic
@@ -526,7 +526,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.591476Z
+    created: 2020-02-26T15:15:57.654211Z
     description: A Generic Helm chart for Kubernetes
     digest: 9af6d1356fbe192e26fd4a0bc69797a28b3e1bb6711132aea2597eead3711627
     name: generic
@@ -535,7 +535,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.591134Z
+    created: 2020-02-26T15:15:57.653881Z
     description: A Generic Helm chart for Kubernetes
     digest: 5b61076f2673454ecab15461bec3e3c8e211990b1f7d904aa218c84198a380b7
     name: generic
@@ -544,7 +544,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.590767Z
+    created: 2020-02-26T15:15:57.653545Z
     description: A Generic Helm chart for Kubernetes
     digest: 51db3c069dc057f75e8ee70757daaf78b6b42b19618ad2b8a3ae12a6c99a89ad
     name: generic
@@ -553,7 +553,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.590441Z
+    created: 2020-02-26T15:15:57.653194Z
     description: A Generic Helm chart for Kubernetes
     digest: bbfee1526a953f358d0ac390b5e2ca21ffd683b3f1f1387f67fa0f3b8bc5a8ab
     name: generic
@@ -562,7 +562,7 @@ entries:
     version: 0.1.7
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.590104Z
+    created: 2020-02-26T15:15:57.652875Z
     description: A Generic Helm chart for Kubernetes
     digest: 726776bfc218704127d851e3664026b4d87917963510406c2e6b683858d238a1
     name: generic
@@ -571,7 +571,7 @@ entries:
     version: 0.1.6
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.589748Z
+    created: 2020-02-26T15:15:57.652552Z
     description: A Generic Helm chart for Kubernetes
     digest: 9699140edfbecf22e6ea1fe387e40f5fcdf35219896cf4a8599e5f28ecdde663
     name: generic
@@ -580,7 +580,7 @@ entries:
     version: 0.1.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.589406Z
+    created: 2020-02-26T15:15:57.652231Z
     description: A Generic Helm chart for Kubernetes
     digest: a29b00eb91e006b11d2959a3c3cc2caf695ae0403158f1f0758c0d27c3ed7d14
     name: generic
@@ -589,7 +589,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.58903Z
+    created: 2020-02-26T15:15:57.65192Z
     description: A Generic Helm chart for Kubernetes
     digest: 6b7a220566d085053beeea929c3ea70b5ce4b0779b6c600ab57d3138b7e76587
     name: generic
@@ -598,7 +598,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.588649Z
+    created: 2020-02-26T15:15:57.651609Z
     description: A Generic Helm chart for Kubernetes
     digest: 8153cb3920c4ca85c18b027d4854da990c97b3453b0d97e19ace8805ea32207e
     name: generic
@@ -607,7 +607,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.58825Z
+    created: 2020-02-26T15:15:57.651306Z
     description: A Generic Helm chart for Kubernetes
     digest: ca3bd2d3033da36d9d6a765f9b84d0872329e68b178199d7ac07301831818464
     name: generic
@@ -616,7 +616,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.587949Z
+    created: 2020-02-26T15:15:57.651008Z
     description: A Generic Helm chart for Kubernetes
     digest: f989086c5c472493d44e7094946980e5a9c95a74f66e4fd20775fedf84b7a013
     name: generic
@@ -626,7 +626,7 @@ entries:
   helloworld:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2020-02-26T15:15:34.594351Z
+    created: 2020-02-26T15:15:57.658376Z
     description: A Helm chart for Kubernetes
     digest: a530741c031d54379fe8381baac8245e925e0bd2c79e81bce3ed495ac41a52cc
     name: helloworld
@@ -636,9 +636,9 @@ entries:
   kong:
   - apiVersion: v1
     appVersion: "1.1"
-    created: 2020-02-26T15:15:34.596181Z
+    created: 2020-02-26T15:15:57.659106Z
     description: The Cloud-Native Ingress and Service Mesh for APIs and Microservices
-    digest: 158ee127803ff5aba81eb702e5e5976625430a8d93567373ec7e32fefc95b053
+    digest: 65ab8ec3ce721ef40f2f62d70617031ea7f2c6f5eac3fc9871139b03e84eb9d4
     engine: gotpl
     home: https://KongHQ.com/
     icon: https://s3.amazonaws.com/downloads.kong/universe/assets/icon-kong-inc-large.png
@@ -654,7 +654,22 @@ entries:
   opendistro-es:
   - apiVersion: v1
     appVersion: 1.0.0
-    created: 2020-02-26T15:15:34.597387Z
+    created: 2020-02-26T15:15:57.661022Z
+    description: Opendistro Elasticsearch
+    digest: f1a675bb2d437352fc4cdfed5b2bf769427d65328cdfa4ce361d2e26b625ce8d
+    engine: gotpl
+    kubeVersion: ^1.10.0-0
+    maintainers:
+    - name: OpenDistro ES Maintainers
+    name: opendistro-es
+    sources:
+    - https://pages.git.viasat.com/ATG/charts
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/opendistro-es-1.0.2.tgz
+    version: 1.0.2
+  - apiVersion: v1
+    appVersion: 1.0.0
+    created: 2020-02-26T15:15:57.660449Z
     description: Opendistro Elasticsearch
     digest: 10cc7ca159fe4e5f97e5699410b9cd215d4017a01ab44ffe3ae141e823e8b062
     engine: gotpl
@@ -668,7 +683,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/opendistro-es-1.0.1.tgz
     version: 1.0.1
   - appVersion: 1.0.0
-    created: 2020-02-26T15:15:34.596789Z
+    created: 2020-02-26T15:15:57.65979Z
     description: Opendistro Elasticsearch
     digest: e7b57bf2c027b2878696cb1de02b4a0203bdf2dd8518229988b8654407af57bf
     engine: gotpl
@@ -681,4 +696,4 @@ entries:
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/opendistro-es-1.0.0.tgz
     version: 1.0.0
-generated: 2020-02-26T15:15:34.569774Z
+generated: 2020-02-26T15:15:57.632188Z
