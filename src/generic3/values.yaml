@@ -1,0 +1,164 @@
+# Default values for generic.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Support for deployment and statefulset resource types
+resourceType: deployment
+
+replicaCount: 3
+
+nameOverride:
+fullnameOverride:
+
+podAntiAffinity:
+  enabled: true
+
+# Additional init containers, e. g. for a database proxy, such as Google's cloudsql-proxy
+extraInitContainers: |
+
+# Additional sidecar containers, e. g. for a database proxy, such as Google's cloudsql-proxy
+extraContainers: |
+
+## Add additional volumes and mounts
+extraVolumes: |
+
+app:
+  name:
+  db:
+    type: postgres
+    create: false
+    enabled: false
+    secret: database-credentials
+    ssl:
+      enabled: false
+    host: 127.0.0.1
+    port: 5432
+    user:
+    name:
+  secret:
+  config:
+    enabled: false
+  port:
+  args: []
+  static_root: /var/www/static
+  storage:
+    bucket:
+      credentialsSecret:
+  probe:
+    type: request
+    # type: tcp
+    path: /health
+    initialDelaySeconds: 5
+    periodSeconds: 10
+  volume:
+    enabled: false
+    mountPath:
+    persist: false
+    accessMode: ReadWriteOnce
+    size: 10Gi
+
+database:
+  instance:
+
+url:
+
+gcp: true
+
+image:
+  repository:
+  tag:
+  pullPolicy: Always
+
+nginx:
+  enabled: false
+  config: |
+    server {
+      {{- if .Values.debug }}
+      error_log /var/log/nginx/error.log info;
+      {{- else }}
+      access_log off;
+      {{- end }}
+      location /health {
+        proxy_pass http://127.0.0.1:{{ .Values.app.port }};
+      }
+    }
+    server {
+      server_name {{ .Values.url }};
+      {{- if .Values.debug }}
+      error_log   /var/log/nginx/error.log info;
+      {{- else }}
+      access_log  off;
+      {{- end }}
+      # Max upload size
+      client_max_body_size 75M;   # adjust to taste
+
+      location /static/ {
+        alias {{ .Values.app.static_root }};
+      }
+      # Finally, send all non-static requests to the Django server.
+      location / {
+        proxy_pass http://127.0.0.1:{{ .Values.app.port }};
+        proxy_set_header        Host               $host;
+        proxy_set_header        X-Real-IP          $remote_addr;
+        proxy_set_header        X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header        X-Forwarded-Host   $host:443;
+        proxy_set_header        X-Forwarded-Server $host;
+        proxy_set_header        X-Forwarded-Port   443;
+        proxy_set_header        X-Forwarded-Proto  https;
+        include    /etc/nginx/uwsgi_params; # or the uwsgi_params you installed manually
+      }
+    }
+
+service:
+  type: NodePort
+  externalPort:
+  internalPort:
+
+imagePullSecrets:
+  enabled: false
+  name:
+
+ingress:
+  enabled: false
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "75M"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    monitor.stakater.com/enabled: "true"
+    statuscake.monitor.stakater.com/contact-group: "DevOps"
+    cert-manager.io/cluster-issuer: letsencrypt
+    cert-manager.io/acme-challenge-type: dns01
+    cert-manager.io/acme-dns01-provider: route53
+
+  path: /
+  hosts:
+    - chart-example.local
+  ssl:
+    letsencrypt: true
+    cert_secret: wildcard
+
+extra_env_vars: {}
+
+env_secrets:
+  enabled: false
+  name:
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

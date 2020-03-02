@@ -1,0 +1,16 @@
+{{ if eq .Values.app.probe.type "exec" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "generic.fullname" . }}-health
+  labels:
+    app: {{ template "generic.name" . }}
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  {{ .Values.app.probe.livenessProbeScriptName}}: |
+{{ .Values.app.probe.livenessProbeScript | indent 4 }}
+  {{ .Values.app.probe.readinessProbeScriptName}}: |
+{{ .Values.app.probe.readinessProbeScript | indent 4 }}
+{{ end }}
