@@ -6,7 +6,14 @@ data:
   aether-gather.json: |
     {
       "name": "aether-gather",
-      "services": ["kernel", "kernel-ui", "gather", "odk"]
+      "services": [
+        "kernel",
+        "kernel-ui",
+        "gather",
+        "odk",
+        "es-consumer",
+        "firebase-consumer",
+        "ckan-consumer"]
     }
   planfeld.json: |
     {
