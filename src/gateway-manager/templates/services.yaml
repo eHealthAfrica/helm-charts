@@ -247,17 +247,10 @@ data:
         }
       ]
     }
-<<<<<<< HEAD
   planfeld.json: |
     {
       "name": "planfeld",
       "host": "http://planfeld",
-=======
-  ui.json: |
-    {
-      "name": "ui",
-      "host": "http://planfeld-ui",
->>>>>>> master
       "oidc_endpoints": [
         {
           "name": "protected",
