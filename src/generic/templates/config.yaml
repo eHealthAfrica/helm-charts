@@ -1,9 +1,12 @@
 {{ if .Values.app.config.enabled }}
+{{- range $config := .Values.app.config.files }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "generic.fullname" . }}-config
+  name: {{ include "generic.fullname" $ }}-{{ $config.name  | replace "." "-" }}
 data:
-  {{ .Values.app.config.name }}: |
-{{ tpl .Values.app.config.data . | indent 4 }}
+  {{ $config.name }}: |
+{{ $config.data | indent 4 }}
+---
+{{- end -}}
 {{ end }}
