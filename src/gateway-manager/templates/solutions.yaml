@@ -4,24 +4,6 @@ metadata:
   name: solutions
 data:
   aether-gather.json: |
-    {
-      "name": "aether-gather",
-      "services": [
-        "kernel",
-        "kernel-ui",
-        "gather",
-        "odk",
-        "es-consumer",
-        "firebase-consumer",
-        "ckan-consumer"]
-    }
+    {{ .Values.gm.aether.solutions }}
   planfeld.json: |
-    {
-      "name": "planfeld",
-      "services": [
-        "monitor", "monitor-health",
-        "planfeld", "planfeld-health",
-        "planner", "planner-health",
-        "ui", "ui-static"
-      ]
-    }
+    {{ .Values.gm.planfeld.solutions }

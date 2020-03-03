@@ -16,6 +16,29 @@ gw:
       internalService: ''
     gather:
       internalService: ''
+    solutions: |
+      {
+        "name": "aether-gather",
+        "services": [
+          "kernel",
+          "kernel-ui",
+          "gather",
+          "odk",
+          "es-consumer",
+          "firebase-consumer"
+        ]
+      }
+  planfeld:
+    solutions: |
+      {
+        "name": "planfeld",
+        "services": [
+          "monitor", "monitor-health",
+          "planfeld", "planfeld-health",
+          "planner", "planner-health",
+          "ui", "ui-static"
+        ]
+      }
   solutions: "(aether-gather planfeld)"
   keyCloak:
     globalAdmin: 'keycloak'
