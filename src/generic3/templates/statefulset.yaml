@@ -1,6 +1,6 @@
-{{ if eq .Values.resourceType "deployment" }}
-apiVersion: apps/v1beta2
-kind: Deployment
+{{ if eq .Values.resourceType "statefulset" }}
+apiVersion: apps/v1beta1
+kind: StatefulSet
 metadata:
   name: {{ template "generic.fullname" . }}
   labels:
@@ -9,29 +9,12 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  serviceName: {{ template "generic.name" . }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "generic.name" . }}
       release: {{ .Release.Name }}
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  {{ if .Values.podAntiAffinity.enabled }}
-  spec:
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app
-              operator: In
-              values:
-              - {{ template "generic.name" . }}
-          topologyKey: "kubernetes.io/hostname"
-  {{ end }}
   template:
     metadata:
       labels:
@@ -98,10 +81,12 @@ spec:
       - name: {{ .Values.app.name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{ if .Values.app.arg.enabled }}
         args:
-          {{- range .Values.app.args }}
+          {{- range .Values.app.arg.command }}
           - {{ . | quote }}
           {{- end }}
+        {{ end }}
         ports:
         - name: app
           containerPort: {{ .Values.app.port }}
@@ -140,18 +125,6 @@ spec:
           initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.app.probe.periodSeconds }}
         {{ end }}
-        {{ if eq .Values.app.probe.type "exec" }}
-        livenessProbe:
-          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.app.probe.periodSeconds }}
-          exec:
-            command: ['bash', '-c', '{{ .Values.app.probe.path }}/{{ .Values.app.probe.livenessProbeScriptName }}', '{{ .Values.app.probe.timeout }}']
-        readinessProbe:
-          initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.app.probe.periodSeconds }}
-          exec:
-            command: ['bash', '-c', '{{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }}', '{{ .Values.app.probe.timeout }}']
-        {{ end }}
         resources:
 {{ toYaml .Values.resources | indent 12 }}
         {{ if .Values.env_secrets.enabled }}
@@ -186,29 +159,9 @@ spec:
         - mountPath: {{ .Values.app.static_root }}
           name: static-assets-volume
         {{ end }}
-        {{ if .Values.app.config.enabled }}
-        {{- range $config := .Values.app.config.files }}
-        - mountPath: {{ $config.path }}/{{ $config.name }}
-          name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
-          subPath: {{ $config.name }}
-        {{ end }}
-        {{ end }}
         {{ if .Values.app.volume.enabled }}
         - mountPath: {{ .Values.app.volume.mountPath }}
           name: {{ template "generic.name" . }}-data
-        {{ end }}
-        {{ if .Values.app.db.ssl.enabled }}
-        - name: postgres-ssl
-          mountPath: {{ .Values.app.db.ssl.certPath }}
-          readOnly: true
-        {{ end }}
-        {{ if eq .Values.app.probe.type "exec" }}
-        - name: {{ template "generic.fullname" . }}-health
-          mountPath: {{ .Values.app.probe.path }}/{{ .Values.app.probe.livenessProbeScriptName }}
-          subPath: {{ .Values.app.probe.livenessProbeScriptName }}
-        - name: {{ template "generic.fullname" . }}-health
-          mountPath: {{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }}
-          subPath: {{ .Values.app.probe.readinessProbeScriptName }}
         {{ end }}
       {{ if .Values.nginx.enabled }}
       - name: nginx
@@ -233,47 +186,30 @@ spec:
         configMap:
           name: {{ template "generic.fullname" . }}-nginx-config
       {{ end }}
-      {{ if .Values.app.config.enabled }}
-      {{- range $config := .Values.app.config.files }}
-      - name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
-        configMap:
-          name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
-          defaultMode: 0744
-      {{ end }}
-      {{ end }}
       {{ if .Values.app.db.create }}
       - name: init-config
         configMap:
           name: {{ template "generic.fullname" . }}-init-pg-config
           defaultMode: 0744
       {{ end }}
-      {{ if and .Values.app.db.enabled .Values.app.db.ssl.enabled }}
-      - name: postgres-ssl
-        secret:
-          secretName: postgres-ssl-certificate
-      {{ end }}
       {{ if and .Values.app.db.enabled .Values.gcp}}
       - name: cloudsql-instance-credentials
         secret:
           secretName: cloudsql-instance-credentials
       {{ end }}
-      {{ if .Values.app.volume.enabled }}
-      - name: {{ template "generic.name" . }}-data
-        {{ if .Values.app.volume.persist }}
-        persistentVolumeClaim:
-          claimName: {{ template "generic.fullname" . }}
-        {{ else }}
-        emptyDir: {}
-        {{ end }}
-      {{ end }}
-      {{ if eq .Values.app.probe.type "exec" }}
-      - name: {{ template "generic.fullname" . }}-health
-        configMap:
-          name: {{ template "generic.fullname" . }}-health
-          defaultMode: 0744
-      {{ end }}
       {{- with .Values.extraVolumes }}
 {{ tpl . $ | indent 6 }}
       {{- end }}
       restartPolicy: Always
+  {{ if .Values.app.volume.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: {{ template "generic.name" . }}-data
+      spec:
+        accessModes:
+          - {{ .Values.app.volume.accessMode | quote }}
+        resources:
+          requests:
+            storage: {{ .Values.app.volume.size | quote }}
+  {{ end }}
 {{ end }}

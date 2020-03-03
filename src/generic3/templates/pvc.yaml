@@ -1,0 +1,17 @@
+{{ if and .Values.app.volume.persist (eq .Values.resourceType "deployment") }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "generic.fullname" . }}
+  labels:
+    app: {{ template "generic.name" . }}
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  accessModes:
+    - {{ .Values.app.volume.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.app.volume.size | quote }}
+{{ end }}

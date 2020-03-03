@@ -1,5 +1,5 @@
 {{ if eq .Values.resourceType "deployment" }}
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "generic.fullname" . }}
@@ -19,25 +19,24 @@ spec:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
-  {{ if .Values.podAntiAffinity.enabled }}
-  spec:
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app
-              operator: In
-              values:
-              - {{ template "generic.name" . }}
-          topologyKey: "kubernetes.io/hostname"
-  {{ end }}
   template:
     metadata:
       labels:
         app: {{ template "generic.name" . }}
         release: {{ .Release.Name }}
     spec:
+      {{ if .Values.podAntiAffinity.enabled }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ template "generic.name" . }}
+            topologyKey: "kubernetes.io/hostname"
+      {{ end }}
       {{ if .Values.app.db.create }}
       initContainers:
       {{- if .Values.extraInitContainers }}
@@ -187,11 +186,8 @@ spec:
           name: static-assets-volume
         {{ end }}
         {{ if .Values.app.config.enabled }}
-        {{- range $config := .Values.app.config.files }}
-        - mountPath: {{ $config.path }}/{{ $config.name }}
-          name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
-          subPath: {{ $config.name }}
-        {{ end }}
+        - mountPath: {{ .Values.app.config.path }}
+          name: {{ template "generic.fullname" . }}-config
         {{ end }}
         {{ if .Values.app.volume.enabled }}
         - mountPath: {{ .Values.app.volume.mountPath }}
@@ -234,12 +230,9 @@ spec:
           name: {{ template "generic.fullname" . }}-nginx-config
       {{ end }}
       {{ if .Values.app.config.enabled }}
-      {{- range $config := .Values.app.config.files }}
-      - name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
+      - name: {{ template "generic.fullname" . }}-config
         configMap:
-          name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
-          defaultMode: 0744
-      {{ end }}
+          name: {{ template "generic.fullname" . }}-config
       {{ end }}
       {{ if .Values.app.db.create }}
       - name: init-config
