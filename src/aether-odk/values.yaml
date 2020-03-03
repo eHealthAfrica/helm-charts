@@ -28,6 +28,18 @@ app:
   admin_user: admin
   port: 8000
   tag: 1.5.5
+  livenessProbe:
+    path: /health
+    initialDelaySeconds: 120
+    periodSeconds: 5
+    successThreshold: 3
+    timeoutSeconds: 10
+  readinessProbe:
+    path: /health
+    initialDelaySeconds: 120
+    periodSeconds: 5
+    successThreshold: 3
+    timeoutSeconds: 10
   uwsgi:
     threads: 0
   kernel:

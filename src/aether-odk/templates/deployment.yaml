@@ -98,25 +98,27 @@ spec:
         args:
         - {{ .Values.app.command }}
         livenessProbe:
-          initialDelaySeconds: 5
-          periodSeconds: 10
           httpGet:
-            path: /health
-            port: 8000
+            path: {{ .Values.app.livenessProbe.path }}
+            port: http
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
+          initialDelaySeconds: {{ .Values.app.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.livenessProbe.periodSeconds }}
+          successThreshold: {{ .Values.app.livenessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.app.livenessProbe.timeoutSeconds }}
         readinessProbe:
-          initialDelaySeconds: 5
-          periodSeconds: 10
           httpGet:
-            path: /health
-            port: 8000
+            path: {{ .Values.app.readinessProbe.path }}
+            port: http
             httpHeaders:
             - name: X-Kubernetes-Health-Check
-              value: check
-            - name: Host
-              value: {{ .Values.url }}
+              value: readinessProbe
+          initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.app.readinessProbe.periodSeconds }}
+          successThreshold: {{ .Values.app.readinessProbe.successThreshold }}
+          timeoutSeconds: {{ .Values.app.readinessProbe.timeoutSeconds }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         env:
         {{- if .Values.extra_env_vars -}}
