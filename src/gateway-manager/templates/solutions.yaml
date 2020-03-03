@@ -6,10 +6,26 @@ data:
   aether-gather.json: |
     {
       "name": "aether-gather",
-      "services": ["kernel", "kernel-ui", "gather", "odk"]
+      "services": [
+        "kernel",
+        "kernel-ui",
+        "gather",
+        "odk",
+        "es-consumer",
+        "firebase-consumer",
+        "ckan-consumer"]
     }
   planfeld.json: |
     {
       "name": "planfeld",
-      "services": ["monitor", "analytics", "planner", "ui", "ui-static"]
+<<<<<<< HEAD
+      "services": ["monitor", "planfeld", "planner", "ui", "ui-static"]
+=======
+      "services": [
+        "monitor", "monitor-health",
+        "planfeld", "planfeld-health",
+        "planner", "planner-health",
+        "ui", "ui-static"
+      ]
+>>>>>>> master
     }

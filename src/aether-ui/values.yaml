@@ -6,10 +6,6 @@ pullPolicy: Always
   # Use `--set image.tag` in the command line to overwrite the version
 name: ui
 project: aether
-service:
-  name: nginx
-  externalPort: 80
-  internalPort: 80
 environment: "dev"
 domain: aether.local
 debug: false

@@ -1,0 +1,121 @@
+# Default values for generic.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+nameOverride: aya
+fullnameOverride: aya
+
+podAntiAffinity:
+  enabled: true
+
+
+app:
+  probe:
+    type: exec
+    livenessProbeScriptName: liveness.sh
+    livenessProbeScript: |
+      echo "test test"
+    readinessProbeScriptName: readiness.sh
+    readinessProbeScript: |
+      echo "test test"
+    path: '/tmp'
+  name: aya
+  config:
+    enabled: true
+    name: test.sh
+    data: |
+      #!/bin/bash
+
+      echo $USER
+  db:
+    secret: database-credentials
+    host: 127.0.0.1
+    user: aya_user
+    name: aya
+  secret: aya-secret
+  name: aya
+  port: 5432
+  command: start
+  static_root: /var/www/static
+  storage:
+    bucket:
+      credentialsSecret: "gcs-bucket-credentials"
+
+## Additional sidecar containers
+extraContainers: |
+  - name: openvpn-client
+    image: ehealthafrica/openvpn-client:3.9.4
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN"]
+    command: ["kano.ovpn"]
+    volumeMounts:
+      - name: kano-vpn
+        mountPath: /etc/openvpn
+        readOnly: true
+      - name: dev-net-tun
+        mountPath: /dev/net/tun
+        readOnly: true
+
+extraVolumes: |
+  - name: vpn-credentials
+    secret:
+      secretName: vpn-credentials
+
+database:
+  instance: development-223016:europe-west1:ehealth-africa-dev
+
+url: aya-dev.ehealthafrica.org
+
+image:
+  repository: eu.gcr.io/kdbs-data-col-proj/hfr-app
+  tag: dev
+  pullPolicy: Always
+
+nginx:
+  enabled: true
+
+service:
+  type: Ingress
+  port: 80
+
+imagePullSecrets:
+  enabled: true
+  name: gcr-json-key
+
+ingress:
+  certsecret: wildcard
+  hosts:
+    - alpha.eha.im
+  ssl:
+    letsencrypt: true
+    cert_secret: alpha.eha.im
+  annotations:
+    kubernetes.io/ingress.class: "kong"
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt
+    certmanager.k8s.io/acme-challenge-type: dns01
+    certmanager.k8s.io/acme-dns01-provider: route53
+
+extra_env_vars: {}
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
