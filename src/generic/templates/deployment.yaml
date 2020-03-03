@@ -187,8 +187,11 @@ spec:
           name: static-assets-volume
         {{ end }}
         {{ if .Values.app.config.enabled }}
-        - mountPath: {{ .Values.app.config.path }}
-          name: {{ template "generic.fullname" . }}-config
+        {{- range $config := .Values.app.config.files }}
+        - mountPath: {{ $config.path }}/{{ $config.name }}
+          name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
+          subPath: {{ $config.name }}
+        {{ end }}
         {{ end }}
         {{ if .Values.app.volume.enabled }}
         - mountPath: {{ .Values.app.volume.mountPath }}
@@ -231,9 +234,12 @@ spec:
           name: {{ template "generic.fullname" . }}-nginx-config
       {{ end }}
       {{ if .Values.app.config.enabled }}
-      - name: {{ template "generic.fullname" . }}-config
+      {{- range $config := .Values.app.config.files }}
+      - name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
         configMap:
-          name: {{ template "generic.fullname" . }}-config
+          name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
+          defaultMode: 0744
+      {{ end }}
       {{ end }}
       {{ if .Values.app.db.create }}
       - name: init-config
