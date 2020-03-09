@@ -18,6 +18,7 @@ data:
     PROXY_PID=$!
     sleep 5
 
+    ./entrypoint.sh manage migrate --noinput
     python ./sql/create_readonly_user.py $KERNEL_READONLY_DB_USERNAME $KERNEL_READONLY_DB_PASSWORD
 
     sleep 5
@@ -31,5 +32,6 @@ data:
 
     set -ex
 
+    ./entrypoint.sh manage migrate --noinput
     python ./sql/create_readonly_user.py $KERNEL_READONLY_DB_USERNAME $KERNEL_READONLY_DB_PASSWORD
 {{- end -}}
