@@ -5,7 +5,10 @@ metadata:
 data:
 {{- if .Values.provider.gcp }}
   create_ro_user.sh: |
-    #!/bin/sh
+    #!/bin/bash
+
+    set -ex
+
     apk add --no-cache wget ca-certificates && update-ca-certificates
     wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /cloud_sql_proxy
     chmod +x /cloud_sql_proxy
@@ -24,7 +27,9 @@ data:
 
 {{ else }}
   create_ro_user.sh: |
-    #!/bin/sh
+    #!/bin/bash
+
+    set -ex
 
     python ./sql/create_readonly_user.py $KERNEL_READONLY_DB_USERNAME $KERNEL_READONLY_DB_PASSWORD
 {{- end -}}
