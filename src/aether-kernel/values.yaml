@@ -20,13 +20,13 @@ app:
     path: /health
     initialDelaySeconds: 120
     periodSeconds: 5
-    successThreshold: 3
+    successThreshold: 1
     timeoutSeconds: 10
   readinessProbe:
     path: /health
     initialDelaySeconds: 120
     periodSeconds: 5
-    successThreshold: 1
+    successThreshold: 3
     timeoutSeconds: 10
   caching:
     enabled: true
