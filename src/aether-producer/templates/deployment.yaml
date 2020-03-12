@@ -91,7 +91,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.kernel.secret }}
-                key: kernel-django-admin-password
+                key: kernel-database-password
           - name: POSTGRES_DBNAME
             value: {{ .Values.app.kernel.db.name }}
           - name: OFFSET_DB_HOST
