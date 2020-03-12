@@ -107,11 +107,6 @@ spec:
           value: {{ .Values.app.db.port | default 5432 | quote }}
         - name: PGHOST
           value: {{ .Values.app.db.host }}
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: kernel-database-password
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: CAS_SERVER_URL
