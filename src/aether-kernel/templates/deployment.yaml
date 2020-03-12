@@ -154,6 +154,16 @@ spec:
             secretKeyRef:
               name: {{ .Values.app.secret }}
               key: kernel-readonly-db-password
+        {{ if .Values.app.exm.enabled }}
+        - name: REDIS_DB
+          value: "0"
+        - name: REDIS_HOST
+          value: {{ .Values.app.exm.redis.service }}
+        - name: REDIS_PORT
+          value: {{ .Values.app.exm.redis.port | quote }}
+        - name: WRITE_ENTITIES_TO_REDIS
+          value: "false"
+        {{ end }}
         - name: WEB_SERVER_PORT
           value: {{ quote .Values.app.port }}
         volumeMounts:
@@ -426,6 +436,16 @@ spec:
               key: kernel-readonly-db-password
         - name: TESTING
           value: {{ quote .Values.testing }}
+        {{ if .Values.app.exm.enabled }}
+        - name: REDIS_DB
+          value: "0"
+        - name: REDIS_HOST
+          value: {{ .Values.app.exm.redis.service }}
+        - name: REDIS_PORT
+          value: {{ .Values.app.exm.redis.port | quote }}
+        - name: WRITE_ENTITIES_TO_REDIS
+          value: "false"
+        {{ end }}
         {{ if .Values.provider.gcp }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: {{ .Values.app.storage.bucket.credentialsPath }}
