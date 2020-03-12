@@ -84,14 +84,14 @@ spec:
           - name: PRODUCER_SETTINGS_FILE
             value:  {{ quote .Values.application.config }}
           - name: POSTGRES_USER
-            value: {{ .Values.app.kernel.readonly_user }}
+            value: {{ .Values.app.kernel.user }}
           - name: POSTGRES_HOST
             value: {{ quote .Values.app.db.host }}
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.app.kernel.secret }}
-                key: kernel-readonly-db-password
+                key: kernel-database-password
           - name: POSTGRES_DBNAME
             value: {{ .Values.app.kernel.db.name }}
           - name: OFFSET_DB_HOST

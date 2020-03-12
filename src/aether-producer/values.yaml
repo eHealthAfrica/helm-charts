@@ -29,7 +29,7 @@ app:
     host: 127.0.0.1
   kernel:
     secret: kernel-secrets
-    readonly_user: kernel-ro
+    user: kernel
 ingress:
   enabled: false
 provider:
