@@ -147,13 +147,6 @@ spec:
           value: {{ .Values.app.db.user }}
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
-        - name: KERNEL_READONLY_DB_USERNAME
-          value: {{ .Values.app.db.readonly_user }}
-        - name: KERNEL_READONLY_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: kernel-readonly-db-password
         {{ if .Values.app.exm.enabled }}
         - name: REDIS_DB
           value: "0"
@@ -315,13 +308,6 @@ spec:
           value: {{ .Values.app.db.host }}
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
-        - name: KERNEL_READONLY_DB_USERNAME
-          value: {{ .Values.app.db.readonly_user }}
-        - name: KERNEL_READONLY_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: kernel-readonly-db-password
         - name: TESTING
           value: {{ quote .Values.testing }}
         {{ if .Values.app.exm.enabled }}
@@ -367,10 +353,6 @@ spec:
       - name: init-pg-config
         configMap:
           name: {{ .Chart.Name }}-init-pg-config
-          defaultMode: 0744
-      - name: init-create-readonly-user-sh
-        configMap:
-          name: {{ .Chart.Name }}-create-readonly-user-sh
           defaultMode: 0744
       - name: init-setup-sh
         configMap:
