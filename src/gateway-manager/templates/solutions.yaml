@@ -13,6 +13,7 @@ data:
         "odk",
         "es-consumer",
         "firebase-consumer",
+        "producer",
         "ckan-consumer"]
     }
   planfeld.json: |
