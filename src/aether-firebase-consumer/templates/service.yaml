@@ -11,8 +11,8 @@ spec:
   type: NodePort
   ports:
     - name: http
-      targetPort: 80
-      port: {{ .Values.app.port }}
+      port: 80
+      targetPort: {{ .Values.app.port }}
       protocol: TCP
       name: http
   selector:
