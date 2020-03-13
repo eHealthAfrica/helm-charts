@@ -42,6 +42,8 @@ gw:
     internalService: ''
   aetherCkanConsumer:
     internalService: ''
+  aetherProducer:
+    internalService: ''
   elasticsearch:
     internalService: ''
     user: 'admin'
