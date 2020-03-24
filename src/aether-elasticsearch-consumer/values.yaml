@@ -4,7 +4,7 @@ debug: false
 
 image:
   repository: "ehealthafrica/aether-elasticsearch-consumer"
-  imageTag: 2.0.2
+  imageTag: 2.0.5
   # Use `--set image.tag` in the command line to overwrite the version
 
 app:
