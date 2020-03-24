@@ -7,8 +7,6 @@ data:
       {
         "security.protocol": "SASL_SSL",
         "sasl.mechanism": "PLAIN",
-        "sasl.username": "${KAFKA_CONSUMER_USER}",
-        "sasl.password": "${KAFKA_CONSUMER_PASSWORD}",
         "auto.offset.reset" : "earliest",
         "group.id": "elasticsearch-metadataonly",
         "enable.auto.commit": true,
