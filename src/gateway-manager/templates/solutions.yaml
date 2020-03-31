@@ -7,14 +7,15 @@ data:
     {
       "name": "aether-gather",
       "services": [
-        "kernel",
         "kernel-ui",
+        "kernel",
         "gather",
         "odk",
         "es-consumer",
         "firebase-consumer",
         "producer",
-        "ckan-consumer"]
+        "ckan-consumer"
+      ]
     }
   planfeld.json: |
     {
