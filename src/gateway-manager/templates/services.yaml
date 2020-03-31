@@ -169,11 +169,11 @@ data:
     {
       "name": "kernel-ui",
       "host": "http://aether-ui",
-      "paths": ["/{public_realm}/{name}"],
+      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
       "oidc_endpoints": [
         {
           "name": "protected",
-          "paths": ["/{realm}/{name}"]
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
         }
       ]
     }
@@ -181,11 +181,11 @@ data:
     {
       "name": "kernel",
       "host": "http://aether-kernel",
-      "paths": ["/{public_realm}/{name}"],
+      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
       "oidc_endpoints": [
         {
           "name": "protected",
-          "paths": ["/{realm}/{name}"]
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
         }
       ]
     }
