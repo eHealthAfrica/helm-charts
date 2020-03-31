@@ -49,7 +49,7 @@ app:
     secret: kernel-secrets
     url: http://kernel.aether.local
   gateWay:
-    serviceId: ui
+    serviceId: kernel-ui
     gatewayPublicRealm: "-"
     defaultRealm: "master"
   keycloak:

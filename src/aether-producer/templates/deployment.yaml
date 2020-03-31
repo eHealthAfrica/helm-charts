@@ -80,9 +80,18 @@ spec:
           - {{ .Values.app.command }}
           env:
           - name: DEBUG
-            value:  {{ quote .Values.debug }}
+            value: {{ quote .Values.debug }}
           - name: PRODUCER_SETTINGS_FILE
-            value:  {{ quote .Values.application.config }}
+            value: {{ quote .Values.application.config }}
+          # kernel credentials (required with API access)
+          - name: AETHER_KERNEL_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.kernel.secret }}
+                key: kernel-django-admin-token
+          - name: AETHER_KERNEL_URL
+            value: {{ .Values.app.kernel.url }}
+          # kernel database (required with DB access)
           - name: POSTGRES_USER
             value: {{ .Values.app.kernel.user }}
           - name: POSTGRES_HOST
@@ -94,6 +103,7 @@ spec:
                 key: kernel-database-password
           - name: POSTGRES_DBNAME
             value: {{ .Values.app.kernel.db.name }}
+          # Producer database
           - name: OFFSET_DB_HOST
             value: {{ .Values.app.db.host }}
           - name: OFFSET_DB_NAME
@@ -107,6 +117,7 @@ spec:
                 key: offset-db-password
           - name: OFFSET_DB_USER
             value: {{ .Values.app.db.user }}
+          # Producer credentials
           - name: PRODUCER_ADMIN_USER
             value: {{ .Values.app.adminUser }}
           - name: PRODUCER_ADMIN_PW
@@ -114,6 +125,7 @@ spec:
               secretKeyRef:
                 name: {{ .Values.app.secret }}
                 key: admin-password
+          # Kafka settings
           - name: KAFKA_URL
             value: {{ .Values.app.kafkaUrl }}
           - name: KAFKA_SU_USER
