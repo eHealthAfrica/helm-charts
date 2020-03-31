@@ -17,20 +17,26 @@ metadata:
 spec:
   tls:
   - hosts:
-    {{- range .Values.ingress.hosts }}
-    - {{ . }}
+    {{- range $host := .Values.ingress.hosts }}
+    - {{ $host.name }}
     {{- end }}
     {{ if .Values.ingress.ssl.letsencrypt }}
     secretName: {{ .Values.ingress.ssl.cert_secret }}
     {{ end }}
   rules:
     {{- range $host := .Values.ingress.hosts }}
-    - host: {{ $host }}
+    - host: {{ $host.name }}
       http:
         paths:
           - path: /
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
+          {{- range $route := $host.extra_routes }}
+          - path: {{ $route.path }}
+            backend:
+              serviceName: {{ $route.serviceName }}
+              servicePort: {{ $route.servicePort }}
+          {{- end -}}
     {{- end -}}
 {{ end }}
