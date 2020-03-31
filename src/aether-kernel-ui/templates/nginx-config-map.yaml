@@ -27,7 +27,7 @@ data:
       # Max upload size
       client_max_body_size 75M;   # adjust to taste
 
-      location /-/ui/static/ {
+      location /-/kernel-ui/static/ {
         alias /var/www/static/;
       }
 
