@@ -1,4 +1,4 @@
 apiVersion: v1
 description: A Helm chart for gateway-manager
 name: gateway-manager
-version: 1.0.6
+version: 1.0.7

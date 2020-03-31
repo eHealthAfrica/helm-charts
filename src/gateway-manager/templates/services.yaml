@@ -168,7 +168,7 @@ data:
   kernel-ui.json: |
     {
       "name": "kernel-ui",
-      "host": "http://aether-ui",
+      "host": "http://aether-kernel-ui",
       "paths": ["/{public_realm}/{name}"],
       "oidc_endpoints": [
         {
