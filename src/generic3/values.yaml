@@ -54,6 +54,7 @@ app:
     enabled: false
     mountPath:
     persist: false
+    type: standard
     accessMode: ReadWriteOnce
     size: 10Gi
 
