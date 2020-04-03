@@ -9,6 +9,9 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  {{ if eq .Values.app.volume.type "nfs" }}
+  storageClassName: "nfs"
+  {{ end }}
   accessModes:
     - {{ .Values.app.volume.accessMode | quote }}
   resources:
