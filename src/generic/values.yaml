@@ -41,6 +41,7 @@ app:
   port:
   args: []
   static_root: /var/www/static
+  static_path: /static
   storage:
     bucket:
       credentialsSecret:
@@ -93,7 +94,7 @@ nginx:
       # Max upload size
       client_max_body_size 75M;   # adjust to taste
 
-      location /static/ {
+      location /{{ .Values.app.static_path }}/ {
         alias {{ .Values.app.static_root }};
       }
       # Finally, send all non-static requests to the Django server.
