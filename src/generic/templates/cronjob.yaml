@@ -1,0 +1,76 @@
+{{ if eq .Values.resourceType "CronJob" }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "generic.fullname" . }}
+  labels:
+    app: {{ template "generic.name" . }}
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.app.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: {{ .Values.app.name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            args:
+              {{- range .Values.app.args }}
+              - {{ . | quote }}
+              {{- end }}
+            resources:
+    {{ toYaml .Values.resources | indent 12 }}
+            {{ if .Values.env_secrets.enabled }}
+            envFrom:
+            - secretRef:
+                name: {{ .Values.env_secrets.name }}
+            {{ end }}
+            env:
+            {{- if .Values.extra_env_vars -}}
+            {{- range $key, $value := .Values.extra_env_vars }}
+            - name: {{ $key }}
+              value: {{ . | quote }}
+            {{- end -}}
+            {{ end }}
+            {{ if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.secret }}
+                  key: database-password
+            - name: PGUSER
+              value: {{ .Values.app.db.user }}
+            - name: PGPORT
+              value: {{ .Values.app.db.port | default 5432 | quote }}
+            - name: PGHOST
+              value: {{ .Values.app.db.host }}
+            - name: DB_NAME
+              value: {{ .Values.app.db.name }}
+            {{ end }}
+            volumeMounts:
+            {{ if .Values.app.config.enabled }}
+            {{- range $config := .Values.app.config.files }}
+            - mountPath: {{ $config.path }}/{{ $config.name }}
+              name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
+              subPath: {{ $config.name }}
+            {{ end }}
+            {{ end }}
+          {{ if .Values.imagePullSecrets.enabled }}
+          imagePullSecrets:
+          - name: {{ .Values.imagePullSecrets.name }}
+          {{ end }}
+          volumes:
+          {{ if .Values.app.config.enabled }}
+          {{- range $config := .Values.app.config.files }}
+          - name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
+            configMap:
+              name: {{  include "generic.fullname" $ }}-{{ $config.name | replace "." "-" }}
+              defaultMode: 0744
+          {{ end }}
+          {{ end }}
+          restartPolicy: Always
+{{ end }}
