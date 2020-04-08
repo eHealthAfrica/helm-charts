@@ -1,0 +1,406 @@
+generic:
+  resourceType: "CronJob"
+  nameOverride: gateway-manager
+  fullnameOverride: gateway-manager
+
+  service:
+    enabled: false
+
+  app:
+    name: gateway-manager
+    schedule: "* * * * *"
+    args:
+      - start
+    arg:
+      enabled: true
+
+    config:
+      enabled: true
+      files:
+        - name: initialize.sh
+          path: /code/scripts
+          data: |
+            #!/usr/bin/env bash
+            set -Eeuo pipefail
+            gwm="/code/entrypoint.sh"
+            $gwm add_app keycloak
+            $gwm add_realm $REALM "Tenant: $REALM" $LOGIN_THEME
+            $gwm add_public_client $REALM $KEYCLOAK_AETHER_CLIENT
+            $gwm add_oidc_client $REALM $KEYCLOAK_KONG_CLIENT
+            $gwm add_user $REALM $KEYCLOAK_INITIAL_USER_USERNAME $KEYCLOAK_INITIAL_USER_PASSWORD
+
+            SOLUTIONS={{ .Values.gw.solutions }}
+            for solution in "${SOLUTIONS[@]}"; do
+              $gwm add_solution $solution $REALM $KEYCLOAK_KONG_CLIENT
+
+              # create tenant database for planfeld solution
+              if [[ $solution = "planfeld" ]]; then
+                service_creds=${KEYCLOAK_INITIAL_USER_USERNAME}:${KEYCLOAK_INITIAL_USER_PASSWORD}
+                service_url=${BASE_HOST}/${REALM}/planfeld/api/v1/tenant/
+                curl --silent --show-error --fail -u $service_creds -X POST ${service_url}
+              fi
+            done
+
+            # Elasticsearch & Kibana
+            $gwm add_service elasticsearch       "$REALM" $KEYCLOAK_KONG_CLIENT
+            $gwm add_service kibana              "$REALM" $KEYCLOAK_KONG_CLIENT
+            $gwm add_service es-consumer         "$REALM" $KEYCLOAK_KONG_CLIENT
+            $gwm add_elasticsearch_tenant        "$REALM" 7
+
+        - name: keycloak.json
+          path: /code/app
+          data: |
+            {
+              "name": "keycloak",
+              "host": "http://aether-keycloak-http"
+              "paths": [ "/auth/" ]
+            }
+        - name: aether-gather.json
+          path: /code/solution
+          data: |
+            {
+              "name": "aether-gather",
+              "services": [
+                "kernel-ui",
+                "kernel",
+                "gather",
+                "odk",
+                "es-consumer",
+                "firebase-consumer",
+                "producer",
+                "ckan-consumer"
+              ]
+            }
+        - name: planfeld-solution.json
+          path: /code/solution
+          data: |
+            {
+              "name": "planfeld",
+              "services": [
+                "monitor", "monitor-health",
+                "planfeld", "planfeld-health",
+                "planner", "planner-health",
+                "ui", "ui-static"
+              ]
+            }
+        - name: elasticsearch.json
+          path: /code/services
+          data: |
+            {
+              "name": "elasticsearch",
+              "host": "http://opendistro-es-client-service.elasticsearch:9200",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": [
+                    "/{realm}/{name}"
+                  ],
+                  "strip_path": "true",
+                  "oidc_override": {
+                    "config.user_keys": [
+                      "preferred_username",
+                      "email",
+                      "groups"
+                    ]
+                  }
+                }
+              ]
+            }
+        - name: es-consumer.json
+          path: /code/services
+          data: |
+            {
+              "name": "es-consumer",
+              "host": "http://aether-es-consumer",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": [
+                    "/{realm}/{name}"
+                  ],
+                  "strip_path": "true",
+                  "oidc_override": {
+                    "config.user_keys": [
+                      "preferred_username",
+                      "email",
+                      "groups"
+                    ]
+                  }
+                }
+              ]
+            }
+        - name: firebase-consumer.json
+          path: /code/services
+          data: |
+            {
+              "name": "firebase-consumer",
+              "host": "http://aether-firebase-consumer",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": [
+                    "/{realm}/{name}"
+                  ],
+                  "strip_path": "true",
+                  "oidc_override": {
+                    "config.user_keys": [
+                      "preferred_username",
+                      "email",
+                      "groups"
+                    ]
+                  }
+                }
+              ]
+            }
+        - name: ckan-consumer.json
+          path: /code/services
+          data: |
+            {
+              "name": "ckan-consumer",
+              "host": "http://aether-ckan-consumer"
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": [
+                    "/{realm}/{name}"
+                  ],
+                  "strip_path": "true",
+                  "oidc_override": {
+                    "config.user_keys": [
+                      "preferred_username",
+                      "email",
+                      "groups"
+                    ]
+                  }
+                }
+              ]
+            }
+        - name: producer.json
+          path: /code/services
+          data: |
+            {
+              "name": "producer",
+              "host": "http://aether-producer",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": [
+                    "/{realm}/{name}"
+                  ],
+                  "strip_path": "true",
+                  "oidc_override": {
+                    "config.user_keys": [
+                      "preferred_username",
+                      "email",
+                      "groups"
+                    ]
+                  }
+                }
+              ]
+            }
+        - name: kibana.json
+          path: /code/services
+          data: |
+            {
+              "name": "kibana",
+              "host": "http://opendistro-es-kibana-svc.elasticsearch:5601",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": [
+                    "/{realm}/{name}"
+                  ],
+                  "strip_path": "true",
+                  "oidc_override": {
+                    "config.user_keys": [
+                      "preferred_username",
+                      "email",
+                      "groups"
+                    ]
+                  }
+                }
+              ]
+            }
+        - name: gather.json
+          path: /code/services
+          data: |
+            {
+              "name": "gather",
+              "host": "http://gather",
+              "paths": ["/{public_realm}/{name}"],
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": ["/{realm}/{name}"]
+                }
+              ]
+            }
+        - name: odk.json
+          path: /code/services
+          data: |
+            {
+              "name": "odk",
+              "host": "http://aether-odk",
+              "paths": ["/{public_realm}/{name}"],
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": ["/{realm}/{name}"]
+                }
+              ],
+              "public_endpoints": [
+                {
+                  "name": "public",
+                  "paths": [
+                    "/{realm}/{name}/formList",
+                    "/{realm}/{name}/forms",
+                    "/{realm}/{name}/media-file/",
+                    "/{realm}/{name}/submission"
+                  ]
+                }
+              ]
+            }
+        - name: kernel-ui.json
+          path: /code/services
+          data: |
+            {
+              "name": "kernel-ui",
+              "host": "http://aether-ui",
+              "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+                }
+              ]
+            }
+        - name: kernel.json
+          path: /code/services
+          data: |
+            {
+              "name": "kernel",
+              "host": "http://aether-kernel",
+              "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+                }
+              ]
+            }
+        - name: planner.json
+          path: /code/services
+          data: |
+            {
+              "name": "planner",
+              "host": "http://planfeld-planner",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": ["/{realm}/{name}"],
+                  "strip_path": "true"
+                }
+              ]
+            }
+        - name: planner-health.json
+          path: /code/services
+          data: |
+            {
+              "name": "planner-health",
+              "host": "http://planfeld-planner/health",
+              "paths": ["/{public_realm}/planner/health"],
+              "strip_path": "true",
+              "public_endpoints": [
+                {
+                  "name": "public",
+                  "paths": ["/{realm}/planner/health"],
+                  "strip_path": "true"
+                }
+              ]
+            }
+        - name: monitor.json
+          path: /code/services
+          data: |
+            {
+              "name": "monitor",
+              "host": "http://planfeld-monitor",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": ["/{realm}/{name}"],
+                  "strip_path": "true"
+                }
+              ]
+            }
+        - name: monitor-health.json
+          path: /code/services
+          data: |
+            {
+              "name": "monitor-health",
+              "host": "http://planfeld-monitor/health",
+              "paths": ["/{public_realm}/monitor/health"],
+              "strip_path": "true",
+              "public_endpoints": [
+                {
+                  "name": "public",
+                  "paths": ["/{realm}/monitor/health"],
+                  "strip_path": "true"
+                }
+              ]
+            }
+        - name: planfeld.json
+          path: /code/services
+          data: |
+            {
+              "name": "planfeld",
+              "host": "http://planfeld",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": ["/{realm}/{name}"],
+                  "strip_path": "true"
+                }
+              ]
+            }
+        - name: planfeld-health.json
+          path: /code/services
+          data: |
+            {
+              "name": "planfeld-health",
+              "host": "http://planfeld/health",
+              "paths": ["/{public_realm}/planfeld/health"],
+              "strip_path": "true",
+              "public_endpoints": [
+                {
+                  "name": "public",
+                  "paths": ["/{realm}/planfeld/health"],
+                  "strip_path": "true"
+                }
+              ]
+            }
+        - name: ui.json
+          path: /code/services
+          data: |
+            {
+              "name": "ui",
+              "host": "http://planfeld-ui",
+              "oidc_endpoints": [
+                {
+                  "name": "protected",
+                  "paths": ["/{realm}/{name}"],
+                  "strip_path": "true"
+                }
+              ]
+            }
+        - name: ui-static.json
+          path: /code/services
+          data: |
+            {
+              "name": "planfeld-static",
+              "host": "http://planfeld-ui/static",
+              "paths": ["/{public_realm}/ui/static", "/static"],
+              "strip_path": "true"
+            }
+
+
+

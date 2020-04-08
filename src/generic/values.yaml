@@ -112,6 +112,7 @@ nginx:
     }
 
 service:
+  enabled: true
   type: NodePort
   externalPort:
   internalPort:

@@ -9,7 +9,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  schedule: {{ .Values.app.schedule }}
+  schedule: "{{ .Values.app.schedule }}"
   jobTemplate:
     spec:
       template:
@@ -72,5 +72,5 @@ spec:
               defaultMode: 0744
           {{ end }}
           {{ end }}
-          restartPolicy: Always
+          restartPolicy: OnFailure
 {{ end }}
