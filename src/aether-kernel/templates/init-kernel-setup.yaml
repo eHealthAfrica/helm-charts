@@ -9,7 +9,6 @@ data:
 
     set -ex
 
-    apk add --no-cache wget ca-certificates && update-ca-certificates
     wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /cloud_sql_proxy
     chmod +x /cloud_sql_proxy
     echo 8.8.8.8 >>/etc/resolv.conf
