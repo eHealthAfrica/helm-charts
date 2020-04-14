@@ -35,8 +35,6 @@ app:
     secret: kernel-secrets
     ur: https://kernel.aether.local
     adminUser: admin
-    readonly_user: kernel-test-ro
-    accessType: api
 service:
   type: NodePort
 ingress:

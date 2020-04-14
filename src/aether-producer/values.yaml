@@ -30,7 +30,6 @@ app:
   kernel:
     secret: kernel-secrets
     user: kernel
-    accessType: api
 ingress:
   enabled: false
 provider:

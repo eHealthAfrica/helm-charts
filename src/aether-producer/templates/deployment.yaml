@@ -83,7 +83,6 @@ spec:
             value: {{ quote .Values.debug }}
           - name: PRODUCER_SETTINGS_FILE
             value: {{ quote .Values.application.config }}
-          # kernel credentials (required with API access)
           - name: AETHER_KERNEL_TOKEN
             valueFrom:
               secretKeyRef:
@@ -91,19 +90,6 @@ spec:
                 key: kernel-django-admin-token
           - name: AETHER_KERNEL_URL
             value: {{ .Values.app.kernel.url }}
-          # kernel database (required with DB access)
-          - name: POSTGRES_USER
-            value: {{ .Values.app.kernel.user }}
-          - name: POSTGRES_HOST
-            value: {{ quote .Values.app.db.host }}
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.app.kernel.secret }}
-                key: kernel-database-password
-          - name: POSTGRES_DBNAME
-            value: {{ .Values.app.kernel.db.name }}
-          # Producer database
           - name: OFFSET_DB_HOST
             value: {{ .Values.app.db.host }}
           - name: OFFSET_DB_NAME
