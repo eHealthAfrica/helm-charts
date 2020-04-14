@@ -126,6 +126,8 @@ spec:
                 key: kafka-su-password
           - name: KAFKA_SECURITY
             value: {{ .Values.app.kafkaSecurity }}
+          - name: KERNEL_ACCESS_TYPE
+          value: {{ .Values.app.kernel.accessType | default "api" | quote }}
           livenessProbe:
             initialDelaySeconds: 5
             periodSeconds: 10
