@@ -140,6 +140,8 @@ spec:
                 key: kafka-su-password
           - name: KAFKA_SECURITY
             value: {{ .Values.app.kafkaSecurity }}
+          - name: PRODUCER_MODE
+            value: {{ .Vales.app.kernel.accessType }}
           livenessProbe:
             initialDelaySeconds: 5
             periodSeconds: 10
