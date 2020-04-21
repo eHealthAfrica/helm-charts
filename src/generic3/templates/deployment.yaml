@@ -40,7 +40,7 @@ spec:
       {{ if .Values.app.db.create }}
       initContainers:
       {{- if .Values.extraInitContainers }}
-{{ tpl .Values.extraContainers . | indent 6 }}
+{{ tpl .Values.extraInitContainers . | indent 6 }}
       {{- end }}
       - name: init
         image: postgres:9.3-alpine
@@ -93,6 +93,67 @@ spec:
           - name: cloudsql-instance-credentials
             mountPath: /secrets/cloudsql
             readOnly: true
+      {{ end }}
+      {{ if .Values.sidecar.enabled }}
+      - name: {{ .Values.sidecar.name }}
+        image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}"
+        imagePullPolicy: {{ .Values.sidecar.image.pullPolicy }}
+        args:
+          {{- range .Values.sidecar.args }}
+          - {{ . | quote }}
+          {{- end }}
+        ports:
+        - name: sidecar
+          containerPort: {{ .Values.sidecar.port }}
+          protocol: TCP
+        {{ if eq .Values.sidecar.probe.type "request" }}
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.sidecar.probe.path }}
+            port: sidecar
+            httpHeaders:
+            - name: X-Kubernetes-Health-Check
+              value: livenessProbe
+          initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.sidecar.probe.path }}
+            port: sidecar
+            httpHeaders:
+            - name: X-Kubernetes-Health-Check
+              value: readinessProbe
+            - name: Host
+              value: {{ .Values.url }}
+          initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
+        {{ end }}
+        {{ if eq .Values.app.probe.type "tcp" }}
+        livenessProbe:
+          tcpSocket:
+            port: sidecar
+          initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
+        readinessProbe:
+          tcpSocket:
+            port: sidecar
+          initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
+        {{ end }}
+        resources:
+      {{ toYaml .Values.resources | indent 12 }}
+        {{ if .Values.env_secrets.enabled }}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.env_secrets.name }}
+        {{ end }}
+        env:
+        {{- if .Values.extra_env_vars -}}
+        {{- range $key, $value := .Values.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ . | quote }}
+        {{- end -}}
+        {{ end }}
       {{ end }}
       - name: {{ .Values.app.name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
