@@ -49,7 +49,7 @@ app:
     type: request
     # type: tcp
     path: /health
-    initialDelaySeconds: 5
+    initialDelaySeconds: 120
     periodSeconds: 10
   volume:
     enabled: false
@@ -58,6 +58,22 @@ app:
     type: standard
     accessMode: ReadWriteOnce
     size: 10Gi
+
+sidecar:
+  enabled: false
+  name:
+  image:
+    repository:
+    tag:
+    pullPolicy: Always
+  args: []
+  port:
+  probe:
+    type: request
+    # type: tcp
+    path: /health
+    initialDelaySeconds: 120
+    periodSeconds: 10
 
 database:
   instance:
