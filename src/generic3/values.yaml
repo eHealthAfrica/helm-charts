@@ -112,7 +112,7 @@ nginx:
       # Max upload size
       client_max_body_size 75M;   # adjust to taste
 
-      location /{{ .Values.app.static_path }}/ {
+      location {{ .Values.app.static_path }}/ {
         alias {{ .Values.app.static_root }};
       }
       # Finally, send all non-static requests to the Django server.
