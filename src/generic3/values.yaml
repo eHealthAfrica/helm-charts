@@ -74,6 +74,8 @@ sidecar:
     path: /health
     initialDelaySeconds: 120
     periodSeconds: 10
+  db:
+    enabled: false
 
 database:
   instance:
