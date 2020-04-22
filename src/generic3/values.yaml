@@ -65,7 +65,7 @@ sidecar:
   image:
     repository:
     tag:
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   args: []
   port:
   probe:
@@ -85,7 +85,7 @@ gcp: true
 image:
   repository:
   tag:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 nginx:
   enabled: false

@@ -69,7 +69,7 @@ gcp: true
 image:
   repository:
   tag:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent 
 
 nginx:
   enabled: false
