@@ -90,10 +90,14 @@ spec:
                 key: kernel-django-admin-token
           - name: AETHER_KERNEL_URL
             value: {{ .Values.app.kernel.url }}
+          - name: KERNEL_DB_POOL_SIZE
+            value: {{ .Values.app.db.kernelPool | quote }}
           - name: OFFSET_DB_HOST
             value: {{ .Values.app.db.host }}
           - name: OFFSET_DB_NAME
             value: {{ .Values.app.db.name }}
+          - name: OFFSET_DB_POOL_SIZE
+            value: {{ .Values.app.db.offsetPool | quote }}
           - name: OFFSET_DB_PORT
             value: {{ quote .Values.app.db.port }}
           - name: OFFSET_DB_PASSWORD
