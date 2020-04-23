@@ -27,6 +27,8 @@ app:
     secret: database-credentials
     port: 5432
     host: 127.0.0.1
+    kernelPool: 9
+    offsetPool: 9
   kernel:
     secret: kernel-secrets
     user: kernel
