@@ -91,21 +91,13 @@ spec:
           - name: AETHER_KERNEL_URL
             value: {{ .Values.app.kernel.url }}
           - name: KERNEL_DB_POOL_SIZE
-<<<<<<< HEAD
             value: {{ quote .Values.app.db.kernelPool }}
-=======
-            value: {{ .Values.app.db.kernelPool}}
->>>>>>> master
           - name: OFFSET_DB_HOST
             value: {{ .Values.app.db.host }}
           - name: OFFSET_DB_NAME
             value: {{ .Values.app.db.name }}
           - name: OFFSET_DB_POOL_SIZE
-<<<<<<< HEAD
             value: {{ quote .Values.app.db.offsetPool }}
-=======
-            value: {{ .Values.app.db.offsetPool}}
->>>>>>> master
           - name: OFFSET_DB_PORT
             value: {{ quote .Values.app.db.port }}
           - name: OFFSET_DB_PASSWORD
