@@ -305,16 +305,6 @@ spec:
           value: {{ .Values.app.db.name }}
         - name: TESTING
           value: {{ quote .Values.testing }}
-        {{ if .Values.app.exm.enabled }}
-        - name: REDIS_DB
-          value: "0"
-        - name: REDIS_HOST
-          value: {{ .Values.app.exm.redis.service }}
-        - name: REDIS_PORT
-          value: {{ .Values.app.exm.redis.port | quote }}
-        - name: WRITE_ENTITIES_TO_REDIS
-          value: "false"
-        {{ end }}
         {{ if .Values.provider.gcp }}
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: {{ .Values.app.storage.bucket.credentialsPath }}
