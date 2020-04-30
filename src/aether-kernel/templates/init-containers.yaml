@@ -1,6 +1,6 @@
 {{- define "aether-kernel.initContainers" }}
 - name: init-pg
-  image: postgres:9.3-alpine
+  image: postgres:9.6-alpine
   command: ['bash', '-c', './scripts/init.sh']
   env:
   - name: PGHOST
