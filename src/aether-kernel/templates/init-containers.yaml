@@ -1,0 +1,52 @@
+{{- define "aether-kernel.initContainers" }}
+- name: init-pg
+  image: postgres:9.6-alpine
+  command: ['bash', '-c', './scripts/init.sh']
+  env:
+  - name: PGHOST
+    valueFrom :
+      secretKeyRef:
+        name: {{ .Values.app.db.secret }}
+        key: host
+  - name: PGUSER
+    valueFrom:
+      secretKeyRef:
+        name: {{ .Values.app.db.secret }}
+        key: user
+  - name: PGPASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: {{ .Values.app.db.secret }}
+        key: password
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: {{ .Values.app.secret }}
+        key: kernel-database-password
+  - name: DB_USERNAME
+    value: {{ .Values.app.db.user }}
+  - name: DB_NAME
+    value: {{ .Values.app.db.name }}
+  volumeMounts:
+  - mountPath: /scripts
+    name: init-pg-config
+  {{ if .Values.provider.gcp }}
+  - mountPath: /secrets/cloudsql
+    name: cloudsql-instance-credentials
+    readOnly: true
+  {{ end }}
+- name: init-kernel-setup
+  image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
+  imagePullPolicy: {{ .Values.pullPolicy }}
+  command: ['bash', '-c', '/scripts/shell/setup.sh']
+  env:
+  {{ include "aether-kernel.env" . | indent 2 }}
+  volumeMounts:
+  - mountPath: /scripts/shell
+    name: init-setup-sh
+  {{ if .Values.provider.gcp }}
+  - mountPath: /secrets/cloudsql
+    name: cloudsql-instance-credentials
+    readOnly: true
+  {{ end }}
+{{- end }}

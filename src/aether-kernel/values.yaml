@@ -1,5 +1,5 @@
-replicaCount: 1
-pullPolicy: Always
+replicaCount: 3
+pullPolicy: IfNotPresent
 debug: false
 ingress:
   ssl:
@@ -15,26 +15,24 @@ app:
   secret: kernel-secrets
   admin_user: admin
   repository: "ehealthafrica/aether-kernel"
-  tag: 1.5.5
+  name: aether-kernel
+  tag: 1.7.2
   livenessProbe:
     path: /health
-    initialDelaySeconds: 120
+    initialDelaySeconds: 240
     periodSeconds: 5
     successThreshold: 1
     timeoutSeconds: 10
   readinessProbe:
     path: /health
-    initialDelaySeconds: 120
+    initialDelaySeconds: 240
     periodSeconds: 5
     successThreshold: 3
     timeoutSeconds: 10
   caching:
-    enabled: true
+    enabled: false
   exm:
-    enabled: true
-    redis:
-      host: 127.0.0.1
-      port: 6379
+    enabled: false
   uwsgi:
     threads: 0
   port: 8000
