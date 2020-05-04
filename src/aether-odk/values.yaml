@@ -27,7 +27,7 @@ app:
   secret: odk-secrets
   admin_user: admin
   port: 8000
-  tag: 1.7.2
+  tag: 1.7.3
   caching:
     enabled: false
   livenessProbe:
