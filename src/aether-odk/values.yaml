@@ -28,6 +28,8 @@ app:
   admin_user: admin
   port: 8000
   tag: 1.7.3
+  redis:
+    port: 6379
   caching:
     enabled: false
   livenessProbe:

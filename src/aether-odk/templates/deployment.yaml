@@ -58,7 +58,7 @@ spec:
       volumes:
       - name: static-assets-volume
         emptyDir: {}
-      - name: odk-nginx-config
+      - name: nginx-config
         configMap:
           name: {{ .Chart.Name }}-nginx-config
       - name: odk-init
