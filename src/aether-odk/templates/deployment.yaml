@@ -19,19 +19,7 @@ spec:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
-  {{ if .Values.podAntiAffinity.enabled }}
-  spec:
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app
-              operator: In
-              values:
-              - {{ .Chart.Name }}
-          topologyKey: "kubernetes.io/hostname"
-  {{ end }}
+  {{- include "aether-odk.podAntiAffinity" . | indent 2 }}
   template:
     metadata:
       {{ if .Values.kube2iam.enabled }}
@@ -43,185 +31,18 @@ spec:
         release: {{ .Release.Name }}
     spec:
       initContainers:
-      - name: init
-        image: postgres:9.3-alpine
-        command: ['bash', '-c', './scripts/init.sh']
-        env:
-        - name: PGHOST
-          valueFrom :
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: host
-        - name: PGUSER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: user
-        - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: password
-        - name: DB_USERNAME
-          value: {{ .Values.app.db.user }}
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-database-password
-        - name: DB_NAME
-          value: {{ .Values.app.db.name }}
-        volumeMounts:
-        - mountPath: /scripts
-          name: odk-init
-        {{ if .Values.provider.gcp }}
-        - name: cloudsql-instance-credentials
-          mountPath: /secrets/cloudsql
-          readOnly: true
-        {{ end }}
+      {{- include "aether-odk.initContainers" . | indent 6 }}
       containers:
-      {{ if .Values.provider.gcp }}
-      - name: cloudsql-proxy
-        image: gcr.io/cloudsql-docker/gce-proxy:1.11
-        command: ["/cloud_sql_proxy",
-                  "-instances={{ .Values.database.instance }}=tcp:5432",
-                  "-credential_file=/secrets/cloudsql/credentials.json"]
-        volumeMounts:
-          - name: cloudsql-instance-credentials
-            mountPath: /secrets/cloudsql
-            readOnly: true
-      {{ end }}
+      {{- include "aether-odk.extraContainers" . | indent 6 }}
       - name: odk
         image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
         ports:
-        - containerPort: 8000
+        - containerPort: {{ .Values.app.port }}
         args:
         - {{ .Values.app.command }}
-        livenessProbe:
-          httpGet:
-            path: {{ .Values.app.livenessProbe.path }}
-            port: http
-            httpHeaders:
-            - name: X-Kubernetes-Health-Check
-              value: livenessProbe
-          initialDelaySeconds: {{ .Values.app.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.app.livenessProbe.periodSeconds }}
-          successThreshold: {{ .Values.app.livenessProbe.successThreshold }}
-          timeoutSeconds: {{ .Values.app.livenessProbe.timeoutSeconds }}
-        readinessProbe:
-          httpGet:
-            path: {{ .Values.app.readinessProbe.path }}
-            port: http
-            httpHeaders:
-            - name: X-Kubernetes-Health-Check
-              value: readinessProbe
-          initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.app.readinessProbe.periodSeconds }}
-          successThreshold: {{ .Values.app.readinessProbe.successThreshold }}
-          timeoutSeconds: {{ .Values.app.readinessProbe.timeoutSeconds }}
-        imagePullPolicy: {{ .Values.pullPolicy }}
+        {{- include "aether-odk.probes" . | indent 8 }}
         env:
-        {{- if .Values.extra_env_vars -}}
-        {{- range $key, $value := .Values.extra_env_vars }}
-        - name: {{ $key }}
-          value: {{ . | quote }}
-        {{- end -}}
-        {{ end }}
-        - name: DJANGO_STORAGE_BACKEND
-          value: {{ .Values.app.storage.backend }}
-        - name: BUCKET_NAME
-          value: {{ .Values.app.storage.bucket.name }}
-        {{ if .Values.provider.aws }}
-        - name: AWS_S3_REGION_NAME
-          value: {{ .Values.app.storage.bucket.region }}
-        - name: AWS_S3_ENDPOINT_URL
-          value: s3.{{ .Values.app.storage.bucket.region }}.amazonaws.com
-        - name: AWS_DEFAULT_ACL
-          value: {{ .Values.app.storage.bucket.default_acl }}
-        {{ end }}
-        {{ if .Values.provider.gcp }}
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: {{ .Values.app.storage.bucket.credentialsPath }}
-        {{ end }}
-        {{ if .Values.sentry.enabled }}
-        - name: SENTRY_DSN
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: sentry-dsn
-        {{ end }}
-        - name: GATEWAY_SERVICE_ID
-          value: {{ .Values.app.gateWay.serviceId }}
-        - name: GATEWAY_PUBLIC_REALM
-          value: "{{ .Values.app.gateWay.gatewayPublicRealm }}"
-        - name: DEFAULT_REALM
-          value: "{{ .Values.app.gateWay.defaultRealm }}"
-        - name: KEYCLOAK_SERVER_URL
-          value: {{ .Values.app.keycloak.externalUrl }}
-        - name: KEYCLOAK_CLIENT_ID
-          value: {{ .Values.app.keycloak.clientId }}
-        - name: CAS_SERVER_URL
-          value: {{ .Values.ums_url }}
-        - name: CSRF_COOKIE_DOMAIN
-          value: {{ .Values.domain }}
-        - name: CSRF_TRUSTED_ORIGINS
-          value: .{{ .Values.domain }}
-        - name: HOSTNAME
-          value: "{{ .Values.app.url }}"
-        - name: DJANGO_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-django-secret-key
-        - name: ADMIN_USERNAME
-          value: {{ .Values.app.admin_user }}
-        - name: ADMIN_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-django-admin-password
-        - name: ADMIN_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-django-admin-token
-        - name: AETHER_KERNEL_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.kernel.secret }}
-              key: kernel-django-admin-token
-        - name: AETHER_KERNEL_URL
-          value: {{ .Values.app.kernel.url }}
-        - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.app.kernel.url_test }}
-        - name: DEBUG
-          value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
-        - name: TESTING
-          value: {{ if .Values.testing }}"1"{{ else }}""{{ end }}
-        - name: PGUSER
-          value: {{ .Values.app.db.user }}
-        - name: PGPORT
-          value: {{ .Values.app.db.port | default 5432 | quote }}
-        - name: PGHOST
-          valueFrom :
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: host
-        - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secret }}
-              key: odk-database-password
-        - name: DB_NAME
-          value: {{ .Values.app.db.name }}
-        # `WEB_SERVER_PORT` is kept around for compatibility with the old tests,
-        # which are using different ports in different environments. Once all
-        # tests have been updated to run inside the cluster, `WEB_SERVER_PORT`
-        # can be removed.
-        - name: WEB_SERVER_PORT
-          value: {{ quote .Values.app.port }}
-        - name: UWSGI_THREADS
-          value: {{ .Values.app.uwsgi.threads | quote }}
+        {{- include "aether-odk.env" . | indent 8 }}
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
@@ -230,15 +51,6 @@ spec:
           name: google-bucket-credentials
           readOnly: true
         {{ end }}
-      - name: nginx
-        image: nginx:stable-alpine
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - mountPath: /var/www/static
-          name: static-assets-volume
-        - mountPath: /etc/nginx/conf.d
-          name: odk-nginx-config
       {{ if .Values.imagePullSecrets.enabled }}
       imagePullSecrets:
         - name: {{ .Values.imagePullSecrets.name }}
