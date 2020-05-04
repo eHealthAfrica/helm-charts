@@ -16,7 +16,9 @@ app:
   admin_user: admin
   repository: "ehealthafrica/aether-kernel"
   name: aether-kernel
-  tag: 1.7.2
+  redis:
+    port: 6379
+  tag: 1.7.3
   livenessProbe:
     path: /health
     initialDelaySeconds: 240
