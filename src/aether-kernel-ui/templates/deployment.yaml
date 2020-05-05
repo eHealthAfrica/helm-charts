@@ -39,7 +39,7 @@ spec:
       containers:
         {{- include "aether-kernel-ui.extraContainers" . | indent 6 }}
         - name: ui
-          # This default allows us to overwrite ' .Chart.Version' through the command line
+          # This default allows us to overwrite '.Chart.Version' through the command line
           image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           args:
