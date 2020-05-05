@@ -48,7 +48,11 @@ spec:
           - name: REDIS_DB
             value: {{ .Values.app.redis.db | quote }}
           - name: REDIS_HOST
-            value: {{ .Values.app.redis.host }}
+            value: {{ .Release.Name }}-redis-master
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-redis
           - name: REDIS_PORT
             value: {{ .Values.app.redis.port | quote }}
           - name: KAFKA_CONSUMER_USER
