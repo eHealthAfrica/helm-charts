@@ -28,6 +28,8 @@ imagePullSecrets:
 namespace:
   create: false
 app:
+  caching:
+    enabled: false
   command: start
   admin_user: admin
   secret: gather-secrets
