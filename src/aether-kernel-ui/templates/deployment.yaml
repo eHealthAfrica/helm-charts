@@ -27,37 +27,30 @@ spec:
         app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
     spec:
+      initContainers:
       {{- include "aether-kernel-ui.initContainers" . | indent 6 }}
-        volumeMounts:
-        - mountPath: /scripts
-          name: init-config
-        {{ if .Values.provider.gcp }}
-        - name: cloudsql-instance-credentials
-          mountPath: /secrets/cloudsql
-          readOnly: true
-        {{ end }}
       containers:
         {{- include "aether-kernel-ui.extraContainers" . | indent 6 }}
-        - name: ui
-          # This default allows us to overwrite '.Chart.Version' through the command line
-          image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
-          imagePullPolicy: {{ .Values.pullPolicy }}
-          args:
-          - {{ .Values.app.command }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.app.port }}
-              protocol: TCP
-          {{- include "aether-kernel-ui.probes" . | indent 8 }}
-          env:
-          {{- include "aether-kernel-ui.extraContainers" . | indent 8 }}
-          volumeMounts:
-          - mountPath: /var/www/static
-            name: static-assets-volume
-          {{ if .Values.imagePullSecrets.enabled }}
-          imagePullSecrets:
-            - name: {{ .Values.imagePullSecrets.name }}
-          {{ end }}
+      - name: ui
+        # This default allows us to overwrite '.Chart.Version' through the command line
+        image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        args:
+        - {{ .Values.app.command }}
+        ports:
+          - name: http
+            containerPort: {{ .Values.app.port }}
+            protocol: TCP
+        {{- include "aether-kernel-ui.probes" . | indent 8 }}
+        env:
+        {{- include "aether-kernel-ui.env" . | indent 8 }}
+        volumeMounts:
+        - mountPath: /var/www/static
+          name: static-assets-volume
+        {{ if .Values.imagePullSecrets.enabled }}
+        imagePullSecrets:
+          - name: {{ .Values.imagePullSecrets.name }}
+        {{ end }}
       volumes:
       - name: {{ .Chart.Name }}
       - name: static-assets-volume
