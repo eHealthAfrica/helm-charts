@@ -11,7 +11,7 @@ image:
 
 service:
   type: ClusterIP
-  port: 9005
+  port: 5005
 kernel_url: http://kernel
 kernel_admin_username: admin
 imagePullSecrets:
@@ -20,7 +20,7 @@ app:
   secrets: producer-secrets
   command: start
   repository: ehealthafrica/aether-producer
-  tag: 1.5.5
+  tag: 1.7.3
   adminUser: admin
   kafkaSecurity: SASL_SSL
   db:
