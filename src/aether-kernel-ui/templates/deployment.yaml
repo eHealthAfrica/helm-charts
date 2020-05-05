@@ -19,17 +19,7 @@ spec:
       maxUnavailable: 25%
     type: RollingUpdate
   {{ if .Values.podAntiAffinity.enabled }}
-  spec:
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app
-              operator: In
-              values:
-              - {{ .Chart.Name }}
-          topologyKey: "kubernetes.io/hostname"
+  {{- include "aether-kernel.podAntiAffinity" . | indent 2 }}
   {{ end }}
   template:
     metadata:
@@ -37,35 +27,7 @@ spec:
         app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
     spec:
-      initContainers:
-      - name: init
-        image: postgres:9.3-alpine
-        command: ['bash', '-c', './scripts/init.sh']
-        env:
-        - name: PGHOST
-          valueFrom :
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: host
-        - name: PGUSER
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: user
-        - name: PGPASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.db.secret }}
-              key: password
-        - name: DB_NAME
-          value: {{ .Values.app.db.name }}
-        - name: DB_USERNAME
-          value: {{ .Values.app.db.user }}
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.app.secrets }}
-              key: ui-database-password
+      {{- include "aether-kernel-ui.initContainers" . | indent 6 }}
         volumeMounts:
         - mountPath: /scripts
           name: init-config
@@ -75,30 +37,9 @@ spec:
           readOnly: true
         {{ end }}
       containers:
-        {{ if .Values.provider.gcp }}
-        - name: cloudsql-proxy
-          image: gcr.io/cloudsql-docker/gce-proxy:1.11
-          command: ["/cloud_sql_proxy",
-                    "-instances={{ .Values.database.instance }}=tcp:5432",
-                    "-credential_file=/secrets/cloudsql/credentials.json"]
-          volumeMounts:
-            - name: cloudsql-instance-credentials
-              mountPath: /secrets/cloudsql
-              readOnly: true
-        {{ end }}
-        - name: nginx
-          image: nginx:stable-alpine
-          ports:
-          - containerPort: 80
-          volumeMounts:
-          - mountPath: /var/www/static
-            name: static-assets-volume
-          - mountPath: /etc/nginx/conf.d
-            name: nginx-config
-          - mountPath: /media
-            name: {{ .Chart.Name }}
+        {{- include "aether-kernel.extraContainers" . | indent 6 }}
         - name: ui
-          # This default allows us to overwrite '.Chart.Version' through the command line
+          # This default allows us to overwrite ' .Chart.Version' through the command line
           image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           args:
@@ -107,83 +48,9 @@ spec:
             - name: http
               containerPort: {{ .Values.app.port }}
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.app.livenessProbe.path }}
-              port: http
-              httpHeaders:
-              - name: X-Kubernetes-Health-Check
-                value: livenessProbe
-            initialDelaySeconds: {{ .Values.app.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.app.livenessProbe.periodSeconds }}
-            successThreshold: {{ .Values.app.livenessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.app.livenessProbe.timeoutSeconds }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.app.readinessProbe.path }}
-              port: http
-              httpHeaders:
-              - name: X-Kubernetes-Health-Check
-                value: readinessProbe
-            initialDelaySeconds: {{ .Values.app.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.app.readinessProbe.periodSeconds }}
-            successThreshold: {{ .Values.app.readinessProbe.successThreshold }}
-            timeoutSeconds: {{ .Values.app.readinessProbe.timeoutSeconds }}
+          {{- include "aether-kernel-ui.probes" . | indent 8 }}
           env:
-          - name: DJANGO_SECRET_KEY
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.app.secrets }}
-                key: ui-django-secret-key
-          - name: ADMIN_USERNAME
-            value: {{ .Values.app.admin_user }}
-          - name: ADMIN_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.app.secrets }}
-                key: ui-django-admin-password
-          - name: PGPASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.app.secrets }}
-                key: ui-database-password
-          - name: GATEWAY_SERVICE_ID
-            value: {{ .Values.app.gateWay.serviceId }}
-          - name: GATEWAY_PUBLIC_REALM
-            value: "{{ .Values.app.gateWay.gatewayPublicRealm }}"
-          - name: DEFAULT_REALM
-            value: "{{ .Values.app.gateWay.defaultRealm }}"
-          - name: KEYCLOAK_SERVER_URL
-            value: {{ .Values.app.keycloak.externalUrl }}
-          - name: KEYCLOAK_CLIENT_ID
-            value: {{ .Values.app.keycloak.clientId }}
-          - name: PGHOST
-            value: {{ .Values.app.db.host }}
-          - name: PGUSER
-            value: {{ .Values.app.db.user }}
-          - name: PGPORT
-            value: {{ .Values.app.db.port | default 5432 | quote }}
-          - name: DB_NAME
-            value: {{ .Values.app.db.name }}
-          - name: AETHER_KERNEL_URL
-            value: {{ .Values.app.kernel.url }}
-          - name: CSRF_COOKIE_DOMAIN
-            value: {{ .Values.domain }}
-          - name: CSRF_TRUSTED_ORIGINS
-            value: .{{ .Values.domain }}
-          - name: AETHER_KERNEL_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.app.kernel.secret }}
-                key: kernel-django-admin-token
-          - name: DJANGO_STORAGE_BACKEND
-            value: 'filesystem'
-          - name: DEBUG
-            value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
-          - name: WEB_SERVER_PORT
-            value: {{ quote .Values.app.port }}
-          - name: UWSGI_THREADS
-            value: {{ .Values.app.uwsgi.threads | quote }}
+          {{- include "aether-kernel-ui.extraContainers" . | indent 8 }}
           volumeMounts:
           - mountPath: /var/www/static
             name: static-assets-volume
