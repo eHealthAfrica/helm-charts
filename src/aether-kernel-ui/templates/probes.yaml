@@ -1,4 +1,4 @@
-{{ define "aether-kernel.probes" }}
+{{ define "aether-kernel-ui.probes" }}
 livenessProbe:
   httpGet:
     path: {{ .Values.app.livenessProbe.path }}

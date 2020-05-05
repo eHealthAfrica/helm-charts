@@ -19,7 +19,7 @@ spec:
       maxUnavailable: 25%
     type: RollingUpdate
   {{ if .Values.podAntiAffinity.enabled }}
-  {{- include "aether-kernel.podAntiAffinity" . | indent 2 }}
+  {{- include "aether-kernel-ui.podAntiAffinity" . | indent 2 }}
   {{ end }}
   template:
     metadata:
@@ -37,7 +37,7 @@ spec:
           readOnly: true
         {{ end }}
       containers:
-        {{- include "aether-kernel.extraContainers" . | indent 6 }}
+        {{- include "aether-kernel-ui.extraContainers" . | indent 6 }}
         - name: ui
           # This default allows us to overwrite ' .Chart.Version' through the command line
           image: "{{ .Values.app.repository }}:{{ .Values.app.tag | default .Chart.Version }}"

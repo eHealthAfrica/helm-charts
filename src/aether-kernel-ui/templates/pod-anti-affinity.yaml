@@ -1,4 +1,4 @@
-{{- define "aether-kernel.podAntiAffinity" }}
+{{- define "aether-kernel-ui.podAntiAffinity" }}
 spec:
   affinity:
     podAntiAffinity:
