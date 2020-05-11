@@ -143,7 +143,7 @@ spec:
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: {{ .Release.Name }}
+              name: {{ .Release.Name }}-redis
               key: redis-password
         {{ end }}
         - name: GATEWAY_SERVICE_ID
