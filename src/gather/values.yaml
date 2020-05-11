@@ -4,7 +4,7 @@ replicaCount: 3
 pullPolicy: IfNotPresent
 gather:
   repository: "ehealthafrica/gather"
-  tag: 3.2.1
+  tag: 3.4.3
   # Use `--set image.tag` in the command line to overwrite the version
 ingress:
   enabled: false
