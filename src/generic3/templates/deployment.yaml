@@ -80,6 +80,10 @@ spec:
         {{ end }}
       {{ end }}
       containers:
+        resources:
+          requests:
+            cpu: {{ .Values.app.resources.requests.cpu }}
+            memory: {{ .Values.app.resources.requests.memory }}
       {{- if .Values.extraContainers }}
 {{ tpl .Values.extraContainers . | indent 6 }}
       {{- end }}

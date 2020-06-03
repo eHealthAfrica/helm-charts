@@ -35,6 +35,10 @@ app:
     port: 5432
     user:
     name:
+  resources:
+    requests:
+      cpu: 0.5
+      memory: 500M
   secret:
   config:
     enabled: false
