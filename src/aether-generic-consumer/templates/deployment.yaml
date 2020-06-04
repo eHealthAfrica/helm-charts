@@ -20,7 +20,7 @@ spec:
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: firebase-consumer
+        - name: generic-consumer
           # This default allows us to overwrite '.Chart.Version' through the command line
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.Version }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
@@ -79,20 +79,20 @@ spec:
           - name: kafka-config
             mountPath: /code/conf/consumer/kafka.json
             subPath: kafka.json
-          - name: firebase-consumer-config
+          - name: generic-consumer-config
             mountPath: /code/conf/consumer/consumer.json
             subPath: consumer.json
       volumes:
       - name: kafka-config
         configMap:
-          name: firebase-consumer-kafka-config
+          name: generic-consumer-kafka-config
           defaultMode: 0744
           items:
           - key: kafka.json
             path: kafka.json
-      - name: firebase-consumer-config
+      - name: generic-consumer-config
         configMap:
-          name: firebase-consumer-config
+          name: generic-consumer-config
           defaultMode: 0744
           items:
           - key: consumer.json

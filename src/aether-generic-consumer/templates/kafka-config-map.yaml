@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: firebase-consumer-kafka-config
+  name: generic-consumer-kafka-config
 data:
     kafka.json: |
       {
         "security.protocol": "SASL_SSL",
         "sasl.mechanism": "PLAIN",
-        "group.id": "firebase-metadataonly",
+        "group.id": "generic-metadataonly",
         "auto.offset.reset" : "earliest",
         "enable.auto.commit": true,
         "auto.commit.interval.ms": 5000,
