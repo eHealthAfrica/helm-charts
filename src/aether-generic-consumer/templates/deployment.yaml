@@ -1,0 +1,99 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+    chart: {{ template "aether-elasticsearch-consumer.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: firebase-consumer
+          # This default allows us to overwrite '.Chart.Version' through the command line
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.Version }}"
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          args:
+          - {{ .Values.app.command }}
+          ports:
+          - name: http
+            containerPort: {{ .Values.app.port }}
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: livenessProbe
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+              httpHeaders:
+              - name: X-Kubernetes-Health-Check
+                value: readinessProbe
+          env:
+          - name: REDIS_DB
+            value: {{ .Values.app.redis.db | quote }}
+          - name: REDIS_HOST
+            value: {{ .Release.Name }}-redis-master
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-redis
+          - name: REDIS_PORT
+            value: {{ .Values.app.redis.port | quote }}
+          - name: KAFKA_CONSUMER_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: kafka-su-username
+          - name: KAFKA_CONSUMER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.app.secret }}
+                key: kafka-su-password
+          - name: TENANCY_HEADER
+            value: {{ .Values.app.tenancyHeader }}
+          - name: CONSUMER_NAME
+            value: {{ .Values.app.consumerName }}
+          - name: EXPOSE_PORT
+            value: {{ .Values.app.port | quote }}
+          - name: STACKDRIVER_LOGGING
+            value: {{ .Values.app.stackDriverLogging | quote }}
+          - name: LOG_LEVEL
+            value: {{ .Values.app.logLevel }}
+          volumeMounts:
+          - name: kafka-config
+            mountPath: /code/conf/consumer/kafka.json
+            subPath: kafka.json
+          - name: firebase-consumer-config
+            mountPath: /code/conf/consumer/consumer.json
+            subPath: consumer.json
+      volumes:
+      - name: kafka-config
+        configMap:
+          name: firebase-consumer-kafka-config
+          defaultMode: 0744
+          items:
+          - key: kafka.json
+            path: kafka.json
+      - name: firebase-consumer-config
+        configMap:
+          name: firebase-consumer-config
+          defaultMode: 0744
+          items:
+          - key: consumer.json
+            path: consumer.json

@@ -1,0 +1,5 @@
+apiVersion: v2
+appVersion: "1.0"
+description: The generic consumer module for Aether, an open source development platform for data curation, exchange, and publication
+name: aether-generic-consumer
+version: 0.1.0
