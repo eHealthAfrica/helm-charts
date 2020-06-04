@@ -41,8 +41,5 @@ jobs:
           name: opendistro-es
           command: helm lint src/opendistro-es/
       - run:
-          name: generic3
-          command: helm lint src/generic3/
-      - run:
           name: generic
           command: helm lint src/generic/
