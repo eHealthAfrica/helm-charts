@@ -1,0 +1,27 @@
+replicaCount: 1
+pullPolicy: Always
+debug: false
+
+image:
+  repository: "ehealthafrica/aether-generic-consumer"
+  imageTag: 2.0.2
+  # Use `--set image.tag` in the command line to overwrite the version
+
+app:
+  esConsumerConfigPath: "/code/conf/consumer/consumer.json"
+  esConsumerKafkaConfigPath: "/code/conf/consumer/kafka.json"
+  tenancyHeader: "x-oauth-realm"
+  consumerName: "FB-TEST"
+  stackDriverLogging: "True"
+  logLevel: "INFO"
+  command: "start"
+  port: 9013
+  secret: generic-consumer-secrets
+
+  kafka:
+    url: "127.0.0.1:2181"
+
+  redis:
+    db: 0
+    host: "http://127.0.0.1"
+    port: 6379
