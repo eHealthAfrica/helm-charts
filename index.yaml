@@ -2,7 +2,11 @@ apiVersion: v1
 entries:
   aether-couchdb-sync:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.520418-05:00"
+=======
+    created: "2020-06-04T15:52:12.625394+01:00"
+>>>>>>> master
     description: The CouchDB Sync module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: 94663db9c562f35f22ea90820d01721390dbb9ae201ea839e31e7fe097737fcc
@@ -12,20 +16,32 @@ entries:
     version: 1.2.0
   aether-elasticsearch-consumer:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.527653-05:00"
+=======
+    created: "2020-06-04T15:52:12.639415+01:00"
+>>>>>>> master
     dependencies:
     - name: redis
       repository: https://charts.bitnami.com/bitnami
       version: ~10.6.12
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
+<<<<<<< HEAD
     digest: 9dc0a1bec390d7f6150950527c511c5ebd48e3bfe98b5b6ea5318ef90fbf9418
+=======
+    digest: 4cc1463aa241598643815be267f8a27fa9f21d405ed3e66687d6b2fc232aeec3
+>>>>>>> master
     name: aether-elasticsearch-consumer
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.2.5.tgz
     version: 1.2.5
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.524263-05:00"
+=======
+    created: "2020-06-04T15:52:12.631429+01:00"
+>>>>>>> master
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: a71eea3a9fda1202e4a677568aaefad38fa36a1505a47cba22d3331bdcce258c
@@ -34,7 +50,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.2.3.tgz
     version: 1.2.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.523889-05:00"
+=======
+    created: "2020-06-04T15:52:12.630512+01:00"
+>>>>>>> master
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: 2360dd34d4b6bfac1f0e969b17832ea6d6c6e67dd5c4a779b0201aaa3af6325a
@@ -43,7 +63,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.2.2.tgz
     version: 1.2.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.523373-05:00"
+=======
+    created: "2020-06-04T15:52:12.629489+01:00"
+>>>>>>> master
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: e3985af3ad0dc82edf904056c9ab176ffdc3c95738e7dca658b4d48dece11e27
@@ -52,7 +76,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.522877-05:00"
+=======
+    created: "2020-06-04T15:52:12.62859+01:00"
+>>>>>>> master
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: d6364422d4a6131b0c76111254c0e6b887e5f71663cc4ce3449e79d42f6f1fb1
@@ -61,7 +89,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.522211-05:00"
+=======
+    created: "2020-06-04T15:52:12.627703+01:00"
+>>>>>>> master
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: 52c624bc9a2921b0cce002e9380f603776ebaeef1cdc7e204e6d0554801e7fb4
@@ -70,7 +102,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.521693-05:00"
+=======
+    created: "2020-06-04T15:52:12.62702+01:00"
+>>>>>>> master
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: bfa0363936f7d10b2731e8b490e608c746eb36f7b28a93a19ebc61827629eb3f
@@ -79,7 +115,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-elasticsearch-consumer-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.52125-05:00"
+=======
+    created: "2020-06-04T15:52:12.626236+01:00"
+>>>>>>> master
     description: The Elasticsearch consumer module for Aether, an open source development
       platform for data curation, exchange, and publication
     digest: 2263bd3b2649e1fcf4d396def564f9061a5c46032dea8e7a0d074b5b08e829b8
@@ -89,20 +129,32 @@ entries:
     version: 0.9.5
   aether-firebase-consumer:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.531842-05:00"
+=======
+    created: "2020-06-04T15:52:12.647207+01:00"
+>>>>>>> master
     dependencies:
     - name: redis
       repository: https://charts.bitnami.com/bitnami
       version: ~10.6.12
     description: The Firebase module for Aether, an open source development platform
       for data curation, exchange, and publication
+<<<<<<< HEAD
     digest: 931b551d36c8b025bf7cc3f5bdf8437cd453e6e96d1d446cb1ed80d0214744ff
+=======
+    digest: 13e961c77e719522df3793a950a01533ecb4a2cab9c3bfafebd26ad4a334dd95
+>>>>>>> master
     name: aether-firebase-consumer
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-firebase-consumer-1.2.3.tgz
     version: 1.2.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.529087-05:00"
+=======
+    created: "2020-06-04T15:52:12.643394+01:00"
+>>>>>>> master
     description: The Firebase module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: bc126660c9b6c4b70bbf4a7f3dcc427fe2ea0c5c77d3947873c826f61b0f2578
@@ -111,7 +163,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-firebase-consumer-1.2.2.tgz
     version: 1.2.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.528774-05:00"
+=======
+    created: "2020-06-04T15:52:12.641515+01:00"
+>>>>>>> master
     description: The Firebase module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: 86b0ffc02e01094f9771330e89ee233833c58672f40c82ec994ba4781596440d
@@ -120,7 +176,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-firebase-consumer-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.52829-05:00"
+=======
+    created: "2020-06-04T15:52:12.640488+01:00"
+>>>>>>> master
     description: The Firebase module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: dab2afe058bf9336aff255bca658f76dda4d2f595e43390e061a271ab010baf7
@@ -145,7 +205,11 @@ entries:
     version: 0.1.0
   aether-kernel:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.55957-05:00"
+=======
+    created: "2020-06-04T15:52:12.70341+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
@@ -153,13 +217,21 @@ entries:
       version: ~10.6.12
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
+<<<<<<< HEAD
     digest: dbf1f65a100ff87271b2d01259bba732d9a6e0e5aa9553a7bd66a51b0dfdf3e7
+=======
+    digest: 9821bdb690cfdd5a9fdea1b1db4019ecb12f953541868b0d72d74a1268b2e4fb
+>>>>>>> master
     name: aether-kernel
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.3.4.tgz
     version: 1.3.4
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.556526-05:00"
+=======
+    created: "2020-06-04T15:52:12.693116+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
@@ -173,7 +245,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.3.3.tgz
     version: 1.3.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.553156-05:00"
+=======
+    created: "2020-06-04T15:52:12.684823+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: 7174d416ea1f1ec9c0443331c7ce5009b16a384c405653d0ee57011f0c420496
@@ -182,7 +258,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.3.1.tgz
     version: 1.3.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.552589-05:00"
+=======
+    created: "2020-06-04T15:52:12.683057+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: 798601da2f374173ed5036ecc7361ac1543f67f441347bc4d9fe1e1ec5fb2a05
@@ -191,7 +271,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.3.0.tgz
     version: 1.3.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.551468-05:00"
+=======
+    created: "2020-06-04T15:52:12.681247+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: 3c87797c205601b66729510a8a273e22501783d01cfaad28f7de2eeb95b394d4
@@ -200,7 +284,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.9.tgz
     version: 1.2.9
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.550485-05:00"
+=======
+    created: "2020-06-04T15:52:12.67983+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: 3b24844acbdee902128c7fed79cef8d30508468032bd91f0e495d5ac8b4ed157
@@ -209,7 +297,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.8.tgz
     version: 1.2.8
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.549567-05:00"
+=======
+    created: "2020-06-04T15:52:12.677776+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: 9e9f7d570a18c7f258ffded9b0eda57bfd0a9b86350688a2821e8c5c5d9e9a5a
@@ -218,7 +310,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.6.tgz
     version: 1.2.6
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.548661-05:00"
+=======
+    created: "2020-06-04T15:52:12.67515+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: ecee7fa98c36db4272222c0bc1566b3dce4866ba0d606524feade8a3dd6a813b
@@ -227,7 +323,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.5.tgz
     version: 1.2.5
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.547749-05:00"
+=======
+    created: "2020-06-04T15:52:12.670569+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: e039fa3453ba0577f5b980a28872e42a812ae052c71560a2b427b100ddffacfa
@@ -236,7 +336,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.4.tgz
     version: 1.2.4
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.546879-05:00"
+=======
+    created: "2020-06-04T15:52:12.668132+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: 8a86095b27ef29dbc4cd76211422228b4b17b1d34c1b610615898fa688a5a26c
@@ -245,7 +349,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.3.tgz
     version: 1.2.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.54598-05:00"
+=======
+    created: "2020-06-04T15:52:12.665125+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: 51f69425b9cdd76642af7c47af201157309497bfb61f8daa46bcafd5fa26d941
@@ -254,7 +362,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.2.tgz
     version: 1.2.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.544632-05:00"
+=======
+    created: "2020-06-04T15:52:12.663849+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: c82a1ec02305bd85075dc9cc018c999999a2af49c3143e325d17257e6d693dc6
@@ -263,7 +375,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.543738-05:00"
+=======
+    created: "2020-06-04T15:52:12.662288+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: eab6e40c32610888b843e0779f4c4b0c33a80c8d485b43d949b052b12f22121d
@@ -272,7 +388,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.542724-05:00"
+=======
+    created: "2020-06-04T15:52:12.660725+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation & dissemination
     digest: d7c95baf7552f4133b0f81f30b07fb6734c8ec9f18d71441a1059e2868252ee1
@@ -281,7 +401,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.1.0-rc.tgz
     version: 1.1.0-rc
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.541941-05:00"
+=======
+    created: "2020-06-04T15:52:12.659602+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: ccbf850c14f8efd003a3133be4fcd34ad5b28d05537e500d18d02eb474e38194
@@ -290,7 +414,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.541084-05:00"
+=======
+    created: "2020-06-04T15:52:12.658527+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: e6facf338f4b803dc8d6550511d6d5e2865e28a91b804a5894ccde013d67159a
@@ -299,7 +427,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.540266-05:00"
+=======
+    created: "2020-06-04T15:52:12.656909+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: c4183534ac5a6da3fb3c70923134d356494b657586ec3f957981f5983b0e4523
@@ -308,7 +440,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.539541-05:00"
+=======
+    created: "2020-06-04T15:52:12.655771+01:00"
+>>>>>>> master
     description: The Kernel Module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: 1d671e05fe64190130c40fc7148625e3587369247468f43eb0bb02a5920ef399
@@ -318,7 +454,11 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 0.11.0-rc
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.538502-05:00"
+=======
+    created: "2020-06-04T15:52:12.654566+01:00"
+>>>>>>> master
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: 338000692872311424fe09083417664bbd22c0c330f8760297f7e553fffb61e3
     name: aether-kernel
@@ -327,7 +467,11 @@ entries:
     version: 0.0.5
   - apiVersion: v1
     appVersion: 0.9.2
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.537734-05:00"
+=======
+    created: "2020-06-04T15:52:12.653574+01:00"
+>>>>>>> master
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: fd36bfaae42eb64a88ca1d3cce4a6c40b69dd798ee0f409e926d70dea58e1514
     name: aether-kernel
@@ -336,7 +480,11 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 0.9.2
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.53691-05:00"
+=======
+    created: "2020-06-04T15:52:12.651545+01:00"
+>>>>>>> master
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: bfcf122c043c12f5b391b9c0bffa40847cab734219f802195393f100491768e1
     name: aether-kernel
@@ -345,7 +493,11 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 0.8.0
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.536114-05:00"
+=======
+    created: "2020-06-04T15:52:12.648922+01:00"
+>>>>>>> master
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: 689538d9d86148f2c4b66cf355461b47bc130ba78687927d8fb6273841ea3e99
     name: aether-kernel
@@ -354,7 +506,11 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.8.0
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.535208-05:00"
+=======
+    created: "2020-06-04T15:52:12.648153+01:00"
+>>>>>>> master
     description: eHealthAfrica's Aether-Kernel Helm chart
     digest: bcd9fe832ba6c7c7d17c20aef07ee952cde881ae481b094144b90bc1dc963517
     name: aether-kernel
@@ -363,7 +519,11 @@ entries:
     version: 0.0.1
   aether-kernel-ui:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.567549-05:00"
+=======
+    created: "2020-06-04T15:52:12.723105+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
@@ -371,13 +531,21 @@ entries:
       version: ~10.6.12
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
+<<<<<<< HEAD
     digest: ac117161d933da96908be0f157ab68984ff6e3883d7e79c8eae9589ccc1adaa7
+=======
+    digest: 3481ea01597ac4e26a3246b0fa2e7f9bc974933ae2a7349ad9dc8ddfff75315d
+>>>>>>> master
     name: aether-kernel-ui
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-ui-1.2.5.tgz
     version: 1.2.5
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.564591-05:00"
+=======
+    created: "2020-06-04T15:52:12.712703+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
@@ -391,7 +559,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-ui-1.2.4.tgz
     version: 1.2.4
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.561189-05:00"
+=======
+    created: "2020-06-04T15:52:12.70623+01:00"
+>>>>>>> master
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 9745fb6a731758c10186a570fe6d694073455fc5b36a32fb3f028b9a08596ebf
@@ -400,7 +572,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-kernel-ui-1.2.3.tgz
     version: 1.2.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.560683-05:00"
+=======
+    created: "2020-06-04T15:52:12.704896+01:00"
+>>>>>>> master
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 6cf4b228463adbace4f73f7136a776173a73d485aeb2bf4d81f1735032f9b586
@@ -410,7 +586,11 @@ entries:
     version: 1.2.2
   aether-odk:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.584714-05:00"
+=======
+    created: "2020-06-04T15:52:12.765854+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
@@ -418,13 +598,21 @@ entries:
       version: ~10.6.12
     description: The ODK Module for Aether, an open source development platform for
       data curation & dissemination
+<<<<<<< HEAD
     digest: 54893ebd4a5b272b09b0f914ac2d9550fd8626d1d97921541f2c99fd8fdc272a
+=======
+    digest: 5e5332fc988dc2456f2e17d23da137ba4e9aea4f8c7a4e6f64c970612b4a59fc
+>>>>>>> master
     name: aether-odk
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.2.5.tgz
     version: 1.2.5
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.581725-05:00"
+=======
+    created: "2020-06-04T15:52:12.760837+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
@@ -438,7 +626,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.2.4.tgz
     version: 1.2.4
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.578214-05:00"
+=======
+    created: "2020-06-04T15:52:12.752576+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation & dissemination
     digest: e7af4c78f6adc2f605b43ac58c6f5edc558919e366e2d349f1534749db92e25d
@@ -447,7 +639,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.2.3.tgz
     version: 1.2.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.577646-05:00"
+=======
+    created: "2020-06-04T15:52:12.750861+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation & dissemination
     digest: 0f95d2fb5302341404106aa536eda06e18bd79dfab563b02d75136a087eda7ce
@@ -456,7 +652,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.2.2.tgz
     version: 1.2.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.576782-05:00"
+=======
+    created: "2020-06-04T15:52:12.748742+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation & dissemination
     digest: 096e59ff79797ecc7304b8327fd5ccf665b7d93f775d913420f53fe7c86d48f7
@@ -465,7 +665,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.575992-05:00"
+=======
+    created: "2020-06-04T15:52:12.745818+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation & dissemination
     digest: c706710c19e532deb4ac3c07f50dddef65f70afa550b3f01c06734b0230668eb
@@ -474,7 +678,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.575118-05:00"
+=======
+    created: "2020-06-04T15:52:12.742582+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation & dissemination
     digest: f132f514f3ad4e084c61dd2c7dca3cdd3e64a6aab755b8c18df172e77e1b8982
@@ -483,7 +691,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.1.0-rc.tgz
     version: 1.1.0-rc
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.574303-05:00"
+=======
+    created: "2020-06-04T15:52:12.740486+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 9900cd517cb0beb7a19b9a22af3fb6ad0df85e67e107fc75b56420372f38eefa
@@ -492,7 +704,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.573568-05:00"
+=======
+    created: "2020-06-04T15:52:12.739289+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 003334a83866fed32328916734c9ea1d83e36181dd688af5a161fef02dde5cfc
@@ -501,7 +717,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.572815-05:00"
+=======
+    created: "2020-06-04T15:52:12.73819+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 117b9317595787d18fa1a880a690752da5338f45406565ba70fc49cf50c4e5fb
@@ -510,7 +730,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-odk-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.572098-05:00"
+=======
+    created: "2020-06-04T15:52:12.736778+01:00"
+>>>>>>> master
     description: The ODK Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 2d362ff592a0a9492bc9f1d7af747013865d96bd2c75df5f89daedf5c819632a
@@ -520,7 +744,11 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 0.11.0-rc
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.570809-05:00"
+=======
+    created: "2020-06-04T15:52:12.733078+01:00"
+>>>>>>> master
     description: eHealthAfrica's ODK Helm chart
     digest: 082de03cf723a9d1532752d39dd12cac84b71d4d7d4bfe459969c361694a36c3
     name: aether-odk
@@ -529,7 +757,11 @@ entries:
     version: 0.0.5
   - apiVersion: v1
     appVersion: 0.9.2
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.570018-05:00"
+=======
+    created: "2020-06-04T15:52:12.731647+01:00"
+>>>>>>> master
     description: eHealthAfrica's ODK Helm chart
     digest: 22e4c30eeb84a3c21c114a2044a08f1364d18b66172c0c9c8d0a331410715a76
     name: aether-odk
@@ -538,7 +770,11 @@ entries:
     version: 0.0.4
   - apiVersion: v1
     appVersion: 0.9.2
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.569216-05:00"
+=======
+    created: "2020-06-04T15:52:12.72825+01:00"
+>>>>>>> master
     description: eHealthAfrica's ODK Helm chart
     digest: 3112005dc5a7032a3486b8d3b50dfac9189d9c0029107391522d85a304c4184f
     name: aether-odk
@@ -547,7 +783,11 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 0.9.1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.568519-05:00"
+=======
+    created: "2020-06-04T15:52:12.726878+01:00"
+>>>>>>> master
     description: eHealthAfrica's ODK Helm chart
     digest: 6f0d4940df82a8a661cd793f79b8748455ff45452139f0dd520bd7f0857e9fb7
     name: aether-odk
@@ -556,16 +796,27 @@ entries:
     version: 0.0.1
   aether-producer:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.592501-05:00"
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: de526fa91e14d3f2ece75201ee4bc779656549b2509eb94b5d611c3b4a0f3ead
+=======
+    created: "2020-06-04T15:52:12.786353+01:00"
+    description: The Producer for Aether, an open source development platform for
+      data curation & dissemination
+    digest: 3e0f4c1b707d9bde331289c9936ec617f308ec6c69b304ed7984d30fa0731957
+>>>>>>> master
     name: aether-producer
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.7.tgz
     version: 1.2.7
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.592109-05:00"
+=======
+    created: "2020-06-04T15:52:12.783699+01:00"
+>>>>>>> master
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: 6ccc431ee5a34dd4657df3c8295d1480df5c629c5aa43091c4682a0ce6debfff
@@ -574,7 +825,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.6.tgz
     version: 1.2.6
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.591703-05:00"
+=======
+    created: "2020-06-04T15:52:12.780095+01:00"
+>>>>>>> master
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: 9ecc176c361a4a5b141448bcf8e263397c85457b02b9402bdf84ba010341ee86
@@ -583,7 +838,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.5.tgz
     version: 1.2.5
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.591158-05:00"
+=======
+    created: "2020-06-04T15:52:12.778056+01:00"
+>>>>>>> master
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: 648eff5bc716074f7481734aef71c2977ea46b23268819baa380a2901a1429d4
@@ -592,7 +851,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.4.tgz
     version: 1.2.4
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.590054-05:00"
+=======
+    created: "2020-06-04T15:52:12.775848+01:00"
+>>>>>>> master
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: 30d204367aa10f7671c39512287ee5f63d14ab8a61cd57ea19c8545d23bb4e78
@@ -601,7 +864,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.3.tgz
     version: 1.2.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.589466-05:00"
+=======
+    created: "2020-06-04T15:52:12.774201+01:00"
+>>>>>>> master
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: 1c20c4764cc14dd41fb4b3ef9a6eb0e56255bde6202754fa4cdc14ccb765582b
@@ -610,7 +877,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.2.tgz
     version: 1.2.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.588941-05:00"
+=======
+    created: "2020-06-04T15:52:12.772958+01:00"
+>>>>>>> master
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: 5945bffa0e16056ac15bf9d7fab11903826ac3eb5ed3807272a2fa6a979a83ce
@@ -619,7 +890,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.588387-05:00"
+=======
+    created: "2020-06-04T15:52:12.772+01:00"
+>>>>>>> master
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: d73d3b555618be97bb7ee555cb5e188927dda685dbf99b24d1b114d4427e5396
@@ -628,7 +903,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.587877-05:00"
+=======
+    created: "2020-06-04T15:52:12.770761+01:00"
+>>>>>>> master
     description: The Producer for Aether, an open source development platform for
       data curation & dissemination
     digest: 2061b69e6ebaf206a26830bd9ab556becb831a8310ae09f4ce0f7e5a218edaab
@@ -637,7 +916,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.1.0-rc.tgz
     version: 1.1.0-rc
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.587394-05:00"
+=======
+    created: "2020-06-04T15:52:12.769052+01:00"
+>>>>>>> master
     description: The Producer module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: 6995330b5dc1a54b67016b882fadc02b939d5acc5550df0c61bca8f6fe5a0c4d
@@ -646,7 +929,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.586568-05:00"
+=======
+    created: "2020-06-04T15:52:12.76816+01:00"
+>>>>>>> master
     description: The Producer module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: fd4dafa986ab369404bf8350a9aac41ca60420619474195ec5b330ed49920d7b
@@ -655,7 +942,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-producer-1.0.2.tgz
     version: 1.0.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.585904-05:00"
+=======
+    created: "2020-06-04T15:52:12.767338+01:00"
+>>>>>>> master
     description: The Producer module for Aether, an open source development platform
     digest: 27e75aab7b1bd93494b94262ae438c316189c7e5b5d5315a501deb7d077f5da7
     name: aether-producer
@@ -664,7 +955,11 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: 1.0.0
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.585279-05:00"
+=======
+    created: "2020-06-04T15:52:12.766585+01:00"
+>>>>>>> master
     description: The Producer module for Aether, an open source development platform
     digest: 32a9433e4e8bf2536c13c039848627ef453a3c58220833af00793c712945590a
     name: aether-producer
@@ -673,16 +968,27 @@ entries:
     version: 1.0.0
   aether-ui:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.5985-05:00"
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 7744abe19c1344d8b2472093867340b421b465ff4da6e7c8f198a8dc51680ffd
+=======
+    created: "2020-06-04T15:52:12.8043+01:00"
+    description: The UI Module for Aether, an open source development platform for
+      data curation, exchange, and publication
+    digest: 7c5ce148b600b90ac8d9250122751e6db23d9f337dce6e517044cdf9f50327bd
+>>>>>>> master
     name: aether-ui
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.2.2.tgz
     version: 1.2.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.597951-05:00"
+=======
+    created: "2020-06-04T15:52:12.803716+01:00"
+>>>>>>> master
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 669d7105505e50fa79291dc0a63f53e1c43293b45ade7292bd3ca03b5fcdaaea
@@ -691,7 +997,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.2.1.tgz
     version: 1.2.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.596893-05:00"
+=======
+    created: "2020-06-04T15:52:12.802225+01:00"
+>>>>>>> master
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 521d157535a63f3f7cfb44180eacc14b3f1715e9e8767eb91540ebadac29537c
@@ -700,7 +1010,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.2.0.tgz
     version: 1.2.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.596033-05:00"
+=======
+    created: "2020-06-04T15:52:12.797273+01:00"
+>>>>>>> master
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: 10b53ce4917eeee61a6301f18de92dfa0ee4f7ec0a872e0520344b29db418e59
@@ -709,7 +1023,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.595475-05:00"
+=======
+    created: "2020-06-04T15:52:12.79659+01:00"
+>>>>>>> master
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: e5ee4cc31bbb8157da294a1324438bdb2d7a6eb88c162c70282d759733c2cc3c
@@ -718,7 +1036,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.594924-05:00"
+=======
+    created: "2020-06-04T15:52:12.795698+01:00"
+>>>>>>> master
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: e99ebde223326081c5d1c3226e8f5619dacab2d1c2e43d1fd6681b3f64acfcee
@@ -727,7 +1049,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-ui-1.0.0.tgz
     version: 1.0.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.594362-05:00"
+=======
+    created: "2020-06-04T15:52:12.791034+01:00"
+>>>>>>> master
     description: The UI Module for Aether, an open source development platform for
       data curation, exchange, and publication
     digest: e5535ca9bfee5799bd928bf3c86a44930e92bdb81d55b6bac4f7d5e4706aa48c
@@ -737,7 +1063,11 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 0.11.0-rc
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.593734-05:00"
+=======
+    created: "2020-06-04T15:52:12.789539+01:00"
+>>>>>>> master
     description: eHealthAfrica's Aether-UI Helm chart
     digest: f40c96e43e19f039db85160a409ae76d80bd525af1862300ed8bf96eaf1b8acf
     name: aether-ui
@@ -746,7 +1076,11 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.8.0
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.593088-05:00"
+=======
+    created: "2020-06-04T15:52:12.788104+01:00"
+>>>>>>> master
     description: eHealthAfrica's Aether-UI Helm chart
     digest: b895cefc859ee579790bf5ef85f0576c7462fa105f5036b2629a43df806434a0
     name: aether-ui
@@ -755,33 +1089,55 @@ entries:
     version: 0.0.1
   couchdb-backup:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.598899-05:00"
     description: A Helm chart for automating CouchDB backups
     digest: 8161e31c5ee8c77677179c4830b8dbbc2edbba93f02888306e9cd2a10d524206
+=======
+    created: "2020-06-04T15:52:12.804578+01:00"
+    description: A Helm chart for automating CouchDB backups
+    digest: 99980389afb941380952a816c9542135d046139d86992647d5c9650d8cea6e1b
+>>>>>>> master
     name: couchdb-backup
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/couchdb-backup-1.0.0.tgz
     version: 1.0.0
   database-provisioner:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.599456-05:00"
     description: A Helm chart for provisioning databases
     digest: deec7134aa150fcfc4f616307919525441f569f5868505c85edb4341901e77c7
+=======
+    created: "2020-06-04T15:52:12.806381+01:00"
+    description: A Helm chart for provisioning databases
+    digest: 18b908ee2fe28733cb685bbf92d7ca9ba7df830d413be1c68106050306ee846e
+>>>>>>> master
     name: database-provisioner
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/database-provisioner-1.0.0.tgz
     version: 1.0.0
   gateway-manager:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.604138-05:00"
     description: A Helm chart for gateway-manager
     digest: 01156c0c7d54f1361569bfb8a85ff1a6520b213a57d70a03fb1ee2f4ad260aa2
+=======
+    created: "2020-06-04T15:52:12.819512+01:00"
+    description: A Helm chart for gateway-manager
+    digest: 3acf3673175ab73d3814cc28ff49d75cc2fea528f904559b5d6fb6e2d0078609
+>>>>>>> master
     name: gateway-manager
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.7.tgz
     version: 1.0.7
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.603712-05:00"
+=======
+    created: "2020-06-04T15:52:12.814643+01:00"
+>>>>>>> master
     description: A Helm chart for gateway-manager
     digest: 9245c691080703b4e1dd930a49bc8992c29c856289a8dc7a934a1f34484db85e
     name: gateway-manager
@@ -789,7 +1145,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.6.tgz
     version: 1.0.6
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.603072-05:00"
+=======
+    created: "2020-06-04T15:52:12.813339+01:00"
+>>>>>>> master
     description: A Helm chart for gateway-manager
     digest: 1b9fd3c948c0098c8ba0a1cee90ee6facbf165b88f4da8aa156862d5b13db6af
     name: gateway-manager
@@ -797,7 +1157,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.5.tgz
     version: 1.0.5
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.60246-05:00"
+=======
+    created: "2020-06-04T15:52:12.812431+01:00"
+>>>>>>> master
     description: A Helm chart for gateway-manager
     digest: 786d834c39e264faab33a8ea35e7f384bbeea47042a74fef7b5f01a135228e5d
     name: gateway-manager
@@ -805,7 +1169,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.4.tgz
     version: 1.0.4
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.601816-05:00"
+=======
+    created: "2020-06-04T15:52:12.811363+01:00"
+>>>>>>> master
     description: A Helm chart for gateway-manager
     digest: 9c827d142d60cfc2f70436b5cf326ded3fcecdc0d96b0407d59a7d99ffef6353
     name: gateway-manager
@@ -813,7 +1181,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.3.tgz
     version: 1.0.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.601246-05:00"
+=======
+    created: "2020-06-04T15:52:12.810607+01:00"
+>>>>>>> master
     description: A Helm chart for gateway-manager
     digest: eb3ad5ec552802b37ac21c9ffeb1dc7e63ba840326d37730abdb7166fb420f54
     name: gateway-manager
@@ -821,7 +1193,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.2.tgz
     version: 1.0.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.600638-05:00"
+=======
+    created: "2020-06-04T15:52:12.80916+01:00"
+>>>>>>> master
     description: A Helm chart for gateway-manager
     digest: 416af89664ed176ef6d990346681ee030c6dff79c337bbd141853fed0eeccd92
     name: gateway-manager
@@ -829,7 +1205,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gateway-manager-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.600032-05:00"
+=======
+    created: "2020-06-04T15:52:12.807393+01:00"
+>>>>>>> master
     description: A Helm chart for gateway-manager
     digest: 87f28846339a8ecdd48512b014e0bd0efd6507a1b893c64c2820c047db5c50a2
     name: gateway-manager
@@ -838,20 +1218,32 @@ entries:
     version: 1.0.0
   gather:
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.616484-05:00"
+=======
+    created: "2020-06-04T15:52:12.850661+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
       repository: https://charts.bitnami.com/bitnami
       version: ~10.6.12
     description: An open source data collection tool
+<<<<<<< HEAD
     digest: 8b7633520e920871843c366ccfd18f9db53a3a41fb6e8d6fc38eb8c97664df8d
+=======
+    digest: a0df8b2775f0fa3e944af14a0e02dd3b312b33ff84e6607d47ee548a65c45d1f
+>>>>>>> master
     name: gather
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/gather-3.1.3.tgz
     version: 3.1.3
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.613167-05:00"
+=======
+    created: "2020-06-04T15:52:12.845969+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
@@ -864,7 +1256,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gather-3.1.2.tgz
     version: 3.1.2
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.610277-05:00"
+=======
+    created: "2020-06-04T15:52:12.835366+01:00"
+>>>>>>> master
     dependencies:
     - condition: app.caching.enabled
       name: redis
@@ -877,7 +1273,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gather-3.1.1.tgz
     version: 3.1.1
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.606795-05:00"
+=======
+    created: "2020-06-04T15:52:12.826492+01:00"
+>>>>>>> master
     description: An open source data collection tool
     digest: ff07df12a71cabe465e7030b20999f768ffe3f8e5bbc6e4282ed56db915e3e2c
     name: gather
@@ -885,7 +1285,11 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/gather-3.1.0.tgz
     version: 3.1.0
   - apiVersion: v1
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.606285-05:00"
+=======
+    created: "2020-06-04T15:52:12.822196+01:00"
+>>>>>>> master
     description: An open source data collection tool
     digest: 2c1296c63f0c697f35cd481e3cf911c7209f0c981709c7de75e91ffcbf4bb903
     name: gather
@@ -894,7 +1298,11 @@ entries:
     version: 3.0.0
   - apiVersion: v1
     appVersion: 3.0.0-rc
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.605712-05:00"
+=======
+    created: "2020-06-04T15:52:12.821472+01:00"
+>>>>>>> master
     description: eHealthAfrica's Gather Helm chart
     digest: c816f630ec1828a2367446280578f93a48de214e20340a1d6f7f686080e82f5c
     name: gather
@@ -903,7 +1311,11 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 3.0.0-rc
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.604923-05:00"
+=======
+    created: "2020-06-04T15:52:12.820467+01:00"
+>>>>>>> master
     description: eHealthAfrica's Gather Helm chart
     digest: 4e776878df05ab243a98c97cdc21e6a4a4ebfa4bc9b103730e0cb4d14ddc32ea
     name: gather
@@ -913,16 +1325,26 @@ entries:
   generic:
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.63869-05:00"
     description: A Generic Helm chart for Kubernetes
     digest: 4eac040428c52fa338e3e9b0b5d6182551ac3595dfeb7997f845eb3d2a7314da
+=======
+    created: "2020-06-04T15:52:12.89011+01:00"
+    description: A Generic Helm chart for Kubernetes
+    digest: 74754174a72d7cc5af5b812db90ed69453fde0ea14f853bdc113491ce4a308e1
+>>>>>>> master
     name: generic
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/generic-0.3.2.tgz
     version: 0.3.2
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.637312-05:00"
+=======
+    created: "2020-06-04T15:52:12.888121+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 10f2b56521458d58cd9fc95e12a0f086c7c3641875d3cd5c155e3eae15cfe94f
     name: generic
@@ -931,7 +1353,11 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.636169-05:00"
+=======
+    created: "2020-06-04T15:52:12.885461+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 337f73d077ecf02f71d233aa6b9fbab1562ea67a8800be1a31dd439496d129c1
     name: generic
@@ -940,7 +1366,11 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.635036-05:00"
+=======
+    created: "2020-06-04T15:52:12.883846+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: c7ab24a271f46a1284c71297383c110833ecc47dbb6bbe377d3ca09ed46c7f49
     name: generic
@@ -949,7 +1379,11 @@ entries:
     version: 0.2.9
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.633944-05:00"
+=======
+    created: "2020-06-04T15:52:12.882161+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: e934230cb9f11e6e89059dbe074518fcd9c9a72f2b3ccae47314dd93f674b9b7
     name: generic
@@ -958,7 +1392,11 @@ entries:
     version: 0.2.8
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.632843-05:00"
+=======
+    created: "2020-06-04T15:52:12.879584+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: f4b0038768002679ebbd7fbe875b76636bdf4115e4f28c46feb1e59000ee10ec
     name: generic
@@ -967,7 +1405,11 @@ entries:
     version: 0.2.7
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.631739-05:00"
+=======
+    created: "2020-06-04T15:52:12.877784+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 9bb082c417843a293274c4fbb9f983bcd0b4e0ee7b99d44ef55b1de5d2486368
     name: generic
@@ -976,7 +1418,11 @@ entries:
     version: 0.2.6
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.630137-05:00"
+=======
+    created: "2020-06-04T15:52:12.876323+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: f529e036dc23b30e83b2f0eca6f38a091bb060ce4b16440d32c7442fb9916192
     name: generic
@@ -985,7 +1431,11 @@ entries:
     version: 0.2.5
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.628957-05:00"
+=======
+    created: "2020-06-04T15:52:12.873296+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: fcdaf734d2fe928a32585c97b4d8cb6bce3a31f9b203f50b1fba44949a22b7ee
     name: generic
@@ -994,7 +1444,11 @@ entries:
     version: 0.2.4
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.627923-05:00"
+=======
+    created: "2020-06-04T15:52:12.871527+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: c6d061ca74d2b518f2273ce4bad400846e5fa5d4bb5199a7cc35dc114205f1b6
     name: generic
@@ -1003,7 +1457,11 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.626627-05:00"
+=======
+    created: "2020-06-04T15:52:12.869138+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 9af6d1356fbe192e26fd4a0bc69797a28b3e1bb6711132aea2597eead3711627
     name: generic
@@ -1012,7 +1470,11 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.62568-05:00"
+=======
+    created: "2020-06-04T15:52:12.867588+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 5b61076f2673454ecab15461bec3e3c8e211990b1f7d904aa218c84198a380b7
     name: generic
@@ -1021,7 +1483,11 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.624687-05:00"
+=======
+    created: "2020-06-04T15:52:12.864398+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 51db3c069dc057f75e8ee70757daaf78b6b42b19618ad2b8a3ae12a6c99a89ad
     name: generic
@@ -1030,7 +1496,11 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.623688-05:00"
+=======
+    created: "2020-06-04T15:52:12.862316+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: bbfee1526a953f358d0ac390b5e2ca21ffd683b3f1f1387f67fa0f3b8bc5a8ab
     name: generic
@@ -1039,7 +1509,11 @@ entries:
     version: 0.1.7
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.622773-05:00"
+=======
+    created: "2020-06-04T15:52:12.860765+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 726776bfc218704127d851e3664026b4d87917963510406c2e6b683858d238a1
     name: generic
@@ -1048,7 +1522,11 @@ entries:
     version: 0.1.6
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.621791-05:00"
+=======
+    created: "2020-06-04T15:52:12.859269+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 9699140edfbecf22e6ea1fe387e40f5fcdf35219896cf4a8599e5f28ecdde663
     name: generic
@@ -1057,7 +1535,11 @@ entries:
     version: 0.1.5
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.620979-05:00"
+=======
+    created: "2020-06-04T15:52:12.857572+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: a29b00eb91e006b11d2959a3c3cc2caf695ae0403158f1f0758c0d27c3ed7d14
     name: generic
@@ -1066,7 +1548,11 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.620109-05:00"
+=======
+    created: "2020-06-04T15:52:12.856057+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 6b7a220566d085053beeea929c3ea70b5ce4b0779b6c600ab57d3138b7e76587
     name: generic
@@ -1075,7 +1561,11 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.619228-05:00"
+=======
+    created: "2020-06-04T15:52:12.854529+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 8153cb3920c4ca85c18b027d4854da990c97b3453b0d97e19ace8805ea32207e
     name: generic
@@ -1084,7 +1574,11 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.61843-05:00"
+=======
+    created: "2020-06-04T15:52:12.85328+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: ca3bd2d3033da36d9d6a765f9b84d0872329e68b178199d7ac07301831818464
     name: generic
@@ -1093,7 +1587,11 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.617633-05:00"
+=======
+    created: "2020-06-04T15:52:12.851827+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: f989086c5c472493d44e7094946980e5a9c95a74f66e4fd20775fedf84b7a013
     name: generic
@@ -1103,16 +1601,35 @@ entries:
   generic3:
   - apiVersion: v2
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.64494-05:00"
     description: A Generic Helm chart for Kubernetes
     digest: 9d6070877e85c44da6d75d68890fb0a0fc810ce2e8fb820367ae2cc02e3cff2f
+=======
+    created: "2020-06-04T15:52:12.902734+01:00"
+    description: A Generic Helm chart for Kubernetes
+    digest: 4f3c55060443758733df295622197df826ba21874e809c6ba048104767c8b557
+    name: generic3
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/generic3-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2020-06-04T15:52:12.901582+01:00"
+    description: A Generic Helm chart for Kubernetes
+    digest: 96ab5964f5c836474bbb9532cf7ff17815663707c6fc23e6e30a24055222b421
+>>>>>>> master
     name: generic3
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/generic3-0.1.5.tgz
     version: 0.1.5
   - apiVersion: v2
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.644072-05:00"
+=======
+    created: "2020-06-04T15:52:12.899807+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: fe9bdd30194ebc48b82fafd5f8c6575304d1ea9193559f59e66b052cfce13474
     name: generic3
@@ -1121,7 +1638,11 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.643315-05:00"
+=======
+    created: "2020-06-04T15:52:12.897511+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: 08c2ad2be84f2793ddb0905c12fd8962d57fb4f8178227edb4485ded55f02a7d
     name: generic3
@@ -1130,7 +1651,11 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.64208-05:00"
+=======
+    created: "2020-06-04T15:52:12.895261+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: d28a5cb19b6e5208734446d2c9e62a4f10a53826729e9c63120b3ab08294b6d4
     name: generic3
@@ -1139,7 +1664,11 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.640951-05:00"
+=======
+    created: "2020-06-04T15:52:12.893643+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: d816bdb34c39c0b8709f8efbacddcc7ac90c261b531420150e38c0b9b87ddd97
     name: generic3
@@ -1148,7 +1677,11 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.639828-05:00"
+=======
+    created: "2020-06-04T15:52:12.89221+01:00"
+>>>>>>> master
     description: A Generic Helm chart for Kubernetes
     digest: ee30bec2f607b6dfc130e4b7aba93fb6456cd88e1da01d87823e4374655ef11e
     name: generic3
@@ -1158,7 +1691,11 @@ entries:
   helloworld:
   - apiVersion: v1
     appVersion: "1.0"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.645411-05:00"
+=======
+    created: "2020-06-04T15:52:12.903294+01:00"
+>>>>>>> master
     description: A Helm chart for Kubernetes
     digest: a530741c031d54379fe8381baac8245e925e0bd2c79e81bce3ed495ac41a52cc
     name: helloworld
@@ -1168,7 +1705,11 @@ entries:
   keycloak:
   - apiVersion: v1
     appVersion: 9.0.2
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.648578-05:00"
+=======
+    created: "2020-06-04T15:52:12.909871+01:00"
+>>>>>>> master
     dependencies:
     - condition: keycloak.persistence.deployPostgres
       name: postgresql
@@ -1176,7 +1717,11 @@ entries:
       version: 6.3.13
     description: Open Source Identity and Access Management For Modern Applications
       and Services
+<<<<<<< HEAD
     digest: 61b462164233f4eec6c69ab419eab6e2d34686c7a19b57ef47ff01e7f4f208c0
+=======
+    digest: 3f41b7c3c12629f7487772baf39c61870403eef26f167f1c5d6250227457525e
+>>>>>>> master
     home: https://www.keycloak.org/
     icon: https://www.keycloak.org/resources/images/keycloak_logo_480x108.png
     keywords:
@@ -1201,9 +1746,15 @@ entries:
   kong:
   - apiVersion: v1
     appVersion: "1.1"
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.649632-05:00"
     description: The Cloud-Native Ingress and Service Mesh for APIs and Microservices
     digest: fbab281e358f42346d5d766cf7f021c32d68f88f1dd3c729d2cc4b3003efc6cb
+=======
+    created: "2020-06-04T15:52:12.91223+01:00"
+    description: The Cloud-Native Ingress and Service Mesh for APIs and Microservices
+    digest: 3ae456e78687fc75758b9315569df24e4b210f1dde4cab07e80e3675c0660b93
+>>>>>>> master
     home: https://KongHQ.com/
     icon: https://s3.amazonaws.com/downloads.kong/universe/assets/icon-kong-inc-large.png
     maintainers:
@@ -1218,7 +1769,11 @@ entries:
   logstash:
   - apiVersion: v1
     appVersion: 7.5.2
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.651006-05:00"
+=======
+    created: "2020-06-04T15:52:12.914601+01:00"
+>>>>>>> master
     description: Official Elastic helm chart for Logstash
     digest: 5e3a775debc2b09c5a5d245f040d928d98811a96e8631f52f11736d159ca7eb7
     home: https://github.com/elastic/helm-charts
@@ -1235,9 +1790,15 @@ entries:
   opendistro-es:
   - apiVersion: v1
     appVersion: 1.0.0
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.65773-05:00"
     description: Opendistro Elasticsearch
     digest: 5c3ec6b1f11043ada98a52178c3d01c4cc55b1b4edaa9c2c48875f154eeff220
+=======
+    created: "2020-06-04T15:52:12.927244+01:00"
+    description: Opendistro Elasticsearch
+    digest: bcca5132de1ae2c1f4a47c00434e7c18e8deabb770be7a9356147c5dd2c8b6d9
+>>>>>>> master
     kubeVersion: ^1.10.0-0
     maintainers:
     - name: OpenDistro ES Maintainers
@@ -1249,7 +1810,11 @@ entries:
     version: 1.0.3
   - apiVersion: v1
     appVersion: 1.0.0
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.656426-05:00"
+=======
+    created: "2020-06-04T15:52:12.924815+01:00"
+>>>>>>> master
     description: Opendistro Elasticsearch
     digest: 52b2f28b407772d8417a4b0628ec28ef2d55928793ef060782ffd0370701536f
     kubeVersion: ^1.10.0-0
@@ -1263,7 +1828,11 @@ entries:
     version: 1.0.2
   - apiVersion: v1
     appVersion: 1.0.0
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.654353-05:00"
+=======
+    created: "2020-06-04T15:52:12.920629+01:00"
+>>>>>>> master
     description: Opendistro Elasticsearch
     digest: 0f9959ea4163c9c431334ccb5487666b4a26bdcbef3c28334621fff2a1766562
     kubeVersion: ^1.10.0-0
@@ -1277,7 +1846,11 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: 1.0.0
+<<<<<<< HEAD
     created: "2020-06-04T03:36:12.652634-05:00"
+=======
+    created: "2020-06-04T15:52:12.91752+01:00"
+>>>>>>> master
     description: Opendistro Elasticsearch
     digest: e7b57bf2c027b2878696cb1de02b4a0203bdf2dd8518229988b8654407af57bf
     kubeVersion: ^1.10.0-0
@@ -1289,4 +1862,8 @@ entries:
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/opendistro-es-1.0.0.tgz
     version: 1.0.0
+<<<<<<< HEAD
 generated: "2020-06-04T03:36:12.519596-05:00"
+=======
+generated: "2020-06-04T15:52:12.622671+01:00"
+>>>>>>> master
