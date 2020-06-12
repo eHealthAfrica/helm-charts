@@ -12,6 +12,7 @@ spec:
   schedule: {{ .Values.cronjob.schedule }}
   jobTemplate:
     spec:
+      backoffLimit: {{ .Values.cronjob.backoffLimit }}
       template:
         metadata:
           labels:
@@ -341,5 +342,5 @@ spec:
           {{- with .Values.extraVolumes }}
     {{ tpl . $ | indent 10 }}
           {{- end }}
-          restartPolicy: OnFailure
+          restartPolicy: {{ .Values.cronjob.restartpolicy }}
     {{ end }}
