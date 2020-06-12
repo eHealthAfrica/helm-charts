@@ -1,0 +1,346 @@
+{{ if eq .Values.resourceType "cronjob" }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "generic.fullname" . }}
+  labels:
+    app: {{ template "generic.name" . }}
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.cronjob.schedule }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.cronjob.backoffLimit }}
+      template:
+        metadata:
+          labels:
+            app: {{ template "generic.name" . }}
+            release: {{ .Release.Name }}
+        spec:
+          {{ if .Values.podAntiAffinity.enabled }}
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - {{ template "generic.name" . }}
+                topologyKey: "kubernetes.io/hostname"
+          {{ end }}
+          {{ if .Values.app.db.create }}
+          initContainers:
+          {{- if .Values.extraInitContainers }}
+{{ tpl .Values.extraInitContainers . | indent 10 }}
+          {{- end }}
+          - name: init
+            image: postgres:9.3-alpine
+            command: ['bash', '-c', './scripts/init.sh']
+            env:
+            - name: PGHOST
+              valueFrom :
+                secretKeyRef:
+                  name: {{ .Values.app.db.secret }}
+                  key: host
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.db.secret }}
+                  key: user
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.db.secret }}
+                  key: password
+            - name: DB_USERNAME
+              value: {{ .Values.app.db.user }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.secret }}
+                  key: database-password
+            - name: DB_NAME
+              value: {{ .Values.app.db.name }}
+            volumeMounts:
+            - mountPath: /scripts
+              name: init-config
+            {{ if .Values.gcp }}
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            {{ end }}
+          {{ end }}
+          containers:
+          {{- if .Values.extraContainers }}
+{{ tpl .Values.extraContainers . | indent 10 }}
+          {{- end }}
+          {{ if and .Values.app.db.enabled .Values.gcp }}
+          - name: cloudsql-proxy
+            image: gcr.io/cloudsql-docker/gce-proxy:1.11
+            command: ["/cloud_sql_proxy",
+                      "-instances={{ .Values.database.instance }}=tcp:{{ .Values.app.db.port }}",
+                      "-credential_file=/secrets/cloudsql/credentials.json"]
+            volumeMounts:
+              - name: cloudsql-instance-credentials
+                mountPath: /secrets/cloudsql
+                readOnly: true
+          {{ end }}
+          {{ if .Values.sidecar.enabled }}
+          - name: {{ .Values.sidecar.name }}
+            image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}"
+            imagePullPolicy: {{ .Values.sidecar.image.pullPolicy }}
+            args:
+              {{- range .Values.sidecar.args }}
+              - {{ . | quote }}
+              {{- end }}
+            ports:
+            - name: sidecar
+              containerPort: {{ .Values.sidecar.port }}
+              protocol: TCP
+            {{ if eq .Values.sidecar.probe.type "request" }}
+            livenessProbe:
+              httpGet:
+                path: {{ .Values.sidecar.probe.path }}
+                port: sidecar
+                httpHeaders:
+                - name: X-Kubernetes-Health-Check
+                  value: livenessProbe
+              initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
+            readinessProbe:
+              httpGet:
+                path: {{ .Values.sidecar.probe.path }}
+                port: sidecar
+                httpHeaders:
+                - name: X-Kubernetes-Health-Check
+                  value: readinessProbe
+                - name: Host
+                  value: {{ .Values.url }}
+              initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
+            {{ end }}
+            {{ if eq .Values.app.probe.type "tcp" }}
+            livenessProbe:
+              tcpSocket:
+                port: sidecar
+              initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
+            readinessProbe:
+              tcpSocket:
+                port: sidecar
+              initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
+            {{ end }}
+            resources:
+          {{ toYaml .Values.resources | indent 16 }}
+            {{ if .Values.env_secrets.enabled }}
+            envFrom:
+            - secretRef:
+                name: {{ .Values.env_secrets.name }}
+            {{ end }}
+            env:
+            {{- if .Values.extra_env_vars -}}
+            {{- range $key, $value := .Values.extra_env_vars }}
+            - name: {{ $key }}
+              value: {{ . | quote }}
+            {{- end -}}
+            {{ end }}
+            {{ if and .Values.sidecar.db.enabled (eq .Values.app.db.type "postgres") }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.secret }}
+                  key: database-password
+            - name: PGUSER
+              value: {{ .Values.app.db.user }}
+            - name: PGPORT
+              value: {{ .Values.app.db.port | default 5432 | quote }}
+            - name: PGHOST
+              value: {{ .Values.app.db.host }}
+            - name: DB_NAME
+              value: {{ .Values.app.db.name }}
+            {{ end }}
+          {{ end }}
+          - name: {{ .Values.app.name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            resources:
+              requests:
+                cpu: {{ .Values.app.resources.requests.cpu }}
+                memory: {{ .Values.app.resources.requests.memory }}
+            args:
+              {{- range .Values.app.args }}
+              - {{ . | quote }}
+              {{- end }}
+            ports:
+            - name: app
+              containerPort: {{ .Values.app.port }}
+              protocol: TCP
+            {{ if eq .Values.app.probe.type "request" }}
+            livenessProbe:
+              httpGet:
+                path: {{ .Values.app.probe.path }}
+                port: app
+                httpHeaders:
+                - name: X-Kubernetes-Health-Check
+                  value: livenessProbe
+              initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.app.probe.periodSeconds }}
+            readinessProbe:
+              httpGet:
+                path: {{ .Values.app.probe.path }}
+                port: app
+                httpHeaders:
+                - name: X-Kubernetes-Health-Check
+                  value: readinessProbe
+                - name: Host
+                  value: {{ .Values.url }}
+              initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.app.probe.periodSeconds }}
+            {{ end }}
+            {{ if eq .Values.app.probe.type "tcp" }}
+            livenessProbe:
+              tcpSocket:
+                port: app
+              initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.app.probe.periodSeconds }}
+            readinessProbe:
+              tcpSocket:
+                port: app
+              initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.app.probe.periodSeconds }}
+            {{ end }}
+            {{ if eq .Values.app.probe.type "exec" }}
+            livenessProbe:
+              initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.app.probe.periodSeconds }}
+              exec:
+                command: ['bash', '-c', '{{ .Values.app.probe.path }}/{{ .Values.app.probe.livenessProbeScriptName }}', '{{ .Values.app.probe.timeout }}']
+            readinessProbe:
+              initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
+              periodSeconds: {{ .Values.app.probe.periodSeconds }}
+              exec:
+                command: ['bash', '-c', '{{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }}', '{{ .Values.app.probe.timeout }}']
+            {{ end }}
+            resources:
+{{ toYaml .Values.resources | indent 16 }}
+            {{ if .Values.env_secrets.enabled }}
+            envFrom:
+            - secretRef:
+                name: {{ .Values.env_secrets.name }}
+            {{ end }}
+            env:
+            {{- if .Values.extra_env_vars -}}
+            {{- range $key, $value := .Values.extra_env_vars }}
+            - name: {{ $key }}
+              value: {{ . | quote }}
+            {{- end -}}
+            {{ end }}
+            {{ if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.app.secret }}
+                  key: database-password
+            - name: PGUSER
+              value: {{ .Values.app.db.user }}
+            - name: PGPORT
+              value: {{ .Values.app.db.port | default 5432 | quote }}
+            - name: PGHOST
+              value: {{ .Values.app.db.host }}
+            - name: DB_NAME
+              value: {{ .Values.app.db.name }}
+            {{ end }}
+            volumeMounts:
+            {{ if .Values.nginx.enabled }}
+            - mountPath: {{ .Values.app.static_root }}
+              name: static-assets-volume
+            {{ end }}
+            {{ if .Values.app.config.enabled }}
+            - mountPath: {{ .Values.app.config.path }}
+              name: {{ template "generic.fullname" . }}-config
+            {{ end }}
+            {{ if .Values.app.volume.enabled }}
+            - mountPath: {{ .Values.app.volume.mountPath }}
+              name: {{ template "generic.name" . }}-data
+            {{ end }}
+            {{ if .Values.app.db.ssl.enabled }}
+            - name: postgres-ssl
+              mountPath: {{ .Values.app.db.ssl.certPath }}
+              readOnly: true
+            {{ end }}
+            {{ if eq .Values.app.probe.type "exec" }}
+            - name: {{ template "generic.fullname" . }}-health
+              mountPath: {{ .Values.app.probe.path }}/{{ .Values.app.probe.livenessProbeScriptName }}
+              subPath: {{ .Values.app.probe.livenessProbeScriptName }}
+            - name: {{ template "generic.fullname" . }}-health
+              mountPath: {{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }}
+              subPath: {{ .Values.app.probe.readinessProbeScriptName }}
+            {{ end }}
+          {{ if .Values.nginx.enabled }}
+          - name: nginx
+            image: nginx:stable-alpine
+            ports:
+            - containerPort: 80
+            volumeMounts:
+            - mountPath: {{ .Values.app.static_root }}
+              name: static-assets-volume
+            - mountPath: /etc/nginx/conf.d
+              name: nginx-config
+          {{ end }}
+          {{ if .Values.imagePullSecrets.enabled }}
+          imagePullSecrets:
+          - name: {{ .Values.imagePullSecrets.name }}
+          {{ end }}
+          volumes:
+          {{ if .Values.nginx.enabled }}
+          - name: static-assets-volume
+            emptyDir: {}
+          - name: nginx-config
+            configMap:
+              name: {{ template "generic.fullname" . }}-nginx-config
+          {{ end }}
+          {{ if .Values.app.config.enabled }}
+          - name: {{ template "generic.fullname" . }}-config
+            configMap:
+              name: {{ template "generic.fullname" . }}-config
+          {{ end }}
+          {{ if .Values.app.db.create }}
+          - name: init-config
+            configMap:
+              name: {{ template "generic.fullname" . }}-init-pg-config
+              defaultMode: 0744
+          {{ end }}
+          {{ if and .Values.app.db.enabled .Values.app.db.ssl.enabled }}
+          - name: postgres-ssl
+            secret:
+              secretName: postgres-ssl-certificate
+          {{ end }}
+          {{ if and .Values.app.db.enabled .Values.gcp}}
+          - name: cloudsql-instance-credentials
+            secret:
+              secretName: cloudsql-instance-credentials
+          {{ end }}
+          {{ if .Values.app.volume.enabled }}
+          - name: {{ template "generic.name" . }}-data
+            {{ if .Values.app.volume.persist }}
+            persistentVolumeClaim:
+              claimName: {{ template "generic.fullname" . }}
+            {{ else }}
+            emptyDir: {}
+            {{ end }}
+          {{ end }}
+          {{ if eq .Values.app.probe.type "exec" }}
+          - name: {{ template "generic.fullname" . }}-health
+            configMap:
+              name: {{ template "generic.fullname" . }}-health
+              defaultMode: 0744
+          {{ end }}
+          {{- with .Values.extraVolumes }}
+    {{ tpl . $ | indent 10 }}
+          {{- end }}
+          restartPolicy: {{ .Values.cronjob.restartpolicy }}
+    {{ end }}

@@ -63,6 +63,11 @@ app:
     accessMode: ReadWriteOnce
     size: 10Gi
 
+cronjob:
+  schedule: 0 * * * *
+  backoffLimit: 6
+  restartpolicy: Never
+
 sidecar:
   enabled: false
   name:
