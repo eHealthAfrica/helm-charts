@@ -40,6 +40,8 @@ gw:
     internalService: ''
   aetherFirebaseConsumer:
     internalService: ''
+  aetherStreamConsumer:
+    internalService: ''
   aetherCkanConsumer:
     internalService: ''
   aetherProducer:
