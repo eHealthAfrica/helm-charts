@@ -67,6 +67,7 @@ cronjob:
   schedule: 0 * * * *
   backoffLimit: 6
   restartpolicy: Never
+  concurrencyPolicy: Allow
 
 sidecar:
   enabled: false

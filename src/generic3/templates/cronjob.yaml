@@ -10,6 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   schedule: {{ .Values.cronjob.schedule }}
+  concurrencyPolicy: {{ .Values.cronjob.concurrencyPolicy }}
   jobTemplate:
     spec:
       backoffLimit: {{ .Values.cronjob.backoffLimit }}
