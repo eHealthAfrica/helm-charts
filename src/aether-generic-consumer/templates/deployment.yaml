@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}
   labels:
     app: {{ .Release.Name }}
-    chart: {{ template "aether-elasticsearch-consumer.chart" . }}
+    chart: {{ template "aether-generic-consumer.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
