@@ -69,7 +69,7 @@ data:
   stream-consumer.json: |
     {
       "name": "stream-consumer",
-      "host": "{{ .Values.gw.aetherFirebaseConsumer.internalService }}",
+      "host": "{{ .Values.gw.aetherStreamConsumer.internalService }}",
       "oidc_endpoints": [
         {
           "name": "protected",
