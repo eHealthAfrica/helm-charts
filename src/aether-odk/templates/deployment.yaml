@@ -1,25 +1,23 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ template "odk.fullname" . }}
   labels:
-    app: {{ .Chart.Name }}
+    app: {{ template "odk.name" . }}
     chart: {{ template "odk.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  progressDeadlineSeconds: 180
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: {{ template "odk.name" . }}
       release: {{ .Release.Name }}
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
-  {{- include "aether-odk.podAntiAffinity" . | indent 2 }}
   template:
     metadata:
       {{ if .Values.kube2iam.enabled }}
