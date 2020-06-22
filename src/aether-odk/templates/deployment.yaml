@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "odk.fullname" . }}
+  name: {{ template "odk.name" . }}
   labels:
     app: {{ template "odk.name" . }}
     chart: {{ template "odk.chart" . }}

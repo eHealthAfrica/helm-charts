@@ -1,28 +1,29 @@
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ template "kernel-ui.fullname" . }}
   labels:
-    app: {{ .Chart.Name }}
-    chart: {{ template "ui.chart" . }}
+    app: {{ template "kernel-ui.name" . }}
+    chart: {{ template "kernel-ui.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: {{ template "kernel-ui.name" . }}
       release: {{ .Release.Name }}
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
-  {{ if .Values.podAntiAffinity.enabled }}
-  {{- include "aether-kernel-ui.podAntiAffinity" . | indent 2 }}
-  {{ end }}
   template:
     metadata:
+      {{ if .Values.kube2iam.enabled }}
+      annotations:
+        iam.amazonaws.com/role: {{ .Values.app.iam.role }}
+      {{ end }}
       labels:
         app: {{ .Chart.Name }}
         release: {{ .Release.Name }}
@@ -47,10 +48,6 @@ spec:
         volumeMounts:
         - mountPath: /var/www/static
           name: static-assets-volume
-        {{ if .Values.imagePullSecrets.enabled }}
-        imagePullSecrets:
-          - name: {{ .Values.imagePullSecrets.name }}
-        {{ end }}
       volumes:
       - name: {{ .Chart.Name }}
       - name: static-assets-volume

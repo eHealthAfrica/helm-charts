@@ -1,38 +1,28 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ template "gather.fullname" . }}
   labels:
-    app: {{ .Chart.Name }}
-    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
-    release: {{ .Chart.Version }}
+    app: {{ template "gather.name" . }}
+    chart: {{ template "gather.name" . }}
+    release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  {{ if .Values.podAntiAffinity.enabled }}
-  spec:
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-            - key: app
-              operator: In
-              values:
-              - {{ .Chart.Name }}
-          topologyKey: "kubernetes.io/hostname"
-  {{ end }}
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "gather.name" . }}
+      release: {{ .Release.Name }}
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
-  progressDeadlineSeconds: 180
-  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
         app: {{ .Chart.Name }}
-        release: {{ .Chart.Version }}
+        release: {{ .Release.Name }}
     spec:
       initContainers:
       - name: init
@@ -134,9 +124,9 @@ spec:
         {{ if .Values.app.caching.enabled }}
         - name: REDIS_DJANGO_CACHE
           value: 'true'
-        - REDIS_DB:
+        - name: REDIS_DB
           value: "0"
-        - REDIS_PORT:
+        - name: REDIS_PORT
           value: "6379"
         - name: REDIS_HOST
           value: {{ .Chart.Name }}-redis-master
@@ -160,39 +150,29 @@ spec:
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: gather-django-secret-key
+              key: django-secret-key
         - name: ADMIN_USERNAME
           value: {{ .Values.app.admin_user }}
         - name: ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: gather-django-admin-password
+              key: admin-password
         - name: ADMIN_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.app.secret }}
-              key: gather-django-admin-token
-        {{ if .Values.aether.odk.enabled }}
+              key: admin-token
         - name: AETHER_ODK_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.aether.odk.secret }}
               key: odk-django-admin-token
-        - name: AETHER_ODK_URL
-          value: {{ .Values.aether.odk.url }}
-         {{ end }}
         - name: AETHER_KERNEL_TOKEN
           valueFrom:
             secretKeyRef:
               name: {{ .Values.aether.kernel.secret }}
               key: kernel-django-admin-token
-        - name: AETHER_KERNEL_URL
-          value: {{ .Values.aether.kernel.url }}
-        - name: AETHER_KERNEL_URL_TEST
-          value: {{ .Values.aether.kernel.urlTest }}
-        - name: EXTERNAL_APPS
-          value: {{ .Values.app.external.apps }}
         - name: DEBUG
           value: {{ if .Values.debug }}"1"{{ else }}""{{ end }}
         - name: TESTING

@@ -13,11 +13,7 @@ spec:
     matchLabels:
       app: {{ template "producer.name" . }}
       release: {{ .Release.Name }}
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+  serviceName: {{ template "producer.name" . }}
   template:
     metadata:
       labels:
@@ -131,7 +127,7 @@ spec:
           - name: KAFKA_SECURITY
             value: {{ .Values.app.kafkaSecurity }}
           - name: KERNEL_ACCESS_TYPE
-          value: {{ .Values.app.kernel.accessType | default "api" | quote }}
+            value: {{ .Values.app.kernel.accessType | default "api" | quote }}
           livenessProbe:
             initialDelaySeconds: 5
             periodSeconds: 10
@@ -141,8 +137,6 @@ spec:
               httpHeaders:
               - name: X-Kubernetes-Health-Check
                 value: livenessProbe
-              - name: Host
-                value: {{ .Values.url }}
           readinessProbe:
             initialDelaySeconds: 5
             periodSeconds: 10
@@ -152,8 +146,6 @@ spec:
               httpHeaders:
               - name: X-Kubernetes-Health-Check
                 value: check
-              - name: Host
-                value: {{ .Values.url }}
           ports:
             - name: http
               containerPort: 80

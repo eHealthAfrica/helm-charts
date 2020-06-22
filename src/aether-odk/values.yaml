@@ -38,12 +38,14 @@ app:
     periodSeconds: 5
     successThreshold: 1
     timeoutSeconds: 10
+    port: 8000
   readinessProbe:
     path: /health
     initialDelaySeconds: 120
     periodSeconds: 5
     successThreshold: 3
     timeoutSeconds: 10
+    port: 8000
   uwsgi:
     threads: 0
   kernel:

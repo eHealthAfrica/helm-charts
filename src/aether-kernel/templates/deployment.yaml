@@ -1,25 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ template "kernel.name" . }}
   labels:
-    app: {{ .Chart.Name }}
+    app: {{ template "kernel.name" . }}
     chart: {{ template "kernel.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  progressDeadlineSeconds: 180
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: {{ template "kernel.name" . }}
       release: {{ .Release.Name }}
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
-  {{- include "aether-kernel.podAntiAffinity" . | indent 2 }}
   template:
     metadata:
       {{ if .Values.kube2iam.enabled }}
