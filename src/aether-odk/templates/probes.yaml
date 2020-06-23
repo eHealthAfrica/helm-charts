@@ -2,7 +2,7 @@
 livenessProbe:
   httpGet:
     path: {{ .Values.app.livenessProbe.path }}
-    port: http
+    port: {{ .Values.app.readinessProbe.port }}
     httpHeaders:
     - name: X-Kubernetes-Health-Check
       value: livenessProbe
@@ -13,7 +13,7 @@ livenessProbe:
 readinessProbe:
   httpGet:
     path: {{ .Values.app.readinessProbe.path }}
-    port: http
+    port: {{ .Values.app.readinessProbe.port }}
     httpHeaders:
     - name: X-Kubernetes-Health-Check
       value: readinessProbe

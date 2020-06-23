@@ -51,14 +51,7 @@ provider:
   gcp: false
 aether:
   odk:
-    enabled: false
     secret: odk-secrets
   kernel:
     secret: kernel-secrets
   modules: kernel,odk
-aether:
-  odk:
-    enabled: true
-  kernel:
-    url: https://kernel.aether.local
-odk_url: https://odk.aether.local
