@@ -13,7 +13,7 @@ spec:
     server: {{ .Values.app.volume.nfs.server }}
   persistentVolumeReclaimPolicy: Recycle
   volumeMode: Filesystem
-
+{{ if .Values.nginx.enabled }}
 ---
 
 apiVersion: v1
@@ -30,4 +30,5 @@ spec:
     server: {{ .Values.app.volume.nfs.server }}
   persistentVolumeReclaimPolicy: Recycle
   volumeMode: Filesystem
+{{ end }}
 {{ end }}
