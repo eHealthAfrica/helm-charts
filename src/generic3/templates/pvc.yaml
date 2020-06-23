@@ -9,6 +9,34 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+{{ if .Values.app.volume.volumeName }}
+  volumeName: {{ .Values.app.volume.volumeName -}}
+{{ end }}
+  storageClassName: {{ .Values.app.volume.type }}
+  accessModes:
+    - {{ .Values.app.volume.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.app.volume.size | quote }}
+{{ end }}
+
+{{ if and .Values.app.volume.persist (eq .Values.resourceType "deployment") .Values.nginx.enabled }}
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ template "generic.fullname" . }}-nginx
+  labels:
+    app: {{ template "generic.name" . }}
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+{{ if .Values.app.volume.volumeName }}
+  volumeName: {{ .Values.app.volume.volumeName -}}-nginx
+{{ end }}
   storageClassName: {{ .Values.app.volume.type }}
   accessModes:
     - {{ .Values.app.volume.accessMode | quote }}

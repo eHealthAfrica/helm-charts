@@ -296,6 +296,10 @@ spec:
           name: static-assets-volume
         - mountPath: /etc/nginx/conf.d
           name: nginx-config
+        {{ if and .Values.app.volume.enabled .Values.nginx.enabled }}
+        - mountPath: {{ .Values.app.volume.mountPath }}
+          name: {{ template "generic.name" . }}-nginx-data
+        {{ end }}
       {{ end }}
       {{ if .Values.imagePullSecrets.enabled }}
       imagePullSecrets:
@@ -335,6 +339,15 @@ spec:
         {{ if .Values.app.volume.persist }}
         persistentVolumeClaim:
           claimName: {{ template "generic.fullname" . }}
+        {{ else }}
+        emptyDir: {}
+        {{ end }}
+      {{ end }}
+      {{ if and .Values.app.volume.enabled .Values.nginx.enabled }}
+      - name: {{ template "generic.name" . }}-nginx-data
+        {{ if .Values.app.volume.persist }}
+        persistentVolumeClaim:
+          claimName: {{ template "generic.fullname" . }}-nginx
         {{ else }}
         emptyDir: {}
         {{ end }}
