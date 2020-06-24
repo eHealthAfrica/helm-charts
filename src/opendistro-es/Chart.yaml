@@ -8,4 +8,4 @@ maintainers:
 name: opendistro-es
 sources:
 - https://pages.git.viasat.com/ATG/charts
-version: 1.0.3
+version: 1.0.4

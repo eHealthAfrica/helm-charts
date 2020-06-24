@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT-0
 {{- if .Values.elasticsearch.client.enabled }}
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -12,6 +12,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.elasticsearch.client.replicas }}
+  selector:
+    matchLabels:
+{{ include "opendistro-es.labels.standard" . | indent 8 }}
   template:
     metadata:
       labels:
