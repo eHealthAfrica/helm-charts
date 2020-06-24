@@ -53,6 +53,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: {{ .Release.Name }}-redis
+                key: redis-password
           - name: REDIS_PORT
             value: {{ .Values.app.redis.port | quote }}
           - name: KAFKA_CONSUMER_USER
