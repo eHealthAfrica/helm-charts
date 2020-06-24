@@ -2,7 +2,7 @@
 {{- $fullName := printf "%s-%s"  (include "opendistro-es.fullname" .) "client-service" }}
 {{- $ingressPath := .Values.elasticsearch.client.ingress.path -}}
 kind: Ingress
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: {{ $fullName }}
   labels:

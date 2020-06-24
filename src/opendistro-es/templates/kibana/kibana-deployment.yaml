@@ -1,5 +1,5 @@
 {{- if .Values.kibana.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
@@ -7,6 +7,9 @@ metadata:
   name: {{ template "opendistro-es.fullname" . }}-kibana
 spec:
   replicas: {{ .Values.kibana.replicas }}
+  selector:
+    matchLabels:
+{{ include "opendistro-es.labels.standard" . | indent 8 }}
   template:
     metadata:
       labels:
