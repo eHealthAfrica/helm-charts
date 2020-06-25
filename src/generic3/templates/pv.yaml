@@ -13,22 +13,4 @@ spec:
     server: {{ .Values.app.volume.nfs.server }}
   persistentVolumeReclaimPolicy: Recycle
   volumeMode: Filesystem
-{{ if .Values.nginx.enabled }}
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: {{ template "generic.fullname" . }}-nginx
-spec:
-  accessModes:
-  - ReadWriteMany
-  capacity:
-    storage: 1Mi
-  nfs:
-    path: {{ .Values.app.volume.nfs.path }}
-    server: {{ .Values.app.volume.nfs.server }}
-  persistentVolumeReclaimPolicy: Recycle
-  volumeMode: Filesystem
-{{ end }}
 {{ end }}

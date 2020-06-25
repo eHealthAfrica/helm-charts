@@ -298,7 +298,7 @@ spec:
           name: nginx-config
         {{ if and .Values.app.volume.enabled .Values.nginx.enabled }}
         - mountPath: {{ .Values.app.volume.mountPath }}
-          name: {{ template "generic.name" . }}-nginx-data
+          name: {{ template "generic.name" . }}-data
         {{ end }}
       {{ end }}
       {{ if .Values.imagePullSecrets.enabled }}
@@ -339,15 +339,6 @@ spec:
         {{ if .Values.app.volume.persist }}
         persistentVolumeClaim:
           claimName: {{ template "generic.fullname" . }}
-        {{ else }}
-        emptyDir: {}
-        {{ end }}
-      {{ end }}
-      {{ if and .Values.app.volume.enabled .Values.nginx.enabled }}
-      - name: {{ template "generic.name" . }}-nginx-data
-        {{ if .Values.app.volume.persist }}
-        persistentVolumeClaim:
-          claimName: {{ template "generic.fullname" . }}-nginx
         {{ else }}
         emptyDir: {}
         {{ end }}
