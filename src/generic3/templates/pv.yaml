@@ -1,0 +1,16 @@
+{{ if .Values.app.volume.nfs.server }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ template "generic.fullname" . }}
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 1Mi
+  nfs:
+    path: {{ .Values.app.volume.nfs.path }}
+    server: {{ .Values.app.volume.nfs.server }}
+  persistentVolumeReclaimPolicy: Recycle
+  volumeMode: Filesystem
+{{ end }}

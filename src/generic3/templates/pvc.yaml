@@ -9,6 +9,9 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+{{ if .Values.app.volume.volumeName }}
+  volumeName: {{ .Values.app.volume.volumeName -}}
+{{ end }}
   storageClassName: {{ .Values.app.volume.type }}
   accessModes:
     - {{ .Values.app.volume.accessMode | quote }}
@@ -16,3 +19,4 @@ spec:
     requests:
       storage: {{ .Values.app.volume.size | quote }}
 {{ end }}
+
