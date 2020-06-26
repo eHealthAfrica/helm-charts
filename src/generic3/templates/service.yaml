@@ -1,4 +1,3 @@
-{{ if eq .Values.resourceType "deployment" }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -18,4 +17,3 @@ spec:
   selector:
     app: {{ template "generic.name" . }}
     release: {{ .Release.Name }}
-{{ end }}
