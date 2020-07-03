@@ -22,6 +22,7 @@ app:
   repository: ehealthafrica/aether-producer
   tag: 1.7.3
   adminUser: admin
+  logLevel: ERROR
   kafkaSecurity: SASL_SSL
   db:
     secret: database-credentials
