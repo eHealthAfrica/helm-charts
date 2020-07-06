@@ -1,4 +1,4 @@
-apiVersion: v2
+apiVersion: v1
 description: The Producer for Aether, an open source development platform for data curation & dissemination
 name: aether-producer
-version: 1.2.8
+version: 1.2.9
