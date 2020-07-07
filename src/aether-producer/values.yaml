@@ -33,6 +33,10 @@ app:
   kernel:
     secret: kernel-secrets
     user: kernel
+  probe:
+    initialDelaySeconds: 120
+    periodSeconds: 10
+    timeoutSeconds: 10
 ingress:
   enabled: false
 provider:

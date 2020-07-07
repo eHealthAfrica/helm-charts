@@ -195,6 +195,7 @@ spec:
               value: livenessProbe
           initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.app.probe.periodSeconds }}
+          timeoutSeconds: {{ .Values.app.probe.timeoutSeconds }}
         readinessProbe:
           httpGet:
             path: {{ .Values.app.probe.path }}
@@ -206,6 +207,7 @@ spec:
               value: {{ .Values.url }}
           initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.app.probe.periodSeconds }}
+          timeoutSeconds: {{ .Values.app.probe.timeoutSeconds }}
         {{ end }}
         {{ if eq .Values.app.probe.type "tcp" }}
         livenessProbe:
