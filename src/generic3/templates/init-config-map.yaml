@@ -16,32 +16,8 @@ data:
     PROXY_PID=$!
     sleep 5
 
-    # check to see if database exists
-    db_exists=$(psql -t -c "select count(*) from pg_catalog.pg_database where datname='$DB_NAME'")
-
-    # check to see if user exists
-    user_exists=$(psql -t -c "select count(*) from pg_catalog.pg_roles where rolname='$DB_USERNAME'")
-
-    if [ $db_exists -eq 0 ]; then
-        psql -c "CREATE DATABASE $DB_NAME;"
-    fi
-
-    if [ $user_exists -eq 0 ]; then
-      psql -c "CREATE USER $DB_USERNAME WITH PASSWORD '$DB_PASSWORD';"
-    fi
-
-    psql -c "GRANT $DB_USERNAME TO $PGUSER;"
-    psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USERNAME;"
-    psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USERNAME;"
-    echo "sql executed.."
-
-    # create database extensions
-    {{ if .Values.app.db.extensions }}
-    {{- range .Values.app.db.extensions }}
-    echo "creating Postgres database extensions"
-    psql -d $DB_NAME -c 'CREATE EXTENSION IF NOT EXISTS {{ . | quote }} ;'
-    {{- end }}
-    {{ end }}
+    #initialization script
+    {{ tpl .Values.app.db.init . | indent 4 }}
 
     sleep 5
     echo "stopping proxy"
