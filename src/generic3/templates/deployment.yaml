@@ -70,6 +70,11 @@ spec:
               key: database-password
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
+        {{ if .Values.env_secrets.enabled }}
+        envFrom:
+          - secretRef:
+            name: {{ .Values.env_secrets.name }}
+        {{ end }}
         volumeMounts:
         - mountPath: /scripts
           name: init-config
