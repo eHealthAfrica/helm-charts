@@ -72,7 +72,7 @@ spec:
           value: {{ .Values.app.db.name }}
         {{ if .Values.env_secrets.enabled }}
         envFrom:
-          - secretRef:
+        - secretRef:
             name: {{ .Values.env_secrets.name }}
         {{ end }}
         volumeMounts:
