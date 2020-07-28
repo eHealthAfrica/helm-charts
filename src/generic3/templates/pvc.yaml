@@ -1,4 +1,4 @@
-{{ if and .Values.app.volume.persist (eq .Values.resourceType "deployment") }}
+{{ if .Values.app.volume.persist }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -19,4 +19,3 @@ spec:
     requests:
       storage: {{ .Values.app.volume.size | quote }}
 {{ end }}
-
