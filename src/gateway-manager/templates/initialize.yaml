@@ -6,27 +6,41 @@ data:
   initialize.sh: |
     #!/usr/bin/env bash
     set -Eeuo pipefail
+
     gwm="/code/entrypoint.sh"
     $gwm add_app keycloak
-    $gwm add_realm $REALM "Tenant: $REALM" $LOGIN_THEME
-    $gwm add_public_client $REALM $KEYCLOAK_AETHER_CLIENT
-    $gwm add_oidc_client $REALM $KEYCLOAK_KONG_CLIENT
-    $gwm add_user $REALM $KEYCLOAK_INITIAL_USER_USERNAME $KEYCLOAK_INITIAL_USER_PASSWORD
+
+    $gwm add_realm $REALM "Tenant: $REALM" \
+      ${LOGIN_THEME:-keycloak} \
+      ${ACCOUNT_THEME:-keycloak} \
+      ${ADMIN_THEME:-keycloak} \
+      ${EMAIL_THEME:-keycloak}
+
+    $gwm add_public_client $REALM $KEYCLOAK_PUBLIC_CLIENT
+    $gwm add_oidc_client   $REALM $KEYCLOAK_KONG_CLIENT
+
+    # create realm manager
+    $gwm add_admin $REALM $INITIAL_SUPERUSER_USERNAME $INITIAL_SUPERUSER_PASSWORD
+
+    # create users manager
+    $gwm add_user $REALM $INITIAL_ADMIN_USERNAME $INITIAL_ADMIN_PASSWORD
+    $gwm add_user_group $REALM $INITIAL_ADMIN_USERNAME "admin"
+
+    # create simple user
+    $gwm add_user $REALM $INITIAL_USER_USERNAME $INITIAL_USER_PASSWORD
+    $gwm add_user_group $REALM $INITIAL_USER_USERNAME "user"
 
     SOLUTIONS={{ .Values.gw.solutions }}
     for solution in "${SOLUTIONS[@]}"; do
       $gwm add_solution $solution $REALM $KEYCLOAK_KONG_CLIENT
 
-      # create tenant database for planfeld solution
+      # create tenant database for PlanFeld solution
       if [[ $solution = "planfeld" ]]; then
-        service_creds=${KEYCLOAK_INITIAL_USER_USERNAME}:${KEYCLOAK_INITIAL_USER_PASSWORD}
+        service_creds=${INITIAL_ADMIN_USERNAME}:${INITIAL_ADMIN_PASSWORD}
         service_url=${BASE_HOST}/${REALM}/planfeld/api/v1/tenant/
         curl --silent --show-error --fail -u $service_creds -X POST ${service_url}
       fi
     done
 
-    # Elasticsearch & Kibana
-    $gwm add_service elasticsearch       "$REALM" $KEYCLOAK_KONG_CLIENT
-    $gwm add_service kibana              "$REALM" $KEYCLOAK_KONG_CLIENT
-    $gwm add_service es-consumer         "$REALM" $KEYCLOAK_KONG_CLIENT
-    $gwm add_elasticsearch_tenant        "$REALM" 7
+    # Elasticsearch
+    $gwm add_elasticsearch_tenant "$REALM" 7
