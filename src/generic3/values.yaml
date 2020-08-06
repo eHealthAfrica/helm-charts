@@ -6,7 +6,6 @@
 resourceType: deployment
 
 replicaCount: 2
-maxReplicaCount: 5
 
 nameOverride:
 fullnameOverride:
@@ -65,7 +64,16 @@ app:
       memory: 256M
     limits:
       cpu: 500m
-      memory: 512Mi
+      memory: 512M
+
+#  HPA Activation
+  replica:
+    enabled: "true"
+    min: 2
+    max: 5
+    utilization:
+      cpu: 70
+      memory: 70
 
   secret:
   config:
