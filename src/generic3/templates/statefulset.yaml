@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   serviceName: {{ template "generic.name" . }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.app.replica.min }}
   selector:
     matchLabels:
       app: {{ template "generic.name" . }}
