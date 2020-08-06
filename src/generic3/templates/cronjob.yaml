@@ -136,7 +136,7 @@ spec:
               periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
             {{ end }}
             resources:
-          {{ toYaml .Values.resources | indent 16 }}
+{{ toYaml .Values.sidecar.resources | indent 16 }}
             {{ if .Values.env_secrets.enabled }}
             envFrom:
             - secretRef:
@@ -169,9 +169,7 @@ spec:
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             resources:
-              requests:
-                cpu: {{ .Values.app.resources.requests.cpu }}
-                memory: {{ .Values.app.resources.requests.memory }}
+{{ toYaml .Values.app.resources | indent 16 }}
             args:
               {{- range .Values.app.args }}
               - {{ . | quote }}
@@ -226,8 +224,6 @@ spec:
               exec:
                 command: ['bash', '-c', '{{ .Values.app.probe.path }}/{{ .Values.app.probe.readinessProbeScriptName }}', '{{ .Values.app.probe.timeout }}']
             {{ end }}
-            resources:
-{{ toYaml .Values.resources | indent 16 }}
             {{ if .Values.env_secrets.enabled }}
             envFrom:
             - secretRef:
