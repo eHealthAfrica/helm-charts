@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: services
 data:
+  # Elasticsearch & Kibana
   elasticsearch.json: |
     {
       "name": "elasticsearch",
@@ -10,122 +11,8 @@ data:
       "oidc_endpoints": [
         {
           "name": "protected",
-          "paths": [
-            "/{realm}/{name}"
-          ],
-          "strip_path": "true",
-          "oidc_override": {
-            "config.user_keys": [
-              "preferred_username",
-              "email",
-              "groups"
-            ]
-          }
-        }
-      ]
-    }
-  es-consumer.json: |
-    {
-      "name": "es-consumer",
-      "host": "{{ .Values.gw.aetherElasticsearchConsumer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": [
-            "/{realm}/{name}"
-          ],
-          "strip_path": "true",
-          "oidc_override": {
-            "config.user_keys": [
-              "preferred_username",
-              "email",
-              "groups"
-            ]
-          }
-        }
-      ]
-    }
-  firebase-consumer.json: |
-    {
-      "name": "firebase-consumer",
-      "host": "{{ .Values.gw.aetherFirebaseConsumer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": [
-            "/{realm}/{name}"
-          ],
-          "strip_path": "true",
-          "oidc_override": {
-            "config.user_keys": [
-              "preferred_username",
-              "email",
-              "groups"
-            ]
-          }
-        }
-      ]
-    }
-  stream-consumer.json: |
-    {
-      "name": "stream-consumer",
-      "host": "{{ .Values.gw.aetherStreamConsumer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": [
-            "/{realm}/{name}"
-          ],
-          "strip_path": "true",
-          "oidc_override": {
-            "config.user_keys": [
-              "preferred_username",
-              "email",
-              "groups"
-            ]
-          }
-        }
-      ]
-    }
-  ckan-consumer.json: |
-    {
-      "name": "ckan-consumer",
-      "host": "{{ .Values.gw.aetherCkanConsumer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": [
-            "/{realm}/{name}"
-          ],
-          "strip_path": "true",
-          "oidc_override": {
-            "config.user_keys": [
-              "preferred_username",
-              "email",
-              "groups"
-            ]
-          }
-        }
-      ]
-    }
-  producer.json: |
-    {
-      "name": "producer",
-      "host": "{{ .Values.gw.aetherProducer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": [
-            "/{realm}/{name}"
-          ],
-          "strip_path": "true",
-          "oidc_override": {
-            "config.user_keys": [
-              "preferred_username",
-              "email",
-              "groups"
-            ]
-          }
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
         }
       ]
     }
@@ -136,21 +23,13 @@ data:
       "oidc_endpoints": [
         {
           "name": "protected",
-          "paths": [
-            "/{realm}/{name}"
-          ],
-          "strip_path": "true",
-          "oidc_override": {
-            "config.user_keys": [
-              "preferred_username",
-              "email",
-              "groups"
-            ]
-          }
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
         }
       ]
     }
 
+  # Aether + Gather
   gather.json: |
     {
       "name": "gather",
@@ -210,7 +89,68 @@ data:
         }
       ]
     }
+  producer.json: |
+    {
+      "name": "producer",
+      "host": "{{ .Values.gw.aetherProducer.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
 
+  # Aether consumers
+  es-consumer.json: |
+    {
+      "name": "es-consumer",
+      "host": "{{ .Values.gw.aetherElasticsearchConsumer.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"]
+        }
+      ]
+    }
+  firebase-consumer.json: |
+    {
+      "name": "firebase-consumer",
+      "host": "{{ .Values.gw.aetherFirebaseConsumer.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"]
+        }
+      ]
+    }
+  stream-consumer.json: |
+    {
+      "name": "stream-consumer",
+      "host": "{{ .Values.gw.aetherStreamConsumer.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  ckan-consumer.json: |
+    {
+      "name": "ckan-consumer",
+      "host": "{{ .Values.gw.aetherCkanConsumer.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+
+  # PlanFeld
   planner.json: |
     {
       "name": "planner",
@@ -297,6 +237,20 @@ data:
         {
           "name": "protected",
           "paths": ["/{realm}/{name}"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  ui-health.json: |
+    {
+      "name": "ui-health",
+      "host": "http://planfeld-ui/health",
+      "paths": ["/{public_realm}/ui/health"],
+      "strip_path": "true",
+      "public_endpoints": [
+        {
+          "name": "public",
+          "paths": ["/{realm}/ui/health"],
           "strip_path": "true"
         }
       ]

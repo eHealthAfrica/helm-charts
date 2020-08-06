@@ -16,7 +16,7 @@ gw:
       internalService: ''
     gather:
       internalService: ''
-  solutions: "(aether-gather planfeld)"
+  solutions: "(aether-gather planfeld elasticsearch consumers)"
   keyCloak:
     globalAdmin: 'keycloak'
     kongClient: 'kong'
