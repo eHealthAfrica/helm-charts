@@ -10,7 +10,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   serviceName: {{ template "generic.name" . }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.app.replica.min }}
   selector:
     matchLabels:
       app: {{ template "generic.name" . }}
@@ -71,7 +71,7 @@ spec:
       - name: cloudsql-proxy
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
         resources:
-          {{ toYaml .Values.sidecar.resources  | indent 12 }}
+{{ toYaml .Values.sidecar.resources  | indent 12 }}
         command: ["/cloud_sql_proxy",
                   "-instances={{ .Values.database.instance }}=tcp:{{ .Values.app.db.port }}",
                   "-credential_file=/secrets/cloudsql/credentials.json"]
@@ -127,7 +127,7 @@ spec:
           periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
         {{ end }}
         resources:
-      {{ toYaml .Values.sidecar.resources | indent 12 }}
+{{ toYaml .Values.sidecar.resources | indent 12 }}
         {{ if .Values.env_secrets.enabled }}
         envFrom:
         - secretRef:
@@ -160,7 +160,7 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         resources:
-        {{ toYaml .Values.app.resources | indent 12 }}
+{{ toYaml .Values.app.resources | indent 12 }}
         args:
           {{- range .Values.app.args }}
           - {{ . | quote }}
