@@ -5,6 +5,8 @@
 # Support for deployment and statefulset resource types
 resourceType: deployment
 
+replicaCount: 2
+
 nameOverride:
 fullnameOverride:
 
