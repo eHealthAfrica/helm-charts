@@ -32,6 +32,9 @@ data:
 
     SOLUTIONS={{ .Values.gw.solutions }}
     for solution in "${SOLUTIONS[@]}"; do
+      if [[ "${RESET_REALM:-}" == "true" ]]; then
+        $gwm remove_solution $solution $REALM
+      fi
       $gwm add_solution $solution $REALM $KEYCLOAK_KONG_CLIENT
 
       # create tenant database for PlanFeld solution
