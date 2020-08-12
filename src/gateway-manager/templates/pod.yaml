@@ -17,6 +17,7 @@ spec:
     env:
     - name: DEBUG
       value: "{{ .Values.gw.debug }}"
+
     - name: KEYCLOAK_GLOBAL_ADMIN
       value: {{ .Values.gw.keyCloak.globalAdmin }}
     - name: KEYCLOAK_GLOBAL_PASSWORD
@@ -24,28 +25,51 @@ spec:
         secretKeyRef:
           name: {{ .Values.gw.keyCloak.secret.name }}
           key: {{ .Values.gw.keyCloak.secret.passwordKey }}
+
     - name: LOGIN_THEME
-      value: {{ .Values.gw.logingTheme }}
-    - name: KEYCLOAK_AETHER_CLIENT
+      value: {{ .Values.gw.loginTheme }}
+    - name: ACCOUNT_THEME
+      value: {{ .Values.gw.accountTheme }}
+    - name: ADMIN_THEME
+      value: {{ .Values.gw.adminTheme }}
+    - name: EMAIL_THEME
+      value: {{ .Values.gw.emailTheme }}
+
+    - name: KEYCLOAK_PUBLIC_CLIENT
       value: {{ .Values.gw.keyCloak.aetherClient }}
     - name: KEYCLOAK_KONG_CLIENT
       value: {{ .Values.gw.keyCloak.kongClient }}
+
     - name: BASE_DOMAIN
       value: {{ .Values.gw.baseDomain }}
     - name: BASE_HOST
       value: {{ .Values.gw.baseHost }}
+
     - name: KEYCLOAK_INTERNAL
       value: {{ .Values.gw.keyCloak.internalService }}
     - name: KEYCLOAK_HOST
       value: {{ .Values.gw.keyCloak.host }}
-    - name: KEYCLOAK_INITIAL_USER_USERNAME
-      value: {{ .Values.gw.keyCloak.initial_user }}
-    - name: KEYCLOAK_INITIAL_USER_PASSWORD
-      value: {{.Values.gw.keyCloak.initial_password}}
+
     - name: KONG_INTERNAL
       value: {{ .Values.gw.kong.internalService }}
     - name: REALM
       value: {{ .Values.gw.keyCloak.realm }}
+
+    - name: INITIAL_SUPERUSER_USERNAME
+      value: {{ .Values.gw.keyCloak.initial_superuser }}
+    - name: INITIAL_SUPERUSER_PASSWORD
+      value: {{.Values.gw.keyCloak.initial_superuser_password}}
+
+    - name: INITIAL_ADMIN_USERNAME
+      value: {{ .Values.gw.keyCloak.initial_admin }}
+    - name: INITIAL_ADMIN_PASSWORD
+      value: {{.Values.gw.keyCloak.initial_admin_password}}
+
+    - name: INITIAL_USER_USERNAME
+      value: {{ .Values.gw.keyCloak.initial_user }}
+    - name: INITIAL_USER_PASSWORD
+      value: {{.Values.gw.keyCloak.initial_user_password}}
+
     - name: ELASTICSEARCH_HOST
       value: {{ .Values.gw.elasticsearch.internalService }}
     - name: ELASTICSEARCH_USER
@@ -55,6 +79,7 @@ spec:
         secretKeyRef:
           name: {{ .Values.gw.elasticsearch.secret.name }}
           key: {{ .Values.gw.elasticsearch.secret.passwordKey }}
+
     volumeMounts:
     - name: services
       mountPath: /code/service

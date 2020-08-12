@@ -7,5 +7,5 @@ data:
     {
       "name": "keycloak",
       "host": "{{ .Values.gw.keyCloak.host }}",
-      "paths": [ "/auth/" ]
+      "paths": [ "/auth$", "/auth/" ]
     }

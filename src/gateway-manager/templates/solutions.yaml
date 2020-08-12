@@ -11,10 +11,7 @@ data:
         "kernel",
         "gather",
         "odk",
-        "es-consumer",
-        "firebase-consumer",
-        "producer",
-        "ckan-consumer"
+        "producer"
       ]
     }
   planfeld.json: |
@@ -24,6 +21,20 @@ data:
         "monitor", "monitor-health",
         "planfeld", "planfeld-health",
         "planner", "planner-health",
-        "ui", "ui-static"
+        "ui", "ui-health", "ui-static"
+      ]
+    }
+  elasticsearch.json: |
+    {
+      "name": "elasticsearch",
+      "services": ["elasticsearch", "kibana"]
+    }
+  consumers.json: |
+    {
+      "name": "elasticsearch",
+      "services": [
+        "ckan-consumer",
+        "es-consumer",
+        "firebase-consumer"
       ]
     }
