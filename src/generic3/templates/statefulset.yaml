@@ -28,6 +28,8 @@ spec:
       {{- end }}
       - name: init
         image: postgres:9.3-alpine
+        resources:
+{{ toYaml .Values.sidecar.resources  | indent 12 }}
         command: ['bash', '-c', './scripts/init.sh']
         env:
         - name: PGHOST
@@ -83,6 +85,8 @@ spec:
       {{ if .Values.sidecar.enabled }}
       - name: {{ .Values.sidecar.name }}
         image: "{{ .Values.sidecar.image.repository }}:{{ .Values.sidecar.image.tag }}"
+        resources:
+{{ toYaml .Values.sidecar.resources | indent 12 }}
         imagePullPolicy: {{ .Values.sidecar.image.pullPolicy }}
         args:
           {{- range .Values.sidecar.args }}
@@ -126,8 +130,6 @@ spec:
           initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
         {{ end }}
-        resources:
-{{ toYaml .Values.sidecar.resources | indent 12 }}
         {{ if .Values.env_secrets.enabled }}
         envFrom:
         - secretRef:
@@ -271,6 +273,8 @@ spec:
       {{ if .Values.nginx.enabled }}
       - name: nginx
         image: nginx:stable-alpine
+        resources:
+{{ toYaml .Values.sidecar.resources  | indent 12 }}
         ports:
         - containerPort: 80
         volumeMounts:
