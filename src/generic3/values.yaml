@@ -127,12 +127,12 @@ sidecar:
     enabled: false
 
   resources:
-     limits:
+    limits:
       cpu: 100m
       memory: 128Mi
-     requests:
-       cpu: 50m
-       memory: 64Mi
+    requests:
+      cpu: 25m
+      memory: 32Mi
 
 database:
   instance:
