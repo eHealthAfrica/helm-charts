@@ -280,7 +280,12 @@ spec:
         - mountPath: {{ .Values.app.volume.mountPath }}
           name: {{ template "generic.name" . }}-data
         {{ end }}
-        {{ if .Values.app.db.ssl.enabled }}
+
+        {{- with .Values.app.extraVolumeMounts }}
+{{ tpl . $ | indent 10 }}
+        {{- end }}
+
+          {{ if .Values.app.db.ssl.enabled }}
         - name: postgres-ssl
           mountPath: {{ .Values.app.db.ssl.certPath }}
           readOnly: true

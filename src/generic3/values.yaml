@@ -21,6 +21,14 @@ extraContainers: |
 
 ## Add additional volumes and mounts
 extraVolumes: |
+#  - name: {{ template "generic.fullname" . }}-consumer-kafka-config
+#    configMap:
+#      name: {{ template "generic.fullname" . }}-consumer-kafka-config
+#      defaultMode: 0744
+#  - name: {{ template "generic.fullname" . }}-consumer-config
+#    configMap:
+#      name: {{ template "generic.fullname" . }}-consumer-config
+#      defaultMode: 0744
 
 app:
   name:
@@ -67,8 +75,8 @@ app:
       memory: 512M
 
 #  HPA Activation
-  replica:
-    enabled: "true"
+  scaling:
+    enabled: true
     min: 2
     max: 5
     utilization:
@@ -102,6 +110,16 @@ app:
       server:
       path:
 
+  ## Add additional volumeMounts
+  extraVolumeMounts: |
+#    - name: {{ template "generic.fullname" . }}-consumer-kafka-config
+#      mountPath: /code/conf/consumer/kafka.json
+#      subPath: kafka.json
+#    - name: {{ template "generic.fullname" . }}-consumer-config
+#      mountPath: /code/conf/consumer/consumer.json
+#      subPath: consumer.json
+
+
 cronjob:
   schedule: 0 * * * *
   backoffLimit: 6
@@ -129,10 +147,10 @@ sidecar:
   resources:
     limits:
       cpu: 100m
-      memory: 128Mi
+      memory: 128M
     requests:
       cpu: 25m
-      memory: 32Mi
+      memory: 32M
 
 database:
   instance:
@@ -227,3 +245,45 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+aether:
+  redis:
+    enabled: false
+  consumer_configmap:
+    enabled: false
+    data: |
+#      consumer.json: |
+#          {
+#            "startup_connection_retry": 3,
+#            "connect_retry_wait": 1,
+#            "latitude_fields": [
+#              "lat",
+#              "latitude"
+#            ],
+#            "longitude_fields": [
+#              "lon",
+#              "lng",
+#              "long",
+#              "longitude"
+#            ]
+#          }
+
+  consumer_kafka_configmap:
+    enabled: false
+    data: |
+#      kafka.json: |
+#        {
+#          "security.protocol": "SASL_SSL",
+#          "sasl.mechanism": "PLAIN",
+#          "group.id": "elasticsearch-metadataonly",
+#          "auto.offset.reset" : "earliest",
+#          "enable.auto.commit": true,
+#          "auto.commit.interval.ms": 5000,
+#          "aether_emit_flag_required" : false,
+#          "aether_masking_schema_levels" : ["false", "true"],
+#          "aether_masking_schema_emit_level": "false",
+#          "heartbeat.interval.ms": 3000,
+#          "session.timeout.ms": 18000,
+#          "request.timeout.ms": 30000,
+#          "max.poll.interval.ms": 300000
+#        }

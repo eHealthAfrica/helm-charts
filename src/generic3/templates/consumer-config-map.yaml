@@ -1,0 +1,30 @@
+{{ if .Values.aether.consumer_configmap.enabled  }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "generic.fullname" . }}-consumer-config
+  labels:
+    app: {{ template "generic.name" . }}
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+
+data:
+{{ .Values.aether.consumer_configmap.data | indent 4 }}
+
+{{ end }}
+---
+
+{{ if .Values.aether.consumer_kafka_configmap.enabled  }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "generic.fullname" . }}-consumer-kafka-config
+  labels:
+    app: {{ template "generic.name" . }}
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+
+data:
+{{ .Values.aether.consumer_kafka_configmap.data | indent 4 }}
+
+{{ end }}
