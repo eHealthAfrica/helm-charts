@@ -1,4 +1,4 @@
-{{ if eq .Values.aether.consumer_configmap.enabled "true" }}
+{{ if .Values.aether.consumer_configmap.enabled  }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -14,7 +14,7 @@ data:
 {{ end }}
 ---
 
-{{ if eq .Values.aether.consumer_kafka_configmap.enabled "true" }}
+{{ if .Values.aether.consumer_kafka_configmap.enabled  }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
