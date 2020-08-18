@@ -1,0 +1,5 @@
+dependencies:
+- name: redis
+  condition: aether.redis.enabled
+  version: "~10.6.12"
+  repository: "https://charts.bitnami.com/bitnami"

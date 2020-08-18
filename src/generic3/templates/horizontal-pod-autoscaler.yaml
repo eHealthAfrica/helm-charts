@@ -1,4 +1,4 @@
-{{ if eq .Values.app.replica.enabled "true" }}
+{{ if eq .Values.app.scaling.enabled "true" }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -13,16 +13,16 @@ spec:
     apiVersion: apps/v1
     kind: {{ .Values.resourceType }}
     name: {{ template "generic.fullname" . }}
-  minReplicas: {{ .Values.app.replica.min }}
-  maxReplicas: {{ .Values.app.replica.max }}
+  minReplicas: {{ .Values.app.scaling.min }}
+  maxReplicas: {{ .Values.app.scaling.max }}
   metrics:
     - type: Resource
       resource:
         name: cpu
-        targetAverageUtilization: {{ .Values.app.replica.utilization.cpu }}
+        targetAverageUtilization: {{ .Values.app.scaling.utilization.cpu }}
     - type: Resource
       resource:
         name: memory
-        targetAverageUtilization: {{ .Values.app.replica.utilization.memory }}
+        targetAverageUtilization: {{ .Values.app.scaling.utilization.memory }}
 
   {{ end }}
