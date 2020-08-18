@@ -76,7 +76,7 @@ app:
 
 #  HPA Activation
   scaling:
-    enabled: "true"
+    enabled: true
     min: 2
     max: 5
     utilization:
@@ -250,7 +250,7 @@ aether:
   redis:
     enabled: false
   consumer_configmap:
-    enabled: "false"
+    enabled: false
     data: |
 #      consumer.json: |
 #          {
@@ -269,7 +269,7 @@ aether:
 #          }
 
   consumer_kafka_configmap:
-    enabled: "false"
+    enabled: false
     data: |
 #      kafka.json: |
 #        {
@@ -287,4 +287,3 @@ aether:
 #          "request.timeout.ms": 30000,
 #          "max.poll.interval.ms": 300000
 #        }
-
