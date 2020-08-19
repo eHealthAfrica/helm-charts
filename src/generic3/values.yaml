@@ -103,7 +103,7 @@ app:
     enabled: false
     mountPath:
     persist: false
-    type: standard
+    type: standard # type can also be 'retain-volume' for stateful apps or 'nfs' for RWM
     accessMode: ReadWriteOnce
     size: 10Gi
     nfs:
