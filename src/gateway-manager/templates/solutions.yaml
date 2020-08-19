@@ -3,16 +3,20 @@ kind: ConfigMap
 metadata:
   name: solutions
 data:
-  aether-gather.json: |
+  aether.json: |
     {
-      "name": "aether-gather",
+      "name": "aether",
       "services": [
         "kernel-ui",
         "kernel",
-        "gather",
         "odk",
         "producer"
       ]
+    }
+  gather.json: |
+    {
+      "name": "gather",
+      "services": ["gather"]
     }
   planfeld.json: |
     {
@@ -31,7 +35,7 @@ data:
     }
   consumers.json: |
     {
-      "name": "elasticsearch",
+      "name": "consumers",
       "services": [
         "ckan-consumer",
         "es-consumer",
