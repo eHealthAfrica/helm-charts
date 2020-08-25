@@ -18,7 +18,6 @@ gw:
     clusterName: 'dev'
   keyCloak:
     globalAdmin: 'admin'
-    kongClient: 'admin'
     baseDomain: 'eha.im'
     baseHost: 'alpha.eha.im'
     internalService: 'keycloak-http'

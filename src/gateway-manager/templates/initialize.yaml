@@ -10,14 +10,14 @@ data:
     gwm="/code/entrypoint.sh"
     $gwm add_app keycloak
 
-    $gwm add_realm $REALM "Tenant: $REALM" \
-      ${LOGIN_THEME:-keycloak} \
-      ${ACCOUNT_THEME:-keycloak} \
-      ${ADMIN_THEME:-keycloak} \
-      ${EMAIL_THEME:-keycloak}
+    $gwm add_realm $REALM \
+      description="Tenant: $REALM" \
+      login_theme=${LOGIN_THEME:-keycloak} \
+      account_theme=${ACCOUNT_THEME:-keycloak} \
+      admin_theme=${ADMIN_THEME:-keycloak} \
+      email_theme=${EMAIL_THEME:-keycloak}
 
     $gwm add_public_client $REALM $KEYCLOAK_PUBLIC_CLIENT
-    $gwm add_oidc_client   $REALM $KEYCLOAK_KONG_CLIENT
 
     # create realm manager
     $gwm add_admin $REALM $INITIAL_SUPERUSER_USERNAME $INITIAL_SUPERUSER_PASSWORD
@@ -35,7 +35,12 @@ data:
       if [[ "${RESET_REALM:-}" == "true" ]]; then
         $gwm remove_solution $solution $REALM
       fi
-      $gwm add_solution $solution $REALM $KEYCLOAK_KONG_CLIENT
+
+      # create a specific client per solution
+      # (this allows to choose a different login theme or
+      # disable a solution without disabling the whole realm)
+      $gwm add_oidc_client $REALM "kong-$solution"
+      $gwm add_solution $solution $REALM "kong-$solution"
 
       # create tenant database for PlanFeld solution
       if [[ $solution = "planfeld" ]]; then

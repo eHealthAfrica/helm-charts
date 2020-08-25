@@ -37,8 +37,6 @@ spec:
 
     - name: KEYCLOAK_PUBLIC_CLIENT
       value: {{ .Values.gw.keyCloak.aetherClient }}
-    - name: KEYCLOAK_KONG_CLIENT
-      value: {{ .Values.gw.keyCloak.kongClient }}
 
     - name: BASE_DOMAIN
       value: {{ .Values.gw.baseDomain }}
