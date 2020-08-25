@@ -1311,7 +1311,7 @@ entries:
     appVersion: "1.0"
     created: "2020-08-18T13:52:40.757994649+01:00"
     description: A Generic Helm chart for Kubernetes
-    digest: 1d9044e802625374a42411db22c670f30ef5dbe435c2dd4cc03e90e19de470a5
+    digest: 55e8b23a5533cb50ab96c7a1012a5c68ace36219c6a6202f285c8b14e57b717c
     name: generic3
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/generic3-0.2.3.tgz
