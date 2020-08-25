@@ -119,6 +119,9 @@ app:
 #      mountPath: /code/conf/consumer/consumer.json
 #      subPath: consumer.json
 
+  #PDB Activation
+  minAvailable: 1 # set 0 to disable PodDisruptionBudget
+
 
 cronjob:
   schedule: 0 * * * *
