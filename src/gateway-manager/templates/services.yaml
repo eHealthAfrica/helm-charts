@@ -158,7 +158,7 @@ data:
       "oidc_endpoints": [
         {
           "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
           "strip_path": "true"
         }
       ]
