@@ -67,7 +67,7 @@ gw:
       internalService: ''
 
   init:
-    solutions: '( aether )'
+    solutions: 'aether consumers'
 
     publicClient: 'aether'
     kongClient: 'kong'
