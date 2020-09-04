@@ -31,7 +31,8 @@ data:
     $gwm add_user       "$REALM" "$INITIAL_USER_USERNAME" "$INITIAL_USER_PASSWORD"
     $gwm add_user_group "$REALM" "$INITIAL_USER_USERNAME" "user"
 
-    for solution in "${SOLUTIONS[@]}"; do
+    IFS=' ' read -a solutions <<< "${SOLUTIONS:-}"
+    for solution in "${solutions[@]}"; do
       $gwm remove_solution "$solution" "$REALM"
       $gwm add_solution    "$solution" "$REALM" "$KEYCLOAK_KONG_CLIENT"
 

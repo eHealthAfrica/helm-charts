@@ -72,7 +72,7 @@ gw:
       internalService: 'http://planfeld-ui'
 
   init:
-    solutions: '(aether planfeld elasticsearch consumers)'
+    solutions: 'aether planfeld elasticsearch consumers'
 
     loginTheme: keycloak
     accountTheme: keycloak
