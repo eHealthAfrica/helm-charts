@@ -3,6 +3,128 @@ kind: ConfigMap
 metadata:
   name: services
 data:
+  # Aether + Gather
+  kernel.json: |
+    {
+      "name": "kernel",
+      "host": "{{ .Values.gw.aether.kernel.internalService }}",
+      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+        }
+      ]
+    }
+  kernel-ui.json: |
+    {
+      "name": "kernel-ui",
+      "host": "{{ .Values.gw.aether.ui.internalService }}",
+      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+        }
+      ]
+    }
+  odk.json: |
+    {
+      "name": "odk",
+      "host": "{{ .Values.gw.aether.odk.internalService }}",
+      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+        }
+      ],
+      "public_endpoints": [
+        {
+          "name": "public",
+          "paths": [
+            "/{realm}/{name}/formList",
+            "/{realm}/{name}/forms",
+            "/{realm}/{name}/media-file/",
+            "/{realm}/{name}/submission"
+          ]
+        }
+      ]
+    }
+  producer.json: |
+    {
+      "name": "producer",
+      "host": "{{ .Values.gw.aether.producer.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  gather.json: |
+    {
+      "name": "gather",
+      "host": "{{ .Values.gw.gather.internalService }}",
+      "host": "http://gather",
+      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+        }
+      ]
+    }
+
+  # Aether consumers
+  ckan-consumer.json: |
+    {
+      "name": "ckan-consumer",
+      "host": "{{ .Values.gw.consumers.ckan.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  es-consumer.json: |
+    {
+      "name": "es-consumer",
+      "host": "{{ .Values.gw.consumers.elasticsearch.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+        }
+      ]
+    }
+  firebase-consumer.json: |
+    {
+      "name": "firebase-consumer",
+      "host": "{{ .Values.gw.consumers.firebase.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
+        }
+      ]
+    }
+  stream-consumer.json: |
+    {
+      "name": "stream-consumer",
+      "host": "{{ .Values.gw.consumers.stream.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
+          "strip_path": "true"
+        }
+      ]
+    }
+
   # Elasticsearch & Kibana
   elasticsearch.json: |
     {
@@ -29,184 +151,11 @@ data:
       ]
     }
 
-  # Aether + Gather
-  gather.json: |
-    {
-      "name": "gather",
-      "host": "http://gather",
-      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
-        }
-      ]
-    }
-  odk.json: |
-    {
-      "name": "odk",
-      "host": "http://aether-odk",
-      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
-        }
-      ],
-      "public_endpoints": [
-        {
-          "name": "public",
-          "paths": [
-            "/{realm}/{name}/formList",
-            "/{realm}/{name}/forms",
-            "/{realm}/{name}/media-file/",
-            "/{realm}/{name}/submission"
-          ]
-        }
-      ]
-    }
-  kernel-ui.json: |
-    {
-      "name": "kernel-ui",
-      "host": "http://aether-kernel-ui",
-      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
-        }
-      ]
-    }
-  kernel.json: |
-    {
-      "name": "kernel",
-      "host": "http://aether-kernel",
-      "paths": ["/{public_realm}/{name}$", "/{public_realm}/{name}/"],
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
-        }
-      ]
-    }
-  producer.json: |
-    {
-      "name": "producer",
-      "host": "{{ .Values.gw.aetherProducer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
-          "strip_path": "true"
-        }
-      ]
-    }
-
-  # Aether consumers
-  es-consumer.json: |
-    {
-      "name": "es-consumer",
-      "host": "{{ .Values.gw.aetherElasticsearchConsumer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
-        }
-      ]
-    }
-  firebase-consumer.json: |
-    {
-      "name": "firebase-consumer",
-      "host": "{{ .Values.gw.aetherFirebaseConsumer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"]
-        }
-      ]
-    }
-  stream-consumer.json: |
-    {
-      "name": "stream-consumer",
-      "host": "{{ .Values.gw.aetherStreamConsumer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
-          "strip_path": "true"
-        }
-      ]
-    }
-  ckan-consumer.json: |
-    {
-      "name": "ckan-consumer",
-      "host": "{{ .Values.gw.aetherCkanConsumer.internalService }}",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
-          "strip_path": "true"
-        }
-      ]
-    }
-
   # PlanFeld
-  planner.json: |
-    {
-      "name": "planner",
-      "host": "http://planfeld-planner",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
-          "strip_path": "true"
-        }
-      ]
-    }
-  planner-health.json: |
-    {
-      "name": "planner-health",
-      "host": "http://planfeld-planner/health",
-      "paths": ["/{public_realm}/planner/health"],
-      "strip_path": "true",
-      "public_endpoints": [
-        {
-          "name": "public",
-          "paths": ["/{realm}/planner/health"],
-          "strip_path": "true"
-        }
-      ]
-    }
-  monitor.json: |
-    {
-      "name": "monitor",
-      "host": "http://planfeld-monitor",
-      "oidc_endpoints": [
-        {
-          "name": "protected",
-          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
-          "strip_path": "true"
-        }
-      ]
-    }
-  monitor-health.json: |
-    {
-      "name": "monitor-health",
-      "host": "http://planfeld-monitor/health",
-      "paths": ["/{public_realm}/monitor/health"],
-      "strip_path": "true",
-      "public_endpoints": [
-        {
-          "name": "public",
-          "paths": ["/{realm}/monitor/health"],
-          "strip_path": "true"
-        }
-      ]
-    }
   planfeld.json: |
     {
       "name": "planfeld",
-      "host": "http://planfeld",
+      "host": "{{ .Values.gw.planfeld.planfeld.internalService }}",
       "oidc_endpoints": [
         {
           "name": "protected",
@@ -218,7 +167,7 @@ data:
   planfeld-health.json: |
     {
       "name": "planfeld-health",
-      "host": "http://planfeld/health",
+      "host": "{{ .Values.gw.planfeld.planfeld.internalService }}/health",
       "paths": ["/{public_realm}/planfeld/health"],
       "strip_path": "true",
       "public_endpoints": [
@@ -229,10 +178,62 @@ data:
         }
       ]
     }
+  monitor.json: |
+    {
+      "name": "monitor",
+      "host": "{{ .Values.gw.planfeld.monitor.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  monitor-health.json: |
+    {
+      "name": "monitor-health",
+      "host": "{{ .Values.gw.planfeld.monitor.internalService }}/health",
+      "paths": ["/{public_realm}/monitor/health"],
+      "strip_path": "true",
+      "public_endpoints": [
+        {
+          "name": "public",
+          "paths": ["/{realm}/monitor/health"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  planner.json: |
+    {
+      "name": "planner",
+      "host": "{{ .Values.gw.planfeld.planner.internalService }}",
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": ["/{realm}/{name}$", "/{realm}/{name}/"],
+          "strip_path": "true"
+        }
+      ]
+    }
+  planner-health.json: |
+    {
+      "name": "planner-health",
+      "host": "{{ .Values.gw.planfeld.planner.internalService }}/health",
+      "paths": ["/{public_realm}/planner/health"],
+      "strip_path": "true",
+      "public_endpoints": [
+        {
+          "name": "public",
+          "paths": ["/{realm}/planner/health"],
+          "strip_path": "true"
+        }
+      ]
+    }
   ui.json: |
     {
       "name": "ui",
-      "host": "http://planfeld-ui",
+      "host": "{{ .Values.gw.planfeld.ui.internalService }}",
       "oidc_endpoints": [
         {
           "name": "protected",
@@ -244,7 +245,7 @@ data:
   ui-health.json: |
     {
       "name": "ui-health",
-      "host": "http://planfeld-ui/health",
+      "host": "{{ .Values.gw.planfeld.ui.internalService }}/health",
       "paths": ["/{public_realm}/ui/health"],
       "strip_path": "true",
       "public_endpoints": [
@@ -257,8 +258,8 @@ data:
     }
   ui-static.json: |
     {
-      "name": "planfeld-static",
-      "host": "http://planfeld-ui/static",
+      "name": "ui-static",
+      "host": "{{ .Values.gw.planfeld.ui.internalService }}/static",
       "paths": ["/{public_realm}/ui/static", "/static"],
       "strip_path": "true"
     }

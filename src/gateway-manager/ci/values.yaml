@@ -4,27 +4,86 @@ gw:
   repository: 'ehealthafrica/gateway-manager'
   debug: null
   tag: 'latest'
-  aether:
-    services: ["odk", "ui", "kernel", "gather"]
-    ui:
-      internalService: 'aether-ui'
-    odk:
-      internalService: 'aether-odk'
-    kernel:
-      internalService: 'aether-kernel'
-    gather:
-      internalService: 'gather'
+
+  command: '/code/scripts/initialize.sh'
+
+  keycloak:
+    globalAdmin: 'keycloak'
+    masterRealm: 'master'
+
+    baseDomain: ''
+    baseHost: ''
+
+    internalHost: 'http://keycloak-http'
+    internalService: 'http://keycloak-http/auth/'
+
   kafka:
-    clusterName: 'dev'
-  keyCloak:
-    globalAdmin: 'admin'
-    baseDomain: 'eha.im'
-    baseHost: 'alpha.eha.im'
-    internalService: 'keycloak-http'
-    secret:
-      PasswordKey: 'admin-password'
-      name: 'keycloak'
-  kong:
-    internalService: 'kong-kong-admin'
+    kafkaSUUser: ''
+    kafkaSUPassword: ''
+    kafkaRootUser: ''
+
   zookeeper:
-    host: 'localhost:2181'
+    host: ''
+
+  kong:
+    internalService: 'https://kong-kong-admin:8444'
+
+  aether:
+    kernel:
+      internalService: 'http://aether-kernel'
+    odk:
+      internalService: 'http://aether-odk'
+    producer:
+      internalService: 'http://aether-producer'
+    ui:
+      internalService: 'http://aether-kernel-ui'
+
+  gather:
+    internalService: 'http://gather'
+
+  consumers:
+    ckan:
+      internalService: 'http://aether-ckan-consumer'
+    elasticsearch:
+      internalService: 'http://aether-elasticsearch-consumer'
+    stream:
+      internalService: 'http://aether-stream-consumer'
+    firebase:
+      internalService: 'http://aether-firebase-consumer'
+
+  elasticsearch:
+    user: 'admin'
+    internalService: 'http://opendistro-es-client-service:9200'
+    secret:
+      name: 'elasticsearch-credentials'
+      passwordKey: 'password'
+
+  kibana:
+    internalService: 'http://opendistro-es-kibana-svc:5601'
+
+  planfeld:
+    monitor:
+      internalService: 'http://planfeld-monitor'
+    planfeld:
+      internalService: 'http://planfeld'
+    planner:
+      internalService: 'http://planfeld-planner'
+    ui:
+      internalService: 'http://planfeld-ui'
+
+  init:
+    solutions: "(aether planfeld elasticsearch consumers)"
+
+    loginTheme: keycloak
+    accountTheme: keycloak
+    adminTheme: keycloak
+    emailTheme: keycloak
+
+    publicClient: 'aether'
+
+    initialSU: 'sys-admin'
+    initialSUPassword: 'password'
+    initialAdmin: 'admin'
+    initialAdminPassword: 'password'
+    initialUser: 'user'
+    initialUserPassword: 'password'

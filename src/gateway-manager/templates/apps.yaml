@@ -6,6 +6,6 @@ data:
   keycloak.json: |
     {
       "name": "keycloak",
-      "host": "{{ .Values.gw.keyCloak.host }}",
+      "host": "{{ .Values.gw.keycloak.internalHost }}",
       "paths": [ "/auth$", "/auth/" ]
     }
