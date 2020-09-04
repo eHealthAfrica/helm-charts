@@ -18,55 +18,25 @@ spec:
     - name: DEBUG
       value: "{{ .Values.gw.debug }}"
 
-    - name: KEYCLOAK_GLOBAL_ADMIN
-      value: {{ .Values.gw.keyCloak.globalAdmin }}
-    - name: KEYCLOAK_GLOBAL_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: {{ .Values.gw.keyCloak.secret.name }}
-          key: {{ .Values.gw.keyCloak.secret.passwordKey }}
-
-    - name: LOGIN_THEME
-      value: {{ .Values.gw.loginTheme }}
-    - name: ACCOUNT_THEME
-      value: {{ .Values.gw.accountTheme }}
-    - name: ADMIN_THEME
-      value: {{ .Values.gw.adminTheme }}
-    - name: EMAIL_THEME
-      value: {{ .Values.gw.emailTheme }}
-
-    - name: KEYCLOAK_PUBLIC_CLIENT
-      value: {{ .Values.gw.keyCloak.aetherClient }}
-
     - name: BASE_DOMAIN
       value: {{ .Values.gw.baseDomain }}
     - name: BASE_HOST
       value: {{ .Values.gw.baseHost }}
 
     - name: KEYCLOAK_INTERNAL
-      value: {{ .Values.gw.keyCloak.internalService }}
-    - name: KEYCLOAK_HOST
-      value: {{ .Values.gw.keyCloak.host }}
+      value: {{ .Values.gw.keycloak.internalService }}
+    - name: KEYCLOAK_MASTER_REALM
+      value: {{ .Values.gw.keycloak.masterRealm }}
+    - name: KEYCLOAK_GLOBAL_ADMIN
+      value: {{ .Values.gw.keycloak.globalAdmin }}
+    - name: KEYCLOAK_GLOBAL_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Values.gw.keycloak.secret.name }}
+          key: {{ .Values.gw.keycloak.secret.passwordKey }}
 
     - name: KONG_INTERNAL
       value: {{ .Values.gw.kong.internalService }}
-    - name: REALM
-      value: {{ .Values.gw.keyCloak.realm }}
-
-    - name: INITIAL_SUPERUSER_USERNAME
-      value: {{ .Values.gw.keyCloak.initial_superuser }}
-    - name: INITIAL_SUPERUSER_PASSWORD
-      value: {{.Values.gw.keyCloak.initial_superuser_password}}
-
-    - name: INITIAL_ADMIN_USERNAME
-      value: {{ .Values.gw.keyCloak.initial_admin }}
-    - name: INITIAL_ADMIN_PASSWORD
-      value: {{.Values.gw.keyCloak.initial_admin_password}}
-
-    - name: INITIAL_USER_USERNAME
-      value: {{ .Values.gw.keyCloak.initial_user }}
-    - name: INITIAL_USER_PASSWORD
-      value: {{.Values.gw.keyCloak.initial_user_password}}
 
     - name: ELASTICSEARCH_HOST
       value: {{ .Values.gw.elasticsearch.internalService }}
@@ -78,6 +48,41 @@ spec:
           name: {{ .Values.gw.elasticsearch.secret.name }}
           key: {{ .Values.gw.elasticsearch.secret.passwordKey }}
 
+    # Used by "initialize.sh" script
+    - name: REALM
+      value: {{ .Values.gw.init.realm }}
+    - name: SOLUTIONS
+      value: {{ .Values.gw.init.solutions }}
+
+    - name: LOGIN_THEME
+      value: {{ .Values.gw.init.loginTheme }}
+    - name: ACCOUNT_THEME
+      value: {{ .Values.gw.init.accountTheme }}
+    - name: ADMIN_THEME
+      value: {{ .Values.gw.init.adminTheme }}
+    - name: EMAIL_THEME
+      value: {{ .Values.gw.init.emailTheme }}
+
+    - name: KEYCLOAK_PUBLIC_CLIENT
+      value: {{ .Values.gw.init.publicClient }}
+    - name: KEYCLOAK_KONG_CLIENT
+      value: {{ .Values.gw.init.kongClient }}
+
+    - name: INITIAL_SUPERUSER_USERNAME
+      value: {{ .Values.gw.init.initialSU }}
+    - name: INITIAL_SUPERUSER_PASSWORD
+      value: {{.Values.gw.init.initialSUPassword}}
+
+    - name: INITIAL_ADMIN_USERNAME
+      value: {{ .Values.gw.init.initialAdmin }}
+    - name: INITIAL_ADMIN_PASSWORD
+      value: {{.Values.gw.init.initialAdminPassword}}
+
+    - name: INITIAL_USER_USERNAME
+      value: {{ .Values.gw.init.initialUser }}
+    - name: INITIAL_USER_PASSWORD
+      value: {{.Values.gw.init.initialUserPassword}}
+
     volumeMounts:
     - name: services
       mountPath: /code/service
@@ -87,6 +92,7 @@ spec:
       mountPath: /code/app
     - name: initialize
       mountPath: /code/scripts
+
   volumes:
   - name: services
     configMap:

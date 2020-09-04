@@ -1,30 +1,82 @@
 pullPolicy: Always
 gw:
   env: dev
+  pullPolicy: 'Always'
   repository: 'ehealthafrica/gateway-manager'
-  debug: null
   tag: 'latest'
-  aether:
-    services: ["odk", "ui", "kernel", "gather"]
-    ui:
-      internalService: 'aether-ui'
-    odk:
-      internalService: 'aether-odk'
-    kernel:
-      internalService: 'aether-kernel'
-    gather:
-      internalService: 'gather'
-  kafka:
-    clusterName: 'dev'
-  keyCloak:
-    globalAdmin: 'admin'
-    baseDomain: 'eha.im'
-    baseHost: 'alpha.eha.im'
-    internalService: 'keycloak-http'
+
+  debug: null
+
+  keycloak:
+    globalAdmin: 'keycloak'
+    masterRealm: 'master'
+
+    baseDomain: ''
+    baseHost: ''
+
+    internalHost: ''
+    internalService: ''
+
     secret:
-      PasswordKey: 'admin-password'
-      name: 'keycloak'
+      name: 'admin-password'
+      passwordKey: 'password'
+
   kong:
-    internalService: 'kong-kong-admin'
-  zookeeper:
-    host: 'localhost:2181'
+    internalService: ''
+
+  aether:
+    kernel:
+      internalService: ''
+    odk:
+      internalService: ''
+    producer:
+      internalService: ''
+    ui:
+      internalService: ''
+
+  gather:
+    internalService: ''
+
+  consumers:
+    ckan:
+      internalService: ''
+    elasticsearch:
+      internalService: ''
+    stream:
+      internalService: ''
+    firebase:
+      internalService: ''
+
+  elasticsearch:
+    user: 'admin'
+    internalService: ''
+    secret:
+      name: 'elasticsearch-credentials'
+      passwordKey: 'password'
+
+  kibana:
+    internalService: ''
+
+  planfeld:
+    monitor:
+      internalService: ''
+    planfeld:
+      internalService: ''
+    planner:
+      internalService: ''
+    ui:
+      internalService: ''
+
+  init:
+    solutions: "( aether )"
+    realm: 'ci'
+
+    publicClient: 'aether'
+    kongClient: 'kong'
+
+    initialSU: 'sys-admin'
+    initialSUPassword: ''
+    initialAdmin: 'admin'
+    initialAdminPassword: ''
+    initialUser: 'user'
+    initialUserPassword: ''
