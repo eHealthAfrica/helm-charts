@@ -49,8 +49,6 @@ spec:
           key: {{ .Values.gw.elasticsearch.secret.passwordKey }}
 
     # Used by "initialize.sh" script
-    - name: REALM
-      value: {{ .Values.gw.init.realm }}
     - name: SOLUTIONS
       value: {{ .Values.gw.init.solutions }}
 

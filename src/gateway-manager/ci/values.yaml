@@ -6,8 +6,8 @@ gw:
 
   debug: null
 
-  baseDomain: ''
-  baseHost: ''
+  baseDomain: 'ci.eha.im'
+  baseHost: 'https://ci.eha.im'
 
   keycloak:
     globalAdmin: 'keycloak'
@@ -67,8 +67,7 @@ gw:
       internalService: ''
 
   init:
-    solutions: "( aether )"
-    realm: 'ci'
+    solutions: '( aether )'
 
     publicClient: 'aether'
     kongClient: 'kong'
