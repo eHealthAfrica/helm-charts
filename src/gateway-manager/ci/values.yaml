@@ -17,14 +17,6 @@ gw:
     internalHost: 'http://keycloak-http'
     internalService: 'http://keycloak-http/auth/'
 
-  kafka:
-    kafkaSUUser: ''
-    kafkaSUPassword: ''
-    kafkaRootUser: ''
-
-  zookeeper:
-    host: ''
-
   kong:
     internalService: 'https://kong-kong-admin:8444'
 
@@ -73,6 +65,7 @@ gw:
 
   init:
     solutions: "(aether planfeld elasticsearch consumers)"
+    realm: 'dev'
 
     loginTheme: keycloak
     accountTheme: keycloak
@@ -80,6 +73,7 @@ gw:
     emailTheme: keycloak
 
     publicClient: 'aether'
+    kongClient: 'kong'
 
     initialSU: 'sys-admin'
     initialSUPassword: 'password'
