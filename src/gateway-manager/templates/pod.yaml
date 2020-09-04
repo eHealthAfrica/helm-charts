@@ -10,7 +10,7 @@ metadata:
 spec:
   containers:
   - name: {{ .Chart.Name }}
-    image:  "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
+    image: "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
     imagePullPolicy: {{ .Values.gw.pullPolicy }}
     command: ["{{ .Values.gw.command }}"]
     args: ["{{ .Values.gw.args }}"]
@@ -49,8 +49,6 @@ spec:
           key: {{ .Values.gw.elasticsearch.secret.passwordKey }}
 
     # Used by "initialize.sh" script
-    - name: REALM
-      value: {{ .Values.gw.init.realm }}
     - name: SOLUTIONS
       value: {{ .Values.gw.init.solutions }}
 

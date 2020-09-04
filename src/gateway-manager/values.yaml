@@ -1,22 +1,29 @@
 pullPolicy: Always
 gw:
   env: dev
-  pullPolicy: 'Always'
+
   repository: 'ehealthafrica/gateway-manager'
   tag: 'latest'
 
-  command: '/code/scripts/initialize.sh'
+  # To be changed with start
+  command: 'sleep'
+  args: '3000000000'
+
   debug: null
+
+  baseDomain: ''
+  baseHost: ''
 
   keycloak:
     globalAdmin: 'keycloak'
     masterRealm: 'master'
 
-    baseDomain: ''
-    baseHost: ''
-
     internalHost: 'http://keycloak-http'
     internalService: 'http://keycloak-http/auth/'
+
+    secret:
+      name: 'keycloak-admin'
+      passwordKey: 'password'
 
   kong:
     internalService: 'https://kong-kong-admin:8444'
@@ -65,8 +72,7 @@ gw:
       internalService: 'http://planfeld-ui'
 
   init:
-    solutions: "(aether planfeld elasticsearch consumers)"
-    realm: 'dev'
+    solutions: '(aether planfeld elasticsearch consumers)'
 
     loginTheme: keycloak
     accountTheme: keycloak
