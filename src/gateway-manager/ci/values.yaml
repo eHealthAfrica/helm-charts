@@ -1,18 +1,17 @@
 pullPolicy: Always
 gw:
   env: dev
-  pullPolicy: 'Always'
   repository: 'ehealthafrica/gateway-manager'
   tag: 'latest'
 
   debug: null
 
+  baseDomain: ''
+  baseHost: ''
+
   keycloak:
     globalAdmin: 'keycloak'
     masterRealm: 'master'
-
-    baseDomain: ''
-    baseHost: ''
 
     internalHost: ''
     internalService: ''
@@ -48,10 +47,10 @@ gw:
       internalService: ''
 
   elasticsearch:
-    user: 'admin'
     internalService: ''
+    user: 'admin'
     secret:
-      name: 'elasticsearch-credentials'
+      name: 'admin-password'
       passwordKey: 'password'
 
   kibana:
