@@ -7,31 +7,12 @@ data:
     {
       "name": "aether",
       "services": [
-        "kernel-ui",
         "kernel",
+        "kernel-ui",
         "odk",
-        "producer"
+        "producer",
+        "gather"
       ]
-    }
-  gather.json: |
-    {
-      "name": "gather",
-      "services": ["gather"]
-    }
-  planfeld.json: |
-    {
-      "name": "planfeld",
-      "services": [
-        "monitor", "monitor-health",
-        "planfeld", "planfeld-health",
-        "planner", "planner-health",
-        "ui", "ui-health", "ui-static"
-      ]
-    }
-  elasticsearch.json: |
-    {
-      "name": "elasticsearch",
-      "services": ["elasticsearch", "kibana"]
     }
   consumers.json: |
     {
@@ -39,6 +20,22 @@ data:
       "services": [
         "ckan-consumer",
         "es-consumer",
-        "firebase-consumer"
+        "firebase-consumer",
+        "stream-consumer"
+      ]
+    }
+  elasticsearch.json: |
+    {
+      "name": "elasticsearch",
+      "services": ["elasticsearch", "kibana"]
+    }
+  planfeld.json: |
+    {
+      "name": "planfeld",
+      "services": [
+        "planfeld", "planfeld-health",
+        "monitor", "monitor-health",
+        "planner", "planner-health",
+        "ui", "ui-health", "ui-static"
       ]
     }
