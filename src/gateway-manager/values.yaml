@@ -1,7 +1,5 @@
 pullPolicy: Always
 gw:
-  env: dev
-
   repository: 'ehealthafrica/gateway-manager'
   tag: 'latest'
 
