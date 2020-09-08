@@ -36,6 +36,11 @@ data:
       $gwm remove_solution "$solution" "$REALM"
       $gwm add_solution    "$solution" "$REALM" "$KEYCLOAK_KONG_CLIENT"
 
+      # create tenant in elasticsearch for Elasticsearch solution
+      if [[ $solution = "elasticsearch" ]]; then
+        $gwm add_elasticsearch_tenant "$REALM" 7
+      fi
+
       # create tenant database for PlanFeld solution
       if [[ $solution = "planfeld" ]]; then
         service_creds=${INITIAL_ADMIN_USERNAME}:${INITIAL_ADMIN_PASSWORD}
@@ -43,6 +48,3 @@ data:
         curl --silent --show-error --fail -u $service_creds -X POST ${service_url}
       fi
     done
-
-    # Elasticsearch
-    $gwm add_elasticsearch_tenant "$REALM" 7

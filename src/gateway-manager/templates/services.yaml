@@ -3,6 +3,37 @@ kind: ConfigMap
 metadata:
   name: services
 data:
+  # Gateway Landing page
+  gateway.json: |
+    {
+      "name": "{{ .Values.gw.gateway.name }}",
+      "host": "{{ .Values.gw.gateway.internalService }}",
+      "paths": [
+        "/{public_realm}/{name}/health$",
+        "/{public_realm}/{name}/static"
+      ],
+      "oidc_endpoints": [
+        {
+          "name": "protected",
+          "paths": [
+            "/{realm}$",
+            "/{realm}/$",
+            "/{realm}/{name}/",
+            "/{realm}/oauth2/"
+          ]
+        }
+      ],
+      "public_endpoints": [
+        {
+          "name": "public",
+          "paths": [
+            "/{realm}/{name}/health$",
+            "/{realm}/{name}/static"
+          ]
+        }
+      ]
+    }
+
   # Aether + Gather
   kernel.json: |
     {

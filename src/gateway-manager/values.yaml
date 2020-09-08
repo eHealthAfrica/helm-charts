@@ -5,14 +5,18 @@ gw:
   repository: 'ehealthafrica/gateway-manager'
   tag: 'latest'
 
-  # To be changed with start
-  command: 'sleep'
-  args: '3000000000'
+  command: 'start_app'
+  args: ''
 
   debug: null
 
   baseDomain: ''
   baseHost: ''
+
+  gateway:
+    name: 'gateway'
+    port: '8007'
+    internalService: 'http://gateway-manager:8007'
 
   keycloak:
     globalAdmin: 'keycloak'
@@ -72,7 +76,7 @@ gw:
       internalService: 'http://planfeld-ui'
 
   init:
-    solutions: 'aether planfeld elasticsearch consumers'
+    solutions: 'gateway aether planfeld elasticsearch consumers'
 
     loginTheme: keycloak
     accountTheme: keycloak

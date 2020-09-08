@@ -4,10 +4,18 @@ gw:
   repository: 'ehealthafrica/gateway-manager'
   tag: 'latest'
 
+  command: 'sleep'
+  args: '300'
+
   debug: null
 
   baseDomain: 'ci.eha.im'
   baseHost: 'https://ci.eha.im'
+
+  gateway:
+    name: ''
+    port: ''
+    internalService: ''
 
   keycloak:
     globalAdmin: 'keycloak'
