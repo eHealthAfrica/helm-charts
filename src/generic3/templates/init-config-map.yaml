@@ -7,9 +7,7 @@ data:
   init.sh: |
     #!/bin/bash
     set -ex
-    apk add --no-cache ca-certificates && update-ca-certificates
-    wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O /cloud_sql_proxy
-    chmod +x /cloud_sql_proxy
+    apk add --no-cache ca-certificates postgresql-client && update-ca-certificates
     echo 8.8.8.8 >>/etc/resolv.conf
     echo "starting proxy in background"
     /cloud_sql_proxy -instances={{ .Values.database.instance }}=tcp:5432 -credential_file=/secrets/cloudsql/credentials.json &
