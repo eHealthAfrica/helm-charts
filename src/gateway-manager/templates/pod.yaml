@@ -81,6 +81,11 @@ spec:
     - name: INITIAL_USER_PASSWORD
       value: {{.Values.gw.init.initialUserPassword}}
 
+    - name: WEB_SERVICE_NAME
+      value: {{ .Values.gw.gateway.name }}
+    - name: WEB_SERVER_PORT
+      value: {{.Values.gw.gateway.port}}
+
     volumeMounts:
     - name: services
       mountPath: /code/service
@@ -90,6 +95,8 @@ spec:
       mountPath: /code/app
     - name: initialize
       mountPath: /code/scripts
+    - name: data
+      mountPath: /code/data
 
   volumes:
   - name: services
@@ -105,3 +112,6 @@ spec:
     configMap:
       name: initialize
       defaultMode: 0755
+  - name: data
+    configMap:
+      name: data
