@@ -3,6 +3,11 @@ kind: ConfigMap
 metadata:
   name: solutions
 data:
+  gateway.json: |
+    {
+      "name": "gateway",
+      "services": ["gateway"]
+    }
   aether.json: |
     {
       "name": "aether",
@@ -19,7 +24,6 @@ data:
       "name": "consumers",
       "services": [
         "ckan-consumer",
-        "es-consumer",
         "firebase-consumer",
         "stream-consumer"
       ]
@@ -27,7 +31,7 @@ data:
   elasticsearch.json: |
     {
       "name": "elasticsearch",
-      "services": ["elasticsearch", "kibana"]
+      "services": ["elasticsearch", "kibana", "es-consumer"]
     }
   planfeld.json: |
     {
