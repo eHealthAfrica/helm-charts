@@ -51,7 +51,7 @@ spec:
     - name: WEB_SERVICE_NAME
       value: {{ .Values.app.gateway.name }}
     - name: WEB_SERVER_PORT
-      value: {{ .Values.app.gateway.port }}
+      value: {{ quote .Values.app.gateway.port }}
 
     # Used by "initialize.sh" script
     - name: SOLUTIONS
@@ -79,12 +79,12 @@ spec:
     - name: INITIAL_ADMIN_USERNAME
       value: {{ .Values.app.init.initialAdmin }}
     - name: INITIAL_ADMIN_PASSWORD
-      value: {{.Values.app.init.initialAdminPassword}}
+      value: {{ .Values.app.init.initialAdminPassword }}
 
     - name: INITIAL_USER_USERNAME
       value: {{ .Values.app.init.initialUser }}
     - name: INITIAL_USER_PASSWORD
-      value: {{.Values.app.init.initialUserPassword}}
+      value: {{ .Values.app.init.initialUserPassword }}
 
     volumeMounts:
     - name: services
