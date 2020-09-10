@@ -84,7 +84,7 @@ spec:
     - name: WEB_SERVICE_NAME
       value: {{ .Values.gw.gateway.name }}
     - name: WEB_SERVER_PORT
-      value: {{.Values.gw.gateway.port}}
+      value: {{ quote .Values.gw.gateway.port}}
 
     volumeMounts:
     - name: services
