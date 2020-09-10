@@ -10,81 +10,81 @@ metadata:
 spec:
   containers:
   - name: {{ .Chart.Name }}
-    image: "{{ .Values.gw.repository }}:{{ .Values.gw.tag | default .Chart.Version }}"
-    imagePullPolicy: {{ .Values.gw.pullPolicy }}
-    command: ["{{ .Values.gw.command }}"]
-    args: ["{{ .Values.gw.args }}"]
+    image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.Version }}"
+    imagePullPolicy: {{ .Values.app.pullPolicy }}
+    command: ["{{ .Values.app.command }}"]
+    args: ["{{ .Values.app.args }}"]
     env:
     - name: DEBUG
-      value: "{{ .Values.gw.debug }}"
+      value: "{{ .Values.app.debug }}"
 
     - name: BASE_DOMAIN
-      value: {{ .Values.gw.baseDomain }}
+      value: {{ .Values.app.baseDomain }}
     - name: BASE_HOST
-      value: {{ .Values.gw.baseHost }}
+      value: {{ .Values.app.baseHost }}
 
     - name: KEYCLOAK_INTERNAL
-      value: {{ .Values.gw.keycloak.internalService }}
+      value: {{ .Values.app.keycloak.internalService }}
     - name: KEYCLOAK_MASTER_REALM
-      value: {{ .Values.gw.keycloak.masterRealm }}
+      value: {{ .Values.app.keycloak.masterRealm }}
     - name: KEYCLOAK_GLOBAL_ADMIN
-      value: {{ .Values.gw.keycloak.globalAdmin }}
+      value: {{ .Values.app.keycloak.globalAdmin }}
     - name: KEYCLOAK_GLOBAL_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: {{ .Values.gw.keycloak.secret.name }}
-          key: {{ .Values.gw.keycloak.secret.passwordKey }}
+          name: {{ .Values.app.keycloak.secret.name }}
+          key: {{ .Values.app.keycloak.secret.passwordKey }}
 
     - name: KONG_INTERNAL
-      value: {{ .Values.gw.kong.internalService }}
+      value: {{ .Values.app.kong.internalService }}
 
     - name: ELASTICSEARCH_HOST
-      value: {{ .Values.gw.elasticsearch.internalService }}
+      value: {{ .Values.app.elasticsearch.internalService }}
     - name: ELASTICSEARCH_USER
-      value: {{ .Values.gw.elasticsearch.user }}
+      value: {{ .Values.app.elasticsearch.user }}
     - name: ELASTICSEARCH_PW
       valueFrom:
         secretKeyRef:
-          name: {{ .Values.gw.elasticsearch.secret.name }}
-          key: {{ .Values.gw.elasticsearch.secret.passwordKey }}
+          name: {{ .Values.app.elasticsearch.secret.name }}
+          key: {{ .Values.app.elasticsearch.secret.passwordKey }}
+
+    - name: WEB_SERVICE_NAME
+      value: {{ .Values.app.gateway.name }}
+    - name: WEB_SERVER_PORT
+      value: {{ .Values.app.gateway.port }}
 
     # Used by "initialize.sh" script
     - name: SOLUTIONS
-      value: {{ .Values.gw.init.solutions }}
+      value: {{ .Values.app.init.solutions }}
 
     - name: LOGIN_THEME
-      value: {{ .Values.gw.init.loginTheme }}
+      value: {{ .Values.app.init.loginTheme }}
     - name: ACCOUNT_THEME
-      value: {{ .Values.gw.init.accountTheme }}
+      value: {{ .Values.app.init.accountTheme }}
     - name: ADMIN_THEME
-      value: {{ .Values.gw.init.adminTheme }}
+      value: {{ .Values.app.init.adminTheme }}
     - name: EMAIL_THEME
-      value: {{ .Values.gw.init.emailTheme }}
+      value: {{ .Values.app.init.emailTheme }}
 
     - name: KEYCLOAK_PUBLIC_CLIENT
-      value: {{ .Values.gw.init.publicClient }}
+      value: {{ .Values.app.init.publicClient }}
     - name: KEYCLOAK_KONG_CLIENT
-      value: {{ .Values.gw.init.kongClient }}
+      value: {{ .Values.app.init.kongClient }}
 
     - name: INITIAL_SUPERUSER_USERNAME
-      value: {{ .Values.gw.init.initialSU }}
+      value: {{ .Values.app.init.initialSU }}
     - name: INITIAL_SUPERUSER_PASSWORD
-      value: {{.Values.gw.init.initialSUPassword}}
+      value: {{.Values.app.init.initialSUPassword}}
 
     - name: INITIAL_ADMIN_USERNAME
-      value: {{ .Values.gw.init.initialAdmin }}
+      value: {{ .Values.app.init.initialAdmin }}
     - name: INITIAL_ADMIN_PASSWORD
-      value: {{.Values.gw.init.initialAdminPassword}}
+      value: {{.Values.app.init.initialAdminPassword}}
 
     - name: INITIAL_USER_USERNAME
-      value: {{ .Values.gw.init.initialUser }}
+      value: {{ .Values.app.init.initialUser }}
     - name: INITIAL_USER_PASSWORD
-      value: {{.Values.gw.init.initialUserPassword}}
-
-    - name: WEB_SERVICE_NAME
-      value: {{ .Values.gw.gateway.name }}
-    - name: WEB_SERVER_PORT
-      value: {{.Values.gw.gateway.port}}
+      value: {{.Values.app.init.initialUserPassword}}
 
     volumeMounts:
     - name: services
