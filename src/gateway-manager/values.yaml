@@ -1,8 +1,10 @@
+replicaCount: 1
 pullPolicy: Always
-gw:
+image:
   repository: 'ehealthafrica/gateway-manager'
   tag: 'latest'
 
+app:
   command: 'start_app'
   args: ''
 
@@ -13,7 +15,7 @@ gw:
 
   gateway:
     name: 'gateway'
-    port: '8007'
+    port: 8007
     internalService: 'http://gateway-manager:8007'
 
   keycloak:

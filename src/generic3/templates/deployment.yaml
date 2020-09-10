@@ -257,7 +257,7 @@ spec:
         {{ end }}
 
 
-          {{ if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") }}
+        {{ if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") }}
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:

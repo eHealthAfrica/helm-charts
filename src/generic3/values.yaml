@@ -142,7 +142,7 @@ sidecar:
     type: request
     # type: tcp
     path: /health
-    initialDelaySeconds: 120
+    initialDelaySeconds: 20
     periodSeconds: 10
   db:
     enabled: false
