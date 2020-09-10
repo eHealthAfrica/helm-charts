@@ -74,7 +74,7 @@ spec:
     - name: INITIAL_SUPERUSER_USERNAME
       value: {{ .Values.app.init.initialSU }}
     - name: INITIAL_SUPERUSER_PASSWORD
-      value: {{.Values.app.init.initialSUPassword}}
+      value: {{ .Values.app.init.initialSUPassword }}
 
     - name: INITIAL_ADMIN_USERNAME
       value: {{ .Values.app.init.initialAdmin }}
