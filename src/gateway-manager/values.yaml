@@ -1,4 +1,4 @@
-
+replicaCount: 1
 pullPolicy: Always
 image:
   repository: 'ehealthafrica/gateway-manager'
