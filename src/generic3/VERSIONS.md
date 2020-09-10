@@ -5,6 +5,9 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.2.6
+- Collapse aether-kernel-ui charts into generic3
+
 ### 0.2.5
 - Cut down default readiness probe delay to 20sec
 
