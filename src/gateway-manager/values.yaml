@@ -5,8 +5,7 @@ image:
   tag: 'latest'
 
 app:
-  command: 'start_app'
-  args: ''
+  args: start_app
 
   debug: null
 

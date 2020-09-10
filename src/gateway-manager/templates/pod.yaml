@@ -12,7 +12,6 @@ spec:
   - name: {{ .Chart.Name }}
     image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.Version }}"
     imagePullPolicy: {{ .Values.app.pullPolicy }}
-    command: ["{{ .Values.app.command }}"]
     args: ["{{ .Values.app.args }}"]
     env:
     - name: DEBUG
