@@ -252,7 +252,12 @@ spec:
           value: {{ . | quote }}
         {{- end -}}
         {{ end }}
-        {{ if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") }}
+        {{ if .Values.extra_env_vars_secretKeyRef }}
+{{ toYaml .Values.extra_env_vars_secretKeyRef | indent 8 }}
+        {{ end }}
+
+
+          {{ if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") }}
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
