@@ -82,7 +82,7 @@ app:
     adminTheme: keycloak
     emailTheme: keycloak
 
-    publicClient: 'aether'
+    aetherClient: 'aether'
     kongClient: 'kong'
 
     initialSU: 'sys-admin'

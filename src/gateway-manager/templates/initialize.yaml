@@ -7,8 +7,27 @@ data:
     #!/usr/bin/env bash
     set -Eeuo pipefail
 
+    # if no solutions indicated take ALL from the solution folder
+    if [[ "${SOLUTIONS:-}" == "" ]]; then
+      SOLUTIONS=""
+      for file in /code/solution/*.json; do
+        if [[ -f $file ]]; then
+          _path=${file%.json}
+          _solution=${_path##*/}
+          SOLUTIONS="$SOLUTIONS $_solution"
+        fi
+      done
+    fi
+
+    echo " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    echo "  Adding realm  [$REALM]"
+    echo "  to solutions  [${SOLUTIONS:-}]"
+    echo " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+
     gwm="/code/entrypoint.sh"
     $gwm add_app keycloak
+
+    KONG_CLIENT=${KEYCLOAK_KONG_CLIENT:-kong}
 
     $gwm add_realm "$REALM" \
       description="Tenant: $REALM" \
@@ -17,8 +36,7 @@ data:
       admin_theme=${ADMIN_THEME:-keycloak} \
       email_theme=${EMAIL_THEME:-keycloak}
 
-    $gwm add_public_client "$REALM" "$KEYCLOAK_PUBLIC_CLIENT"
-    $gwm add_oidc_client   "$REALM" "$KEYCLOAK_KONG_CLIENT"
+    $gwm add_oidc_client "$REALM" "$KONG_CLIENT"
 
     # create realm manager
     $gwm add_admin "$REALM" "$INITIAL_SUPERUSER_USERNAME" "$INITIAL_SUPERUSER_PASSWORD"
@@ -31,10 +49,15 @@ data:
     $gwm add_user       "$REALM" "$INITIAL_USER_USERNAME" "$INITIAL_USER_PASSWORD"
     $gwm add_user_group "$REALM" "$INITIAL_USER_USERNAME" "user"
 
-    IFS=' ' read -a solutions <<< "${SOLUTIONS:-}"
+    IFS=' ' read -a solutions <<< "$SOLUTIONS"
     for solution in "${solutions[@]}"; do
       $gwm remove_solution "$solution" "$REALM"
-      $gwm add_solution    "$solution" "$REALM" "$KEYCLOAK_KONG_CLIENT"
+      $gwm add_solution    "$solution" "$REALM" "$KONG_CLIENT"
+
+      # create public client for the aether solution
+      if [[ $solution = "aether" ]]; then
+        $gwm add_public_client "$REALM" "${KEYCLOAK_AETHER_CLIENT:-aether}"
+      fi
 
       # create tenant in elasticsearch for Elasticsearch solution
       if [[ $solution = "elasticsearch" ]]; then

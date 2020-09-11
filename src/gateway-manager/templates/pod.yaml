@@ -54,7 +54,7 @@ spec:
 
     # Used by "initialize.sh" script
     - name: SOLUTIONS
-      value: {{ .Values.app.init.solutions }}
+      value: "{{ .Values.app.init.solutions }}"
 
     - name: LOGIN_THEME
       value: {{ .Values.app.init.loginTheme }}
@@ -65,8 +65,8 @@ spec:
     - name: EMAIL_THEME
       value: {{ .Values.app.init.emailTheme }}
 
-    - name: KEYCLOAK_PUBLIC_CLIENT
-      value: {{ .Values.app.init.publicClient }}
+    - name: KEYCLOAK_AETHER_CLIENT
+      value: {{ .Values.app.init.aetherClient }}
     - name: KEYCLOAK_KONG_CLIENT
       value: {{ .Values.app.init.kongClient }}
 
