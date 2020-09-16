@@ -212,6 +212,14 @@ service:
   externalPort:
   internalPort:
 
+service_internal:
+  enabled: false
+  service:
+    name: http
+    type: NodePort
+    externalPort:
+    internalPort:
+
 imagePullSecrets:
   enabled: false
   name:

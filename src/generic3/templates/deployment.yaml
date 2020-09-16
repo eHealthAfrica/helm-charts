@@ -287,7 +287,7 @@ spec:
         {{ end }}
 
         {{- with .Values.app.extraVolumeMounts }}
-{{ tpl . $ | indent 10 }}
+{{ tpl . $ | indent 8 }}
         {{- end }}
 
           {{ if .Values.app.db.ssl.enabled }}
