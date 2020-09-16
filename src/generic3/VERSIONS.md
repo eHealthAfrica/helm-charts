@@ -5,6 +5,9 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.2.7
+- Collapse aether-kernel charts into generic3
+
 ### 0.2.6
 - Collapse aether-kernel-ui charts into generic3
 
