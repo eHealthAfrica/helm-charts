@@ -68,6 +68,6 @@ data:
       if [[ $solution = "planfeld" ]]; then
         service_creds=${INITIAL_ADMIN_USERNAME}:${INITIAL_ADMIN_PASSWORD}
         service_url=${BASE_HOST}/${REALM}/planfeld/api/v1/tenant/
-        curl --silent --show-error --fail -u $service_creds -X POST ${service_url}
+        curl -k --silent --show-error --fail -u $service_creds -X POST ${service_url}
       fi
     done
