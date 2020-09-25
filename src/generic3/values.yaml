@@ -25,10 +25,6 @@ extraVolumes: |
 #    configMap:
 #      name: {{ template "generic.fullname" . }}-consumer-kafka-config
 #      defaultMode: 0744
-#  - name: {{ template "generic.fullname" . }}-consumer-config
-#    configMap:
-#      name: {{ template "generic.fullname" . }}-consumer-config
-#      defaultMode: 0744
 
 app:
   name:
@@ -115,9 +111,6 @@ app:
 #    - name: {{ template "generic.fullname" . }}-consumer-kafka-config
 #      mountPath: /code/conf/consumer/kafka.json
 #      subPath: kafka.json
-#    - name: {{ template "generic.fullname" . }}-consumer-config
-#      mountPath: /code/conf/consumer/consumer.json
-#      subPath: consumer.json
 
   #PDB Activation
   minAvailable: 1 # set 0 to disable PodDisruptionBudget
@@ -265,26 +258,20 @@ tolerations: []
 
 affinity: {}
 
+#Redis Subchart activation and overrides
+redis:
+  enabled: false
+  usePassword: false
+#  existingSecret: existing-redis-secret
+#  existingSecretPasswordKey: redis-password
+
 aether:
-  redis:
-    enabled: false
   consumer_configmap:
     enabled: false
     data: |
 #      consumer.json: |
 #          {
-#            "startup_connection_retry": 3,
-#            "connect_retry_wait": 1,
-#            "latitude_fields": [
-#              "lat",
-#              "latitude"
-#            ],
-#            "longitude_fields": [
-#              "lon",
-#              "lng",
-#              "long",
-#              "longitude"
-#            ]
+#          ||
 #          }
 
   consumer_kafka_configmap:
@@ -293,16 +280,6 @@ aether:
 #      kafka.json: |
 #        {
 #          "security.protocol": "SASL_SSL",
-#          "sasl.mechanism": "PLAIN",
-#          "group.id": "elasticsearch-metadataonly",
-#          "auto.offset.reset" : "earliest",
-#          "enable.auto.commit": true,
-#          "auto.commit.interval.ms": 5000,
-#          "aether_emit_flag_required" : false,
-#          "aether_masking_schema_levels" : ["false", "true"],
-#          "aether_masking_schema_emit_level": "false",
-#          "heartbeat.interval.ms": 3000,
-#          "session.timeout.ms": 18000,
-#          "request.timeout.ms": 30000,
+#           ||
 #          "max.poll.interval.ms": 300000
 #        }

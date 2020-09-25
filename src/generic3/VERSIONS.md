@@ -4,6 +4,9 @@ Change Summary for this chart.
 
 Newer versions are all backward-compatible.
 
+### 0.2.8
+- Collapse aether-producer into generic3
+- Update redis subchart activation key-flag
 
 ### 0.2.7
 - Collapse aether-kernel charts into generic3
