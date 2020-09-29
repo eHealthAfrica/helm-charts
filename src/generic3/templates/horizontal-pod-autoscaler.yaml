@@ -1,4 +1,4 @@
-{{ if .Values.app.scaling.enabled }}
+{{ if and (.Values.app.scaling.enabled) (ne .Values.resourceType "cronjob") }}
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
