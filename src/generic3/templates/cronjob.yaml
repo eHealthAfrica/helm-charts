@@ -266,6 +266,9 @@ spec:
             - mountPath: {{ .Values.app.volume.mountPath }}
               name: {{ template "generic.name" . }}-data
             {{ end }}
+            {{- with .Values.app.extraVolumeMounts }}
+{{ tpl . $ | indent 14 }}
+            {{- end }}
             {{ if .Values.app.db.ssl.enabled }}
             - name: postgres-ssl
               mountPath: {{ .Values.app.db.ssl.certPath }}
@@ -341,7 +344,7 @@ spec:
               defaultMode: 0744
           {{ end }}
           {{- with .Values.extraVolumes }}
-    {{ tpl . $ | indent 10 }}
+    {{ tpl . $ | indent 6 }}
           {{- end }}
           restartPolicy: {{ .Values.cronjob.restartpolicy }}
     {{ end }}
