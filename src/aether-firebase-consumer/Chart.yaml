@@ -1,4 +1,0 @@
-apiVersion: v1
-description: The Firebase module for Aether, an open source development platform for data curation, exchange, and publication
-name: aether-firebase-consumer
-version: 1.2.4
