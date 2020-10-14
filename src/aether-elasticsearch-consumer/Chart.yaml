@@ -1,4 +1,0 @@
-apiVersion: v1
-description: The Elasticsearch consumer module for Aether, an open source development platform for data curation, exchange, and publication
-name: aether-elasticsearch-consumer
-version: 1.2.7

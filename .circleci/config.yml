@@ -6,34 +6,12 @@ jobs:
 
     steps:
       - checkout
-
-      - run:
-          name: gather
-          command: helm lint src/gather/
-      - run:
-          name: aether-kernel
-          command: helm lint -f tests/overrides/service.yaml src/aether-kernel/
-      - run:
-          name: aether-odk
-          command: helm lint -f tests/overrides/service.yaml src/aether-odk/
-      - run:
-          name: aether-producer
-          command: helm lint -f tests/overrides/service.yaml src/aether-producer/
-      - run:
-          name: aether-ui
-          command: helm lint -f tests/overrides/service.yaml src/aether-ui/
-      - run:
-          name: aether-elasticsearch-consumer
-          command: helm lint -f src/aether-elasticsearch-consumer/values.yaml src/aether-elasticsearch-consumer/
       - run:
           name: database-provisioner
           command: helm lint -f tests/overrides/service.yaml src/database-provisioner/
       - run:
           name: kong
           command: helm lint -f src/kong/ci/values.yaml src/kong/
-      - run:
-          name: gateway-manager
-          command: helm lint -f src/gateway-manager/ci/values.yaml src/gateway-manager/
       - run:
           name: generic
           command: helm lint -f src/generic/ci/values.yaml src/generic/
@@ -43,3 +21,6 @@ jobs:
       - run:
           name: generic
           command: helm lint src/generic/
+      - run:
+          name: generic3
+          command: helm lint src/generic3/

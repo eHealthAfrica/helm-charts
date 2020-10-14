@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: firebase-consumer-config
-data:
-    consumer.json: |
