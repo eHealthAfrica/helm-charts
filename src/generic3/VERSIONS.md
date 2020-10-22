@@ -4,6 +4,17 @@ Change Summary for this chart.
 
 Newer versions are all backward-compatible.
 
+### 0.3.1
+-  Reduce resource requests and limits 
+```yaml
+    requests:
+      cpu: 64m
+      memory: 256M
+    limits:
+      cpu: 250m
+      memory: 1024M
+```
+ 
 ### 0.3.0
 - Collapse aether-producer into generic3
 - Update redis subchart activation key-flag
