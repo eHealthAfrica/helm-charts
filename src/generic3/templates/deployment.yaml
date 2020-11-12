@@ -369,6 +369,17 @@ spec:
           defaultMode: 0744
       {{ end }}
       {{- with .Values.extraVolumes }}
+        volumeMounts:
+        {{ if .Values.app.volume.existingClaim }}
+        - mountPath: {{ .Values.app.volume.mountPath }}
+          name: pvcName
+        {{ end }}
+      volumes:
+      {{ if .Values.app.volume.existingClaim }}
+      - name: pvcName
+        persistentVolumeClaim:
+          claimName: {{ .Values.app.volume.claimName }}
+      {{ end }}  
 {{ tpl . $ | indent 6 }}
       {{- end }}
       restartPolicy: Always
