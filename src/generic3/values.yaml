@@ -205,8 +205,6 @@ nginx:
 service:
   enabled: true
   type: NodePort
-  externalPort:
-  internalPort:
 
 service_internal:
   enabled: false
