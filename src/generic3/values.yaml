@@ -102,6 +102,8 @@ app:
     type: standard # type can also be 'retain-volume' for stateful apps or 'nfs' for RWM
     accessMode: ReadWriteOnce
     size: 10Gi
+    existingClaim: false
+    claimName:
     nfs:
       server:
       path:
@@ -201,9 +203,8 @@ nginx:
     }
 
 service:
+  enabled: true
   type: NodePort
-  externalPort:
-  internalPort:
 
 service_internal:
   enabled: false

@@ -78,6 +78,8 @@ The following tables lists the configurable parameters of the Generic3 chart and
 | app.volume.persist | bool | `false` |  |
 | app.volume.size | string | `"10Gi"` |  |
 | app.volume.type | string | `"standard"` |  |
+| app.volume.existingClaim | bool | `false` |  |
+| app.volume.claimName | string | `nil` |  |
 | database.instance | string | `nil` |  |
 | env_secrets.enabled | bool | `false` |  |
 | env_secrets.name | string | `nil` |  |
@@ -115,6 +117,7 @@ The following tables lists the configurable parameters of the Generic3 chart and
 | replicaCount | int | `3` |  |
 | resourceType | string | `"deployment"` |  |
 | resources | object | `{}` |  |
+| service.enabled | bool | `true` |  |
 | service.externalPort | string | `nil` |  |
 | service.internalPort | string | `nil` |  |
 | service.type | string | `"NodePort"` |  |

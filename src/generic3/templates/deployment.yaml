@@ -285,7 +285,10 @@ spec:
         - mountPath: {{ .Values.app.volume.mountPath }}
           name: {{ template "generic.name" . }}-data
         {{ end }}
-
+        {{ if .Values.app.volume.existingClaim }}
+        - mountPath: {{ .Values.app.volume.mountPath }}
+          name: {{ .Values.app.volume.claimName }}
+        {{ end }}
         {{- with .Values.app.extraVolumeMounts }}
 {{ tpl . $ | indent 8 }}
         {{- end }}
@@ -318,6 +321,10 @@ spec:
         {{ if and .Values.app.volume.enabled .Values.nginx.enabled }}
         - mountPath: {{ .Values.app.volume.mountPath }}
           name: {{ template "generic.name" . }}-data
+        {{ end }}
+        {{ if .Values.app.volume.existingClaim }}
+        - mountPath: {{ .Values.app.volume.mountPath }}
+          name: {{ .Values.app.volume.claimName }}
         {{ end }}
       {{ end }}
       {{ if .Values.imagePullSecrets.enabled }}
@@ -353,6 +360,11 @@ spec:
         secret:
           secretName: cloudsql-instance-credentials
       {{ end }}
+      {{ if .Values.app.volume.existingClaim }}
+      - name: {{ .Values.app.volume.claimName }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.app.volume.claimName }}
+      {{ end }} 
       {{ if .Values.app.volume.enabled }}
       - name: {{ template "generic.name" . }}-data
         {{ if .Values.app.volume.persist }}
@@ -360,7 +372,7 @@ spec:
           claimName: {{ template "generic.fullname" . }}
         {{ else }}
         emptyDir: {}
-        {{ end }}
+        {{ end }}  
       {{ end }}
       {{ if eq .Values.app.probe.type "exec" }}
       - name: {{ template "generic.fullname" . }}-health
@@ -370,6 +382,6 @@ spec:
       {{ end }}
       {{- with .Values.extraVolumes }}
 {{ tpl . $ | indent 6 }}
-      {{- end }}
+      {{- end }} 
       restartPolicy: Always
 {{ end }}

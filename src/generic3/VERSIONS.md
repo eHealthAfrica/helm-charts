@@ -4,6 +4,17 @@ Change Summary for this chart.
 
 Newer versions are all backward-compatible.
 
+### 0.3.2
+- Added option to point to an existing PersistentVolumeClaim
+```yaml
+  existingClaim: false
+    claimName:
+```
+- Added option to disable service default true
+```yaml
+service:
+  enabled: true
+```
 ### 0.3.1
 -  Reduce resource requests and limits 
 ```yaml
