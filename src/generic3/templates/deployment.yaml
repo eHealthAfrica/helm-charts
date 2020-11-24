@@ -287,7 +287,7 @@ spec:
         {{ end }}
         {{ if .Values.app.volume.existingClaim }}
         - mountPath: {{ .Values.app.volume.mountPath }}
-          name: pvcname
+          name: {{ .Values.app.volume.claimName }}
         {{ end }}
         {{- with .Values.app.extraVolumeMounts }}
 {{ tpl . $ | indent 8 }}
@@ -324,7 +324,7 @@ spec:
         {{ end }}
         {{ if .Values.app.volume.existingClaim }}
         - mountPath: {{ .Values.app.volume.mountPath }}
-          name: pvcname
+          name: {{ .Values.app.volume.claimName }}
         {{ end }}
       {{ end }}
       {{ if .Values.imagePullSecrets.enabled }}
@@ -361,7 +361,7 @@ spec:
           secretName: cloudsql-instance-credentials
       {{ end }}
       {{ if .Values.app.volume.existingClaim }}
-      - name: pvcname
+      - name: {{ .Values.app.volume.claimName }}
         persistentVolumeClaim:
           claimName: {{ .Values.app.volume.claimName }}
       {{ end }} 
