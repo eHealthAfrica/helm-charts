@@ -117,6 +117,7 @@ The following tables lists the configurable parameters of the Generic3 chart and
 | replicaCount | int | `3` |  |
 | resourceType | string | `"deployment"` |  |
 | resources | object | `{}` |  |
+| service.enabled | bool | `true` |  |
 | service.externalPort | string | `nil` |  |
 | service.internalPort | string | `nil` |  |
 | service.type | string | `"NodePort"` |  |

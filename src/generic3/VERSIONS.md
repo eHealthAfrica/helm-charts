@@ -10,7 +10,11 @@ Newer versions are all backward-compatible.
   existingClaim: false
     claimName:
 ```
-
+- Added option to disable service default true
+```yaml
+service:
+  enabled: true
+```
 ### 0.3.1
 -  Reduce resource requests and limits 
 ```yaml
