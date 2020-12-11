@@ -1,46 +1,14 @@
+{{- if and .Values.elasticsearch.securityConfig.config.securityConfigSecret .Values.elasticsearch.securityConfig.config.data }}
 apiVersion: v1
-kind: ConfigMap
+kind: Secret
 metadata:
-  name: {{ template "opendistro-es.fullname" . }}-security-config
+  name: {{ .Values.elasticsearch.securityConfig.config.securityConfigSecret }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "opendistro-es.labels.standard" . | indent 4 }}
+type: Opaque
 data:
-  config.yml: |
-    _meta:
-      type: "config"
-      config_version: 2
-
-    config:
-      dynamic:
-        do_not_fail_on_forbidden: true
-        kibana:
-          multitenancy_enabled: true
-          server_username: admin
-        http:
-          anonymous_auth_enabled: false
-          xff:
-            enabled: true
-            internalProxies: '.*' # trust all internal proxies, regex pattern
-            remoteIpHeader:  'x-forwarded-for'
-
-        authc:
-          basic_internal_auth_domain:
-            http_enabled: true
-            transport_enabled: true
-            order: 0
-            http_authenticator:
-              type: basic
-              challenge: false
-            authentication_backend:
-              type: intern
-
-          proxy_auth_domain:
-            http_enabled: true
-            transport_enabled: true
-            order: 1
-            http_authenticator:
-              type: proxy
-              challenge: false
-              config:
-                user_header: "x-oauth-preferred_username"
-                roles_header: "x-oauth-realm"
-            authentication_backend:
-              type: noop
+{{- range $key, $val := .Values.elasticsearch.securityConfig.config.data }}
+  {{ $key }}: {{ $val | b64enc | quote }}
+{{- end }}
+{{- end}}
