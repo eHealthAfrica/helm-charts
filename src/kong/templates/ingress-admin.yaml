@@ -2,8 +2,11 @@
 {{- $serviceName := include "kong.fullname" . -}}
 {{- $servicePort := .Values.admin.servicePort -}}
 {{- $path := .Values.admin.ingress.path -}}
-apiVersion: extensions/v1beta1
-kind: Ingress
+{{- if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1"}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else }}
+apiVersion: networking.k8s.io/v1
+{{- end }}
 metadata:
   name: {{ template "kong.fullname" . }}-admin
   labels:

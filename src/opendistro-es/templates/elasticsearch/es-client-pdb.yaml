@@ -2,7 +2,11 @@
 # SPDX-License-Identifier: MIT-0
 {{- if and .Values.elasticsearch.client.podDisruptionBudget.enabled .Values.elasticsearch.client.enabled }}
 ---
+{{- if .Capabilities.APIVersions.Has "policy/v1beta1"}}
 apiVersion: policy/v1beta1
+{{- else }}
+apiVersion: policy/v1
+{{- end }}
 kind: PodDisruptionBudget
 metadata:
   name: {{ template "opendistro-es.fullname" . }}-client-pdb
