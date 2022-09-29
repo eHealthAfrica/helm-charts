@@ -248,6 +248,20 @@ entries:
     digest: 0eb18c7738369b7db985e250641a903494389962a64c680b492c873658c1710e
     name: generic3
     urls:
+    - https://eha-clinics.github.io/helm-charts/charts/generic3-0.3.4.tgz
+    version: 0.3.4
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2022-09-29T11:53:11.19963813+02:00"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~10.6.12
+    description: A Generic Helm chart for Kubernetes
+    digest: 0eb18c7738369b7db985e250641a903494389962a64c680b492c873658c1710e
+    name: generic3
+    urls:
     - https://ehealthafrica.github.io/helm-charts/charts/generic3-0.3.3.tgz
     version: 0.3.3
   - apiVersion: v1
