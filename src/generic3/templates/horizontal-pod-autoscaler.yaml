@@ -1,5 +1,10 @@
 {{ if and (.Values.app.scaling.enabled) (ne .Values.resourceType "cronjob") }}
+apiVersion: autoscaling/v2
+{{- if .Capabilities.APIVersions.Has "autoscaling/v2beta1"}}
 apiVersion: autoscaling/v2beta1
+{{- else }}
+apiVersion: autoscaling/v2
+{{- end }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "generic.fullname" . }}

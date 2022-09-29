@@ -1,5 +1,9 @@
 {{- if and .Values.ingressController.rbac.create .Values.ingressController.enabled -}}
+{{- if .Capabilities.APIVersions.Has "rbac.authorization.k8s.io/v1beta1"}}
 apiVersion: rbac.authorization.k8s.io/v1beta1
+{{- else }}
+apiVersion: rbac.authorization.k8s.io/v1
+{{- end }}
 kind: Role
 metadata:
   name:  {{ template "kong.fullname" . }}
