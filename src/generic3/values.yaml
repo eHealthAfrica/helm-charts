@@ -141,7 +141,7 @@ sidecar:
     periodSeconds: 10
   db:
     enabled: false
-
+  volumeMounts: 
   resources:
     limits:
       cpu: 100m

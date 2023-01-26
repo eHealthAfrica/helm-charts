@@ -149,6 +149,12 @@ spec:
           initialDelaySeconds: {{ .Values.sidecar.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.sidecar.probe.periodSeconds }}
         {{ end }}
+        {{ if .Values.sidecar.volumeMounts }}
+        volumeMounts:
+        {{- with .Values.sidecar.volumeMounts }}
+{{ tpl . $ | indent 8 }}
+        {{- end }}
+        {{ end }}
         resources:
 {{ toYaml .Values.sidecar.resources | indent 12 }}
         {{ if .Values.env_secrets.enabled }}
