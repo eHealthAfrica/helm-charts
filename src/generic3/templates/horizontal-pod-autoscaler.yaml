@@ -1,5 +1,4 @@
 {{ if and (.Values.app.scaling.enabled) (ne .Values.resourceType "cronjob") }}
-apiVersion: autoscaling/v2
 {{- if .Capabilities.APIVersions.Has "autoscaling/v2beta1"}}
 apiVersion: autoscaling/v2beta1
 {{- else }}
@@ -20,6 +19,7 @@ spec:
     name: {{ template "generic.fullname" . }}
   minReplicas: {{ .Values.app.scaling.min }}
   maxReplicas: {{ .Values.app.scaling.max }}
+{{- if .Capabilities.APIVersions.Has "autoscaling/v2beta1"}}
   metrics:
     - type: Resource
       resource:
@@ -29,5 +29,21 @@ spec:
       resource:
         name: memory
         targetAverageUtilization: {{ .Values.app.scaling.utilization.memory }}
+{{- else }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.app.scaling.utilization.cpu }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.app.scaling.utilization.memory }}
 
-  {{ end }}
+{{- end }}
+
+{{ end }}
