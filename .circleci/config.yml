@@ -2,9 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: alpine/helm:3.10.0
+      - image: alpine:latest
 
     steps:
+      - run: apk add helm git openssh
       - checkout
       - run:
           name: database-provisioner
