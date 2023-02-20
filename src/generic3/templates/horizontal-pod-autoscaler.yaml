@@ -1,9 +1,5 @@
 {{ if and (.Values.app.scaling.enabled) (ne .Values.resourceType "cronjob") }}
-{{- if .Capabilities.APIVersions.Has "autoscaling/v2beta1"}}
-apiVersion: autoscaling/v2beta1
-{{- else }}
 apiVersion: autoscaling/v2
-{{- end }}
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "generic.fullname" . }}
@@ -19,17 +15,6 @@ spec:
     name: {{ template "generic.fullname" . }}
   minReplicas: {{ .Values.app.scaling.min }}
   maxReplicas: {{ .Values.app.scaling.max }}
-{{- if .Capabilities.APIVersions.Has "autoscaling/v2beta1"}}
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        targetAverageUtilization: {{ .Values.app.scaling.utilization.cpu }}
-    - type: Resource
-      resource:
-        name: memory
-        targetAverageUtilization: {{ .Values.app.scaling.utilization.memory }}
-{{- else }}
   metrics:
     - type: Resource
       resource:
@@ -43,7 +28,4 @@ spec:
         target:
           type: Utilization
           averageUtilization: {{ .Values.app.scaling.utilization.memory }}
-
-{{- end }}
-
 {{ end }}
