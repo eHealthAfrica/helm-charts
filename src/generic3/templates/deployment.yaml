@@ -264,6 +264,7 @@ spec:
 
 
         {{ if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") }}
+        {{ if eq .Values.app.db.omitconfig "false" }}
         - name: PGPASSWORD
           valueFrom:
             secretKeyRef:
@@ -277,6 +278,7 @@ spec:
           value: {{ .Values.app.db.host }}
         - name: DB_NAME
           value: {{ .Values.app.db.name }}
+        {{ end }}
         {{ end }}
         volumeMounts:
         {{ if .Values.nginx.enabled }}
