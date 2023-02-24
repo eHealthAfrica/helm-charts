@@ -32,6 +32,7 @@ app:
     type: postgres
     create: false
     enabled: false
+    omitconfig: false
     secret: database-credentials
     ssl:
       enabled: false
