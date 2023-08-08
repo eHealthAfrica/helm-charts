@@ -18,7 +18,7 @@ waitImage:
 ## Additional sidecar containers, e. g. for a database proxy, such as Google's cloudsql-proxy
 extraInitContainers: |
     - name: cloudsql-proxy
-      image: gcr.io/cloudsql-docker/gce-proxy:1.11
+      image: gcr.io/cloudsql-docker/gce-proxy:1.33.9
       command: ["/cloud_sql_proxy",
                 "-instances=test:europe-west1:dev=tcp:5432",
                 "-credential_file=/secrets/cloudsql/credentials.json"]
@@ -30,7 +30,7 @@ extraInitContainers: |
 ## Additional sidecar containers, e. g. for a database proxy, such as Google's cloudsql-proxy
 extraContainers: |
     - name: cloudsql-proxy
-      image: gcr.io/cloudsql-docker/gce-proxy:1.11
+      image: gcr.io/cloudsql-docker/gce-proxy:1.33.9
       command: ["/cloud_sql_proxy",
                 "-instances=test:europe-west1:dev=tcp:5432",
                 "-credential_file=/secrets/cloudsql/credentials.json"]
