@@ -43,7 +43,7 @@ spec:
 {{ tpl .Values.extraInitContainers . | indent 6 }}
       {{- end }}
       - name: init
-        image: postgres:14-alpine
+        image: postgres:16-alpine
         resources:
 {{ toYaml .Values.sidecar.resources  | indent 12 }}
         command: ['bash', '-c', './scripts/init.sh']
