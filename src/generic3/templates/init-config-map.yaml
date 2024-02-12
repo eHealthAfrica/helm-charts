@@ -4,6 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ template "generic.fullname" . }}-init-pg-config
 data:
+{{ if .Values.gcp }}
   init.sh: |
     #!/bin/bash
     set -ex
@@ -22,4 +23,12 @@ data:
     sleep 5
     echo "stopping proxy"
     kill $PROXY_PID
+{{ else }}
+  init.sh: |
+    #!/bin/bash
+    set -ex
+    apk add --no-cache ca-certificates && update-ca-certificates
+    #initialization script
+    {{ tpl .Values.app.db.init . | indent 4 }}
+{{ end }}
 {{ end }}

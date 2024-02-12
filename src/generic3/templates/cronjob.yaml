@@ -80,7 +80,7 @@ spec:
           {{- end }}
           {{ if and .Values.app.db.enabled .Values.gcp }}
           - name: cloudsql-proxy
-            image: gcr.io/cloudsql-docker/gce-proxy:1.33.9
+            image: gcr.io/cloudsql-docker/gce-proxy:1.33.16
             resources:
 {{ toYaml .Values.sidecar.resources | indent 16 }}
             command: ["/cloud_sql_proxy",
