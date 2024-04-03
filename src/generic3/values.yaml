@@ -227,16 +227,10 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt
     kubernetes.io/ingress.class: nginx
     kubernetes.io/tls-acme: "true"
-    monitor.stakater.com/enabled: "true"
-    nginx.ingress.kubernetes.io/affinity: "cookie"
-    nginx.ingress.kubernetes.io/affinity-mode: persistent
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: "75M"
-    nginx.ingress.kubernetes.io/session-cookie-expires: "172800"
-    nginx.ingress.kubernetes.io/session-cookie-hash: sha1
-    nginx.ingress.kubernetes.io/session-cookie-max-age: "172800"
-    nginx.ingress.kubernetes.io/session-cookie-name: "sticky-cookie"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    monitor.stakater.com/enabled: "true"
     statuscake.monitor.stakater.com/contact-group: "DevOps"
   path: /
   hosts:
