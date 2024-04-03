@@ -38,7 +38,7 @@ app:
   name: aya
   port: 5432
   command: start
-  static_root: /var/www/static
+  static_root: /var/www/static/
   storage:
     bucket:
       credentialsSecret: "gcs-bucket-credentials"
