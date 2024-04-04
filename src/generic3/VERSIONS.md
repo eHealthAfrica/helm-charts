@@ -1,8 +1,11 @@
 # Generic3 Chart Versions
- 
+
 Change Summary for this chart.
 
 Newer versions are all backward-compatible.
+
+### 0.4.3 (2024-04-03)
+- Replaced option value `app.static_root` from `/var/www/static` to `/var/www/static/`
 
 ### 0.3.2
 - Added option to point to an existing PersistentVolumeClaim
@@ -15,8 +18,9 @@ Newer versions are all backward-compatible.
 service:
   enabled: true
 ```
+
 ### 0.3.1
--  Reduce resource requests and limits 
+-  Reduce resource requests and limits
 ```yaml
     requests:
       cpu: 64m
@@ -25,7 +29,7 @@ service:
       cpu: 250m
       memory: 1024M
 ```
- 
+
 ### 0.3.0
 - Collapse aether-producer into generic3
 - Update redis subchart activation key-flag
