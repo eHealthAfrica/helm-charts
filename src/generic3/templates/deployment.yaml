@@ -206,6 +206,8 @@ spec:
             httpHeaders:
             - name: X-Kubernetes-Health-Check
               value: livenessProbe
+            - name: Host
+              value: {{ .Values.url }}
           initialDelaySeconds: {{ .Values.app.probe.initialDelaySeconds }}
           periodSeconds: {{ .Values.app.probe.periodSeconds }}
           timeoutSeconds: {{ .Values.app.probe.timeoutSeconds }}
