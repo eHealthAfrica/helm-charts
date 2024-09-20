@@ -65,10 +65,8 @@ app:
 
   resources:
     requests:
-      cpu: 64m
       memory: 256M
     limits:
-      cpu: 250m
       memory: 1024M
 
   # HPA Activation
