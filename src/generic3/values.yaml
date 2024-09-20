@@ -143,10 +143,8 @@ sidecar:
   volumeMounts:
   resources:
     limits:
-      cpu: 100m
       memory: 128M
     requests:
-      cpu: 25m
       memory: 32M
 
 database:
