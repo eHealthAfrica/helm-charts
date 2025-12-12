@@ -4,6 +4,10 @@ Change Summary for this chart.
 
 Newer versions are all backward-compatible.
 
+
+### 0.4.7 (2025-12-12)
+- set minAvailable: 0  by default to allow for pod disruption 
+
 ### 0.4.6 (2025-12-12)
 - add variable to specify the app health check path
 - use extra memory limits for nginx

@@ -109,13 +109,12 @@ app:
 
   ## Add additional volumeMounts
   extraVolumeMounts: |
-#    - name: {{ template "generic.fullname" . }}-consumer-kafka-config
-#      mountPath: /code/conf/consumer/kafka.json
-#      subPath: kafka.json
+  #    - name: {{ template "generic.fullname" . }}-consumer-kafka-config
+  #      mountPath: /code/conf/consumer/kafka.json
+  #      subPath: kafka.json
 
   # PDB Activation
-  minAvailable: 1 # set 0 to disable PodDisruptionBudget
-
+  minAvailable: 0 # set 0 to disable PodDisruptionBudget
 
 cronjob:
   schedule: 0 * * * *
@@ -245,7 +244,6 @@ extra_env_vars: {}
 
 extra_env_vars_secretKeyRef: {}
 
-
 env_secrets:
   enabled: false
   name:
@@ -267,14 +265,15 @@ aether:
   consumer_configmap:
     enabled: false
     data: |
-#      consumer.json: |
-#          {
-#          ||
-#          }
+  #      consumer.json: |
+  #          {
+  #          ||
+  #          }
 
   consumer_kafka_configmap:
     enabled: false
     data: |
+
 #      kafka.json: |
 #        {
 #          "security.protocol": "SASL_SSL",
