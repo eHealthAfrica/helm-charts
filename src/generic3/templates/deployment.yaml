@@ -320,7 +320,7 @@ spec:
       - name: nginx
         image: nginx:stable-alpine
         resources:
-{{ toYaml .Values.sidecar.resources  | indent 12 }}
+{{ toYaml .Values.nginx.resources  | indent 12 }}
         ports:
         - containerPort: 80
         volumeMounts:
