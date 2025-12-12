@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   aether-couchdb-sync:
   - apiVersion: v1
-    created: "2024-09-20T13:43:59.659734073+02:00"
+    created: "2025-12-12T10:30:30.366878032+01:00"
     description: The CouchDB Sync module for Aether, an open source development platform
       for data curation, exchange, and publication
     digest: 94663db9c562f35f22ea90820d01721390dbb9ae201ea839e31e7fe097737fcc
@@ -12,7 +12,7 @@ entries:
     version: 1.2.0
   couchdb-backup:
   - apiVersion: v1
-    created: "2024-09-20T13:43:59.669050105+02:00"
+    created: "2025-12-12T10:30:30.368632458+01:00"
     description: A Helm chart for automating CouchDB backups
     digest: f1cbfbb886f99781f59ebeec9ecb26163c87ea5eff77bcbaeb299e67d6160859
     name: couchdb-backup
@@ -20,7 +20,7 @@ entries:
     - https://ehealthafrica.github.io/helm-charts/charts/couchdb-backup-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v1
-    created: "2024-09-20T13:43:59.668584305+02:00"
+    created: "2025-12-12T10:30:30.367795641+01:00"
     description: A Helm chart for automating CouchDB backups
     digest: acbd3f7361bf2c415b6e531247936ac7e1c04912c041a9b7e84ff6caca901983
     name: couchdb-backup
@@ -29,7 +29,7 @@ entries:
     version: 1.0.0
   database-provisioner:
   - apiVersion: v1
-    created: "2024-09-20T13:43:59.669332179+02:00"
+    created: "2025-12-12T10:30:30.369545679+01:00"
     description: A Helm chart for provisioning databases
     digest: eedc233d0e1eaf69ef527e574b2fa690072135316a531a1ee8624f556a7f61ce
     name: database-provisioner
@@ -39,7 +39,7 @@ entries:
   generic:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.699611893+02:00"
+    created: "2025-12-12T10:30:30.405392081+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: aaf71afcc748e764e5bdcdd639f3e7d3cc999b6fb2e184f9f7fe7be9e854e0c9
     name: generic
@@ -48,7 +48,7 @@ entries:
     version: 0.3.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.698127345+02:00"
+    created: "2025-12-12T10:30:30.403937574+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 758d9fd0d27f2f0fef0141f06c83658a9c32cf433c45e5367dff053c6d6d1012
     name: generic
@@ -57,7 +57,7 @@ entries:
     version: 0.3.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.696601958+02:00"
+    created: "2025-12-12T10:30:30.402323584+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 3cc9d83d6d7fbf69affd3717272693927df897c106f3766f822abfaf68a89129
     name: generic
@@ -66,7 +66,7 @@ entries:
     version: 0.3.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.694973792+02:00"
+    created: "2025-12-12T10:30:30.400628119+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 10f2b56521458d58cd9fc95e12a0f086c7c3641875d3cd5c155e3eae15cfe94f
     name: generic
@@ -75,7 +75,7 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.692696561+02:00"
+    created: "2025-12-12T10:30:30.39797047+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 337f73d077ecf02f71d233aa6b9fbab1562ea67a8800be1a31dd439496d129c1
     name: generic
@@ -84,7 +84,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.691381179+02:00"
+    created: "2025-12-12T10:30:30.396216545+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: c7ab24a271f46a1284c71297383c110833ecc47dbb6bbe377d3ca09ed46c7f49
     name: generic
@@ -93,7 +93,7 @@ entries:
     version: 0.2.9
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.690076947+02:00"
+    created: "2025-12-12T10:30:30.394669612+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: e934230cb9f11e6e89059dbe074518fcd9c9a72f2b3ccae47314dd93f674b9b7
     name: generic
@@ -102,7 +102,7 @@ entries:
     version: 0.2.8
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.688781764+02:00"
+    created: "2025-12-12T10:30:30.392992573+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: f4b0038768002679ebbd7fbe875b76636bdf4115e4f28c46feb1e59000ee10ec
     name: generic
@@ -111,7 +111,7 @@ entries:
     version: 0.2.7
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.687482362+02:00"
+    created: "2025-12-12T10:30:30.391270969+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 9bb082c417843a293274c4fbb9f983bcd0b4e0ee7b99d44ef55b1de5d2486368
     name: generic
@@ -120,7 +120,7 @@ entries:
     version: 0.2.6
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.68616048+02:00"
+    created: "2025-12-12T10:30:30.389853922+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: f529e036dc23b30e83b2f0eca6f38a091bb060ce4b16440d32c7442fb9916192
     name: generic
@@ -129,7 +129,7 @@ entries:
     version: 0.2.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.684895437+02:00"
+    created: "2025-12-12T10:30:30.388342256+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: fcdaf734d2fe928a32585c97b4d8cb6bce3a31f9b203f50b1fba44949a22b7ee
     name: generic
@@ -138,7 +138,7 @@ entries:
     version: 0.2.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.683670783+02:00"
+    created: "2025-12-12T10:30:30.386870716+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: c6d061ca74d2b518f2273ce4bad400846e5fa5d4bb5199a7cc35dc114205f1b6
     name: generic
@@ -147,7 +147,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.68239569+02:00"
+    created: "2025-12-12T10:30:30.385500859+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 9af6d1356fbe192e26fd4a0bc69797a28b3e1bb6711132aea2597eead3711627
     name: generic
@@ -156,7 +156,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.681239985+02:00"
+    created: "2025-12-12T10:30:30.384257141+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 5b61076f2673454ecab15461bec3e3c8e211990b1f7d904aa218c84198a380b7
     name: generic
@@ -165,7 +165,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.680045701+02:00"
+    created: "2025-12-12T10:30:30.382983446+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 51db3c069dc057f75e8ee70757daaf78b6b42b19618ad2b8a3ae12a6c99a89ad
     name: generic
@@ -174,7 +174,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.678853946+02:00"
+    created: "2025-12-12T10:30:30.381758774+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: bbfee1526a953f358d0ac390b5e2ca21ffd683b3f1f1387f67fa0f3b8bc5a8ab
     name: generic
@@ -183,7 +183,7 @@ entries:
     version: 0.1.7
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.677681181+02:00"
+    created: "2025-12-12T10:30:30.380183768+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 726776bfc218704127d851e3664026b4d87917963510406c2e6b683858d238a1
     name: generic
@@ -192,7 +192,7 @@ entries:
     version: 0.1.6
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.676555375+02:00"
+    created: "2025-12-12T10:30:30.378783804+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 9699140edfbecf22e6ea1fe387e40f5fcdf35219896cf4a8599e5f28ecdde663
     name: generic
@@ -201,7 +201,7 @@ entries:
     version: 0.1.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.67537941+02:00"
+    created: "2025-12-12T10:30:30.377263211+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: a29b00eb91e006b11d2959a3c3cc2caf695ae0403158f1f0758c0d27c3ed7d14
     name: generic
@@ -210,7 +210,7 @@ entries:
     version: 0.1.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.674335312+02:00"
+    created: "2025-12-12T10:30:30.375802642+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 6b7a220566d085053beeea929c3ea70b5ce4b0779b6c600ab57d3138b7e76587
     name: generic
@@ -219,7 +219,7 @@ entries:
     version: 0.1.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.672894483+02:00"
+    created: "2025-12-12T10:30:30.3736232+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 8153cb3920c4ca85c18b027d4854da990c97b3453b0d97e19ace8805ea32207e
     name: generic
@@ -228,7 +228,7 @@ entries:
     version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.671301627+02:00"
+    created: "2025-12-12T10:30:30.372247692+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: ca3bd2d3033da36d9d6a765f9b84d0872329e68b178199d7ac07301831818464
     name: generic
@@ -237,7 +237,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.670347967+02:00"
+    created: "2025-12-12T10:30:30.370903794+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: f989086c5c472493d44e7094946980e5a9c95a74f66e4fd20775fedf84b7a013
     name: generic
@@ -247,7 +247,21 @@ entries:
   generic3:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.885434525+02:00"
+    created: "2025-12-12T10:30:30.60515739+01:00"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~10.6.12
+    description: A Generic Helm chart for Kubernetes
+    digest: e6e6f8da2d5b1ab3a36a2148a4c8e43c46033ce126d54591f46e09f0524428c2
+    name: generic3
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/generic3-0.4.6.tgz
+    version: 0.4.6
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2025-12-12T10:30:30.60109045+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -261,7 +275,7 @@ entries:
     version: 0.4.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.87909199+02:00"
+    created: "2025-12-12T10:30:30.594790586+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -275,7 +289,7 @@ entries:
     version: 0.4.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.874115896+02:00"
+    created: "2025-12-12T10:30:30.590853581+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -289,7 +303,7 @@ entries:
     version: 0.4.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.869076373+02:00"
+    created: "2025-12-12T10:30:30.586914764+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -303,7 +317,7 @@ entries:
     version: 0.4.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.863896044+02:00"
+    created: "2025-12-12T10:30:30.581813763+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -317,7 +331,7 @@ entries:
     version: 0.4.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.857792514+02:00"
+    created: "2025-12-12T10:30:30.572603851+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -331,7 +345,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.850548768+02:00"
+    created: "2025-12-12T10:30:30.56507647+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -345,7 +359,7 @@ entries:
     version: 0.3.8
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.842856542+02:00"
+    created: "2025-12-12T10:30:30.556503697+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -359,7 +373,7 @@ entries:
     version: 0.3.7
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.834438251+02:00"
+    created: "2025-12-12T10:30:30.549025048+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -373,7 +387,7 @@ entries:
     version: 0.3.6
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.827071558+02:00"
+    created: "2025-12-12T10:30:30.539988595+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -387,7 +401,7 @@ entries:
     version: 0.3.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.819590318+02:00"
+    created: "2025-12-12T10:30:30.529160416+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -401,7 +415,7 @@ entries:
     version: 0.3.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.810847124+02:00"
+    created: "2025-12-12T10:30:30.521655087+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -415,7 +429,7 @@ entries:
     version: 0.3.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.80352449+02:00"
+    created: "2025-12-12T10:30:30.514245348+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -429,7 +443,7 @@ entries:
     version: 0.3.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.796130147+02:00"
+    created: "2025-12-12T10:30:30.504730519+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -443,7 +457,7 @@ entries:
     version: 0.3.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.788306994+02:00"
+    created: "2025-12-12T10:30:30.497289281+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -457,7 +471,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.779856524+02:00"
+    created: "2025-12-12T10:30:30.489073925+01:00"
     dependencies:
     - condition: aether.redis.enabled
       name: redis
@@ -471,7 +485,7 @@ entries:
     version: 0.2.9
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.772454462+02:00"
+    created: "2025-12-12T10:30:30.480100573+01:00"
     dependencies:
     - condition: redis.enabled
       name: redis
@@ -485,7 +499,7 @@ entries:
     version: 0.2.8
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.764631628+02:00"
+    created: "2025-12-12T10:30:30.471036628+01:00"
     dependencies:
     - condition: aether.redis.enabled
       name: redis
@@ -499,7 +513,7 @@ entries:
     version: 0.2.7
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.755694159+02:00"
+    created: "2025-12-12T10:30:30.460801142+01:00"
     dependencies:
     - condition: aether.redis.enabled
       name: redis
@@ -513,7 +527,7 @@ entries:
     version: 0.2.6
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.748092891+02:00"
+    created: "2025-12-12T10:30:30.453198809+01:00"
     dependencies:
     - condition: aether.redis.enabled
       name: redis
@@ -527,7 +541,7 @@ entries:
     version: 0.2.5
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.740447964+02:00"
+    created: "2025-12-12T10:30:30.445469685+01:00"
     dependencies:
     - condition: aether.redis.enabled
       name: redis
@@ -541,7 +555,7 @@ entries:
     version: 0.2.4
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.731819657+02:00"
+    created: "2025-12-12T10:30:30.436043654+01:00"
     dependencies:
     - condition: aether.redis.enabled
       name: redis
@@ -555,7 +569,7 @@ entries:
     version: 0.2.3
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.724149371+02:00"
+    created: "2025-12-12T10:30:30.42872039+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 964e069a8dd4fccd82cc7c436165512611dc78aa9c5eb99ce8dd4034e2c8f35a
     name: generic3
@@ -564,7 +578,7 @@ entries:
     version: 0.2.2
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.722402758+02:00"
+    created: "2025-12-12T10:30:30.42681097+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: c8122c3843f5611c68e2c1e4f476ae8ba0c233d19d65cda970d504559ad6cf30
     name: generic3
@@ -573,7 +587,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.720651215+02:00"
+    created: "2025-12-12T10:30:30.424861694+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: c56aa4de0e73dcb593a283bd6901e8cd7098375a6b15f0821eaf2e733575c03d
     name: generic3
@@ -582,7 +596,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.718519361+02:00"
+    created: "2025-12-12T10:30:30.422952735+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 5da5fc6b9a5ce6810f1c3215e06d0ea29ddca13f357e7dc64dfb571260f1e84d
     name: generic3
@@ -591,7 +605,7 @@ entries:
     version: 0.1.9
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.71388005+02:00"
+    created: "2025-12-12T10:30:30.419881372+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: cba826d6e9df0e930d421a488d0850d8d7785cb4279358e88d9820ca92dd2d19
     name: generic3
@@ -600,7 +614,7 @@ entries:
     version: 0.1.8
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.712177846+02:00"
+    created: "2025-12-12T10:30:30.418084765+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: f483a153cf1d3cbf728dd8966d8f727fac405dc38210732aeb5954c08c99d255
     name: generic3
@@ -609,7 +623,7 @@ entries:
     version: 0.1.7
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.710457363+02:00"
+    created: "2025-12-12T10:30:30.416301434+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 7e9d3df66ac3708dd6171b12e1032bd09e9819dc631372c897054b4da18c9331
     name: generic3
@@ -618,7 +632,7 @@ entries:
     version: 0.1.6
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.708876036+02:00"
+    created: "2025-12-12T10:30:30.414449002+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 96ab5964f5c836474bbb9532cf7ff17815663707c6fc23e6e30a24055222b421
     name: generic3
@@ -627,7 +641,7 @@ entries:
     version: 0.1.5
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.706903258+02:00"
+    created: "2025-12-12T10:30:30.412766623+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: fe9bdd30194ebc48b82fafd5f8c6575304d1ea9193559f59e66b052cfce13474
     name: generic3
@@ -636,7 +650,7 @@ entries:
     version: 0.1.4
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.70541158+02:00"
+    created: "2025-12-12T10:30:30.411320561+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: 08c2ad2be84f2793ddb0905c12fd8962d57fb4f8178227edb4485ded55f02a7d
     name: generic3
@@ -645,7 +659,7 @@ entries:
     version: 0.1.3
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.70399758+02:00"
+    created: "2025-12-12T10:30:30.409705199+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: d28a5cb19b6e5208734446d2c9e62a4f10a53826729e9c63120b3ab08294b6d4
     name: generic3
@@ -654,7 +668,7 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.702411524+02:00"
+    created: "2025-12-12T10:30:30.408409242+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: d816bdb34c39c0b8709f8efbacddcc7ac90c261b531420150e38c0b9b87ddd97
     name: generic3
@@ -663,7 +677,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.700974955+02:00"
+    created: "2025-12-12T10:30:30.406839195+01:00"
     description: A Generic Helm chart for Kubernetes
     digest: ee30bec2f607b6dfc130e4b7aba93fb6456cd88e1da01d87823e4374655ef11e
     name: generic3
@@ -673,7 +687,7 @@ entries:
   helloworld:
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2024-09-20T13:43:59.88612445+02:00"
+    created: "2025-12-12T10:30:30.60626508+01:00"
     description: A Helm chart for Kubernetes
     digest: a530741c031d54379fe8381baac8245e925e0bd2c79e81bce3ed495ac41a52cc
     name: helloworld
@@ -683,7 +697,7 @@ entries:
   keycloak:
   - apiVersion: v1
     appVersion: 9.0.2
-    created: "2024-09-20T13:43:59.891427387+02:00"
+    created: "2025-12-12T10:30:30.613093617+01:00"
     dependencies:
     - condition: keycloak.persistence.deployPostgres
       name: postgresql
@@ -716,7 +730,7 @@ entries:
   kong:
   - apiVersion: v1
     appVersion: "1.1"
-    created: "2024-09-20T13:43:59.8950343+02:00"
+    created: "2025-12-12T10:30:30.617621992+01:00"
     description: The Cloud-Native Ingress and Service Mesh for APIs and Microservices
     digest: 6d096444356c79af983ce814d3f6b54bfde6dd9b43f4122f97c31545ef3a9477
     home: https://KongHQ.com/
@@ -732,7 +746,7 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: "1.1"
-    created: "2024-09-20T13:43:59.893505043+02:00"
+    created: "2025-12-12T10:30:30.615417152+01:00"
     description: The Cloud-Native Ingress and Service Mesh for APIs and Microservices
     digest: f9686e72b76bd4bc1113d73e5277cba043fb0bb0e6051b60f12bbfdd78b526c3
     home: https://KongHQ.com/
@@ -749,7 +763,7 @@ entries:
   logstash:
   - apiVersion: v1
     appVersion: 7.5.2
-    created: "2024-09-20T13:43:59.896806003+02:00"
+    created: "2025-12-12T10:30:30.619441752+01:00"
     description: Official Elastic helm chart for Logstash
     digest: 5e3a775debc2b09c5a5d245f040d928d98811a96e8631f52f11736d159ca7eb7
     home: https://github.com/elastic/helm-charts
@@ -766,7 +780,7 @@ entries:
   opendistro-es:
   - apiVersion: v1
     appVersion: 1.8.0
-    created: "2024-09-20T13:43:59.922994515+02:00"
+    created: "2025-12-12T10:30:30.643428279+01:00"
     description: Open Distro for Elasticsearch
     digest: d1a106b42372e0c230088a82e24c474275af0b0b993bbdb00d595c9c6523dc64
     kubeVersion: ^1.10.0-0
@@ -783,7 +797,7 @@ entries:
     version: 1.8.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.920449209+02:00"
+    created: "2025-12-12T10:30:30.640725384+01:00"
     description: Opendistro Elasticsearch
     digest: 4965e1650ab59482354826d63e4732c0a8e9287b7a133719642ed7d8baf1d9e6
     kubeVersion: ^1.10.0-0
@@ -797,7 +811,7 @@ entries:
     version: 1.0.8
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.918080719+02:00"
+    created: "2025-12-12T10:30:30.638437537+01:00"
     description: Opendistro Elasticsearch
     digest: 0d969f81a141995b09e923568c8c03892218f823cf737d682ff4f23de892d63b
     kubeVersion: ^1.10.0-0
@@ -811,7 +825,7 @@ entries:
     version: 1.0.7
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.915583933+02:00"
+    created: "2025-12-12T10:30:30.63604998+01:00"
     description: Opendistro Elasticsearch
     digest: 6ff1170c979257f4ad2085cac84b6d63208d2bf5bc32b60bbd16a2db0ef22422
     kubeVersion: ^1.10.0-0
@@ -825,7 +839,7 @@ entries:
     version: 1.0.6
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.912914719+02:00"
+    created: "2025-12-12T10:30:30.63360238+01:00"
     description: Opendistro Elasticsearch
     digest: 30a2c1a290924700eebe108a8a16dea6cd4e576b3684a7258adebc5c62e1d754
     kubeVersion: ^1.10.0-0
@@ -839,7 +853,7 @@ entries:
     version: 1.0.5
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.910464382+02:00"
+    created: "2025-12-12T10:30:30.630201271+01:00"
     description: Opendistro Elasticsearch
     digest: a52a88c9d8ea55a9c35341fcee8e39c63276059bc24456bab042b7dc82e5b721
     kubeVersion: ^1.10.0-0
@@ -853,7 +867,7 @@ entries:
     version: 1.0.4
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.907952525+02:00"
+    created: "2025-12-12T10:30:30.628031017+01:00"
     description: Opendistro Elasticsearch
     digest: 46f82df3aaa62eefb611b5d14b86d9c42c66c20ad0f8b42b198447c6e8d8001b
     kubeVersion: ^1.10.0-0
@@ -867,7 +881,7 @@ entries:
     version: 1.0.3
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.90539794+02:00"
+    created: "2025-12-12T10:30:30.62574366+01:00"
     description: Opendistro Elasticsearch
     digest: 52b2f28b407772d8417a4b0628ec28ef2d55928793ef060782ffd0370701536f
     kubeVersion: ^1.10.0-0
@@ -881,7 +895,7 @@ entries:
     version: 1.0.2
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.901556102+02:00"
+    created: "2025-12-12T10:30:30.62361773+01:00"
     description: Opendistro Elasticsearch
     digest: 0f9959ea4163c9c431334ccb5487666b4a26bdcbef3c28334621fff2a1766562
     kubeVersion: ^1.10.0-0
@@ -895,7 +909,7 @@ entries:
     version: 1.0.1
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-09-20T13:43:59.899122263+02:00"
+    created: "2025-12-12T10:30:30.621542094+01:00"
     description: Opendistro Elasticsearch
     digest: e7b57bf2c027b2878696cb1de02b4a0203bdf2dd8518229988b8654407af57bf
     kubeVersion: ^1.10.0-0
@@ -907,4 +921,4 @@ entries:
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/opendistro-es-1.0.0.tgz
     version: 1.0.0
-generated: "2024-09-20T13:43:59.650378572+02:00"
+generated: "2025-12-12T10:30:30.365068421+01:00"

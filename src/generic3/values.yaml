@@ -143,9 +143,9 @@ sidecar:
   volumeMounts:
   resources:
     limits:
-      memory: 128M
+      memory: 256M
     requests:
-      memory: 32M
+      memory: 128M
 
 database:
   instance:
@@ -161,6 +161,12 @@ image:
 
 nginx:
   enabled: false
+  healthCheckPath: ""
+  resources:
+    limits:
+      memory: 256M
+    requests:
+      memory: 128M
   config: |
     server {
       {{- if .Values.debug }}
@@ -169,7 +175,7 @@ nginx:
       access_log off;
       {{- end }}
       location /health {
-        proxy_pass http://127.0.0.1:{{ .Values.app.port }};
+        proxy_pass http://127.0.0.1:{{ .Values.app.port }}{{ .Values.nginx.healthCheckPath }};
       }
     }
     server {
