@@ -1,0 +1,20 @@
+{{- if .Values.httpRoute.enabled -}}
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: {{ template "generic.fullname" . }}-tls-grant
+  labels:
+    app: {{ template "generic.fullname" . }}
+    chart: {{ template "generic.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      namespace: gateway-system
+  to:
+    - group: ""
+      kind: Secret
+      name: {{ .Values.url }}
+{{- end }}

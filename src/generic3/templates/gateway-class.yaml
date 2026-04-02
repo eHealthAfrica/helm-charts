@@ -1,0 +1,16 @@
+{{- if .Values.gatewayClass.enabled -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: {{ .Values.gatewayClass.name }}
+  labels:
+    app: {{ template "generic.fullname" . }}
+    chart: {{ template "generic.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  controllerName: {{ .Values.gatewayClass.controllerName }}
+  {{- if .Values.gatewayClass.description }}
+  description: {{ .Values.gatewayClass.description }}
+  {{- end }}
+{{- end }}

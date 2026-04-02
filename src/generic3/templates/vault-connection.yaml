@@ -1,0 +1,14 @@
+{{- if .Values.vaultConnection.enabled -}}
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: {{ .Values.vaultConnection.name }}
+  labels:
+    app: {{ template "generic.fullname" . }}
+    chart: {{ template "generic.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  address: {{ .Values.vaultConnection.address }}
+  skipTLSVerify: {{ .Values.vaultConnection.skipTLSVerify }}
+{{- end }}

@@ -102,7 +102,7 @@ app:
     accessMode: ReadWriteOnce
     size: 10Gi
     existingClaim: false
-    claimName:
+    claimeName:
     nfs:
       server:
       path:
@@ -247,6 +247,7 @@ extra_env_vars_secretKeyRef: {}
 env_secrets:
   enabled: false
   name:
+  path:
 
 nodeSelector: {}
 
@@ -260,6 +261,69 @@ redis:
   usePassword: false
   # existingSecret: existing-redis-secret
   # existingSecretPasswordKey: redis-password
+
+gatewayClass:
+  enabled: false
+  name: gke-l7-regional-external-managed
+  controllerName: networking.gke.io/gateway
+  description: ""
+
+gateway:
+  enabled: false
+  name: eha-gateway
+  className: gke-l7-regional-external-managed
+  annotations: {}
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: vault-tls
+      allowedRoutes:
+        from: All
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        from: All
+
+httpRoute:
+  enabled: false
+  annotations:
+    external-dns.alpha.kubernetes.io/ttl: "300"
+  # letsencrypt (dns01 via Route53) or letsencrypt-http01 (http01 challenge)
+  certIssuer: letsencrypt
+  parentRefs:
+    - name: eha-gateway
+      namespace: gateway-system
+      sectionName: https
+  path: /
+
+vaultConnection:
+  enabled: false
+  name: vault-connection
+  address: http://vault.vault.svc.cluster.local:8200
+  skipTLSVerify: false
+
+vaultAuth:
+  enabled: false
+  name: vault-auth
+  vaultConnectionRef: vault-connection
+  method: kubernetes
+  mount: kubernetes
+  role: vso-role
+  serviceAccount: default
+
+vaultStaticSecret:
+  enabled: false
+  vaultAuthRef: vault-secrets-operator-system/default
+  mount: kv
+  type: kv-v2
+  refreshAfter: 60s
+  destinationCreate: true
 
 aether:
   consumer_configmap:

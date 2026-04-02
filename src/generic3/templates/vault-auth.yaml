@@ -1,0 +1,18 @@
+{{- if .Values.vaultAuth.enabled -}}
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: {{ .Values.vaultAuth.name }}
+  labels:
+    app: {{ template "generic.fullname" . }}
+    chart: {{ template "generic.chart" . }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+spec:
+  vaultConnectionRef: {{ .Values.vaultAuth.vaultConnectionRef }}
+  method: {{ .Values.vaultAuth.method }}
+  mount: {{ .Values.vaultAuth.mount }}
+  kubernetes:
+    role: {{ .Values.vaultAuth.role }}
+    serviceAccount: {{ .Values.vaultAuth.serviceAccount }}
+{{- end }}
