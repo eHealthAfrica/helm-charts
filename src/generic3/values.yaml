@@ -324,6 +324,15 @@ vaultStaticSecret:
   type: kv-v2
   refreshAfter: 60s
   destinationCreate: true
+  # Auto-restart deployment when Vault secret changes
+  rolloutRestart: true
+
+vaultextrasecrets:
+  enabled: false
+  rolloutrestart: true
+  secrets: []
+  # - name: my-secret
+  #   path: ehealthafrica/dev/my-secret
 
 aether:
   consumer_configmap:
