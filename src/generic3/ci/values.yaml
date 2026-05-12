@@ -86,12 +86,10 @@ imagePullSecrets:
   name: gcr-json-key
 
 ingress:
-  certsecret: wildcard
   hosts:
     - alpha.eha.im
   ssl:
     letsencrypt: true
-    cert_secret: alpha.eha.im
   annotations:
     kubernetes.io/ingress.class: "kong"
     ingress.kubernetes.io/ssl-redirect: "true"

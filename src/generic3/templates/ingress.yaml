@@ -24,7 +24,7 @@ spec:
     - {{ . }}
     {{- end }}
     {{ if .Values.ingress.ssl.letsencrypt }}
-    secretName: {{ .Values.ingress.ssl.cert_secret }}
+    secretName: {{ first .Values.ingress.hosts }}
     {{ end }}
   rules:
     {{- range $host := .Values.ingress.hosts }}
