@@ -21,6 +21,7 @@ extraContainers: |
 
 ## Add additional volumes and mounts
 extraVolumes: |
+
 #  - name: {{ template "generic.fullname" . }}-consumer-kafka-config
 #    configMap:
 #      name: {{ template "generic.fullname" . }}-consumer-kafka-config
@@ -107,8 +108,9 @@ app:
       server:
       path:
 
-  ## Add additional volumeMounts
+        ## Add additional volumeMounts
   extraVolumeMounts: |
+
   #    - name: {{ template "generic.fullname" . }}-consumer-kafka-config
   #      mountPath: /code/conf/consumer/kafka.json
   #      subPath: kafka.json
@@ -222,6 +224,9 @@ imagePullSecrets:
 
 ingress:
   enabled: false
+  # className sets spec.ingressClassName (modern replacement for kubernetes.io/ingress.class annotation)
+  # Use "nginx" for ingress-nginx or "traefik" for Traefik
+  className: ""
   annotations:
     cert-manager.io/acme-challenge-type: dns01
     cert-manager.io/acme-dns01-provider: route53
@@ -262,45 +267,7 @@ redis:
   # existingSecret: existing-redis-secret
   # existingSecretPasswordKey: redis-password
 
-gatewayClass:
-  enabled: false
-  name: gke-l7-regional-external-managed
-  controllerName: networking.gke.io/gateway
-  description: ""
 
-gateway:
-  enabled: false
-  name: eha-gateway
-  className: gke-l7-regional-external-managed
-  annotations: {}
-  listeners:
-    - name: https
-      protocol: HTTPS
-      port: 443
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: vault-tls
-      allowedRoutes:
-        from: All
-    - name: http
-      protocol: HTTP
-      port: 80
-      allowedRoutes:
-        from: All
-
-httpRoute:
-  enabled: false
-  annotations:
-    external-dns.alpha.kubernetes.io/ttl: "300"
-  # letsencrypt (dns01 via Route53) or letsencrypt-http01 (http01 challenge)
-  certIssuer: letsencrypt
-  parentRefs:
-    - name: eha-gateway
-      namespace: gateway-system
-      sectionName: https
-  path: /
 
 vaultConnection:
   enabled: false
@@ -327,17 +294,11 @@ vaultStaticSecret:
   # Auto-restart deployment when Vault secret changes
   rolloutRestart: true
 
-vaultextrasecrets:
-  enabled: false
-  rolloutrestart: true
-  secrets: []
-  # - name: my-secret
-  #   path: ehealthafrica/dev/my-secret
-
 aether:
   consumer_configmap:
     enabled: false
     data: |
+
   #      consumer.json: |
   #          {
   #          ||
@@ -346,6 +307,7 @@ aether:
   consumer_kafka_configmap:
     enabled: false
     data: |
+
 
 #      kafka.json: |
 #        {
