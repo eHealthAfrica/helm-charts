@@ -1,0 +1,41 @@
+name: Helm Lint
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Install Helm
+        uses: Azure/setup-helm@v5.0.1
+        with:
+          version: latest
+
+      - name: Install git and openssh
+        run: sudo apt-get update && sudo apt-get install -y git
+
+      - name: Lint database-provisioner
+        run: helm lint -f tests/overrides/service.yaml src/database-provisioner/
+
+      - name: Lint kong
+        run: helm lint -f src/kong/ci/values.yaml src/kong/
+
+      - name: Lint generic with CI values
+        run: helm lint -f src/generic/ci/values.yaml src/generic/
+
+      - name: Lint opendistro-es
+        run: helm lint src/opendistro-es/
+
+      - name: Lint generic
+        run: helm lint src/generic/
+
+      - name: Lint generic3
+        run: helm lint src/generic3/
