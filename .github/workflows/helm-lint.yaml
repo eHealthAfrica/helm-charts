@@ -20,7 +20,7 @@ jobs:
           version: latest
 
       - name: Install git and openssh
-        run: sudo apt-get update && sudo apt-get install -y git openssh-client
+        run: sudo apt-get update && sudo apt-get install -y git
 
       - name: Lint database-provisioner
         run: helm lint -f tests/overrides/service.yaml src/database-provisioner/
