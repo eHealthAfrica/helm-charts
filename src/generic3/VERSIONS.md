@@ -5,6 +5,15 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.5.7 (2026-07-28)
+- vault-extra-secrets: `rolloutRestartTargets` now applies to **all** secrets in the list
+  (previously only the first one, due to a `$first` guard). Each secret also accepts an
+  optional `restartTargets` list to restart multiple/other Deployments — needed for shared
+  credentials consumed across several releases (e.g. a DB secret used by many workloads).
+  When `restartTargets` is omitted, `vaultextrasecrets.rolloutrestart: true` still defaults
+  to the release's own Deployment (backward-compatible). Also sets `hmacSecretData: true`
+  explicitly so VSO reliably detects secret-data changes and fires the rollout.
+
 ### 0.4.7 (2025-12-12)
 - set minAvailable: 0  by default to allow for pod disruption 
 
