@@ -5,6 +5,25 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.5.8 (2026-08-28)
+- horizontal-pod-autoscaler: only emit a Resource metric whose request is actually
+  set on `app.resources.requests`, and skip the HPA entirely when neither cpu nor
+  memory is requested.
+
+  An HPA computes Utilization as usage/request, so a metric with no request is
+  uncomputable. Kubernetes does not fail loudly: it sets `ScalingActive=False`
+  with `FailedGetResourceMetric` ("missing request for cpu") and then autoscales
+  on **nothing** - including the metric that would have worked. Because this chart
+  defaults `app.resources.requests` to memory only while always emitting a cpu
+  metric, every release taking the defaults got an HPA that was inert from
+  creation, advertising elasticity it did not have.
+
+  Backward-compatible for any release that sets a cpu request: the rendered HPA is
+  byte-identical. Releases without one previously had a broken HPA and now get a
+  working memory-only one - so a workload sitting above `app.scaling.utilization.memory`
+  (default 70%) can begin scaling out where it previously could not. Check
+  `app.scaling.min`/`max` on releases that omit a cpu request before upgrading.
+
 ### 0.5.7 (2026-07-28)
 - vault-extra-secrets: `rolloutRestartTargets` now applies to **all** secrets in the list
   (previously only the first one, due to a `$first` guard). Each secret also accepts an
