@@ -1,4 +1,20 @@
-{{ if and (.Values.app.scaling.enabled) (ne .Values.resourceType "cronjob") }}
+{{/*
+  Only emit a Resource metric the pod can actually satisfy.
+
+  An HPA computes Utilization as usage/request, so a metric whose resource has
+  no request on the app container is uncomputable. Kubernetes does not fail the
+  HPA loudly in that case - it sets ScalingActive=False with
+  FailedGetResourceMetric ("missing request for cpu") and the HPA silently stops
+  autoscaling on every metric, including ones that would have worked.
+
+  This chart defaults app.resources.requests to memory only, while always
+  emitting a cpu metric, so any release taking the defaults got an HPA that was
+  inert from creation - advertising elasticity it did not have.
+*/}}
+{{- $requests := default dict (default dict .Values.app.resources).requests -}}
+{{- $hasCPU := hasKey $requests "cpu" -}}
+{{- $hasMemory := hasKey $requests "memory" -}}
+{{ if and (.Values.app.scaling.enabled) (ne .Values.resourceType "cronjob") (or $hasCPU $hasMemory) }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -16,16 +32,20 @@ spec:
   minReplicas: {{ .Values.app.scaling.min }}
   maxReplicas: {{ .Values.app.scaling.max }}
   metrics:
+{{- if $hasCPU }}
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
           averageUtilization: {{ .Values.app.scaling.utilization.cpu }}
+{{- end }}
+{{- if $hasMemory }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
           averageUtilization: {{ .Values.app.scaling.utilization.memory }}
+{{- end }}
 {{ end }}
