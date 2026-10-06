@@ -13,6 +13,12 @@ fullnameOverride:
 podAntiAffinity:
   enabled: true
 
+# Annotations applied to the POD template (not the Deployment/StatefulSet object).
+# Needed for scheduler-facing hints that must live on the pod, e.g.
+#   karpenter.sh/do-not-disrupt: "true"
+# to stop Karpenter evicting a single-replica workload during consolidation.
+podAnnotations: {}
+
 # Additional init containers, e. g. for a database proxy, such as Google's cloudsql-proxy
 extraInitContainers: |
 

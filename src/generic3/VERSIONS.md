@@ -5,6 +5,14 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.5.8 (2026-10-06)
+- add `podAnnotations` (default `{}`), rendered onto the pod template of both the Deployment
+  and the StatefulSet. Previously the pod template carried labels only, so pod-level scheduler
+  annotations could not be set from an override at all. The motivating case is
+  `karpenter.sh/do-not-disrupt: "true"` on single-replica services: Karpenter consolidates the
+  node and evicts the only pod (`Evicted pod: Underutilized`), causing a 40-60s outage, and
+  `pod-disruption-budget.yaml` is gated on `replicaCount > 1` so a PDB cannot cover them.
+
 ### 0.5.7 (2026-07-28)
 - vault-extra-secrets: `rolloutRestartTargets` now applies to **all** secrets in the list
   (previously only the first one, due to a `$first` guard). Each secret also accepts an
