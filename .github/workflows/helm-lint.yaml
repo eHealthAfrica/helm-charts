@@ -39,3 +39,6 @@ jobs:
 
       - name: Lint generic3
         run: helm lint src/generic3/
+
+      - name: Lint alloy-logs with CI values
+        run: helm lint -f src/alloy-logs/ci/values.yaml src/alloy-logs/

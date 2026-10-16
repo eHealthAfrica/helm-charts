@@ -1,0 +1,137 @@
+# IMPORTANT: this CR's name ("alloy-logs") must NOT equal the Helm release name that
+# deploys this chart. grafana/alloy-operator is a helm-based operator: for an Alloy CR it
+# creates its OWN Helm release named after the CR to build the DaemonSet. If the wrapper
+# release is also "alloy-logs" the operator errors "duplicate release name" and can never
+# build the DaemonSet. Hence the pipelines deploy this chart as release "alloy-logs-cr". DEVOPS-180.
+apiVersion: collectors.grafana.com/v1alpha1
+kind: Alloy
+metadata:
+  name: alloy-logs
+  namespace: {{ .Values.namespace }}
+spec:
+  controller:
+    type: daemonset
+  alloy:
+    clustering:
+      enabled: false
+    mounts:
+      varlog: true
+    extraEnv:
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      - name: CLUSTER_NAME
+        value: {{ required "clusterName is required" .Values.clusterName | quote }}
+      - name: LOKI_URL
+        value: {{ required "lokiUrl is required" .Values.lokiUrl | quote }}
+      {{- if .Values.lokiTenant }}
+      - name: LOKI_TENANT
+        value: {{ .Values.lokiTenant | quote }}
+      {{- end }}
+    configMap:
+      content: |
+        // Alloy file-based log pipeline (Promtail parity incl. stream/filename). DEVOPS-180.
+        discovery.kubernetes "pods" {
+          role = "pod"
+          selectors {
+            role  = "pod"
+            field = "spec.nodeName=" + sys.env("NODE_NAME")
+          }
+        }
+        discovery.relabel "pod_logs" {
+          targets = discovery.kubernetes.pods.targets
+          rule {
+            source_labels = ["__meta_kubernetes_namespace"]
+            target_label  = "namespace"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_name"]
+            target_label  = "pod"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_container_name"]
+            target_label  = "container"
+          }
+          // `app` must fall back the way the stock grafana/promtail chart did:
+          // app.kubernetes.io/name -> app -> controller name -> pod name. EHA's
+          // generic/generic3 charts set only the PLAIN `app` label, so sourcing
+          // app.kubernetes.io/name alone leaves every EHA workload with no `app`
+          // at all - only third-party charts kept one. DEVOPS-245.
+          rule {
+            source_labels = ["__meta_kubernetes_pod_controller_name"]
+            regex         = "([0-9a-z-.]+?)(-[0-9a-f]{8,10})?"
+            target_label  = "__tmp_controller_name"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name", "__meta_kubernetes_pod_label_app", "__tmp_controller_name", "__meta_kubernetes_pod_name"]
+            regex         = "^;*([^;]+)(;.*)?$"
+            action        = "replace"
+            target_label  = "app"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_node_name"]
+            target_label  = "node_name"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_node_name"]
+            target_label  = "node"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_component"]
+            target_label  = "component"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_container_name"]
+            separator     = "/"
+            target_label  = "job"
+          }
+          rule {
+            source_labels = ["__meta_kubernetes_pod_uid", "__meta_kubernetes_pod_container_name"]
+            separator     = "/"
+            action        = "replace"
+            replacement   = "/var/log/pods/*$1/*.log"
+            target_label  = "__path__"
+          }
+        }
+        local.file_match "pod_logs" {
+          path_targets = discovery.relabel.pod_logs.output
+        }
+        loki.source.file "pod_logs" {
+          targets    = local.file_match.pod_logs.targets
+          forward_to = [loki.process.parse.receiver]
+        }
+        loki.process "parse" {
+          stage.cri { }
+          // Never ship Loki's own store failures back to Loki: a full disk makes it log one error
+          // per failed chunk flush, Alloy returns them, and the retry backlog compounds.
+          // clinics-prod 2026-09-06: 79 GiB of stderr in one day.
+          stage.match {
+            selector = "{job=\"monitoring/loki\"}"
+            stage.drop {
+              expression          = ".*(no space left on device|failed to flush user).*"
+              drop_counter_reason = "loki_self_store_error"
+            }
+          }
+          stage.labels {
+            values = { stream = "" }
+          }
+          stage.static_labels {
+            values = {
+              cluster = sys.env("CLUSTER_NAME"),
+              cloud   = "gcp",
+            }
+          }
+          forward_to = [loki.write.default.receiver]
+        }
+        loki.write "default" {
+          endpoint {
+            url = sys.env("LOKI_URL")
+            {{- if .Values.lokiTenant }}
+            tenant_id = sys.env("LOKI_TENANT")
+            {{- end }}
+          }
+          wal {
+            enabled = true
+          }
+        }
