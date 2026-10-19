@@ -10,6 +10,18 @@ entries:
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/aether-couchdb-sync-1.2.0.tgz
     version: 1.2.0
+  alloy-logs:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2026-10-16T17:35:51.030838+01:00"
+    description: Renders the Grafana Alloy CR (file-based log collector) for the Alloy
+      Operator (DEVOPS-180)
+    digest: 4f2c43fa96f89a41b374bdbdf65ba299dc1ad5433bac792c9bd872f8e556f55d
+    name: alloy-logs
+    type: application
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/alloy-logs-0.1.0.tgz
+    version: 0.1.0
   couchdb-backup:
   - apiVersion: v1
     created: "2026-05-12T11:56:05.274311+03:00"
@@ -1077,4 +1089,4 @@ entries:
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/opendistro-es-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-06T13:29:03.558147+01:00"
+generated: "2026-10-16T17:35:51.030838+01:00"

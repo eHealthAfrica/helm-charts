@@ -1,0 +1,5 @@
+# Per-cluster values supplied by system/<cluster>/overrides/alloy.yaml
+namespace: monitoring
+clusterName: ""     # e.g. eha-dev | ehealth-africa-prod | clinics-dev | clinics-prod
+lokiUrl: ""         # Phase 1: local loki push URL. Phase 2: hub gateway.
+lokiTenant: ""      # Phase 2 only (per-project X-Scope-OrgID); empty = single-tenant

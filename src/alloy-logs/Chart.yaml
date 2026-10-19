@@ -1,0 +1,6 @@
+apiVersion: v2
+name: alloy-logs
+description: Renders the Grafana Alloy CR (file-based log collector) for the Alloy Operator (DEVOPS-180)
+type: application
+version: 0.1.0
+appVersion: "1.0"
