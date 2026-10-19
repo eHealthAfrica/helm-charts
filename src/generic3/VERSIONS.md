@@ -5,6 +5,17 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.5.9 (2026-10-19)
+- horizontal-pod-autoscaler: emit a Resource metric only when the matching request is set on
+  the app container. An HPA computes `Utilization` as `usage / request`, so a metric whose
+  resource has no request is uncomputable — and one bad metric stops the HPA acting on the
+  others, including ones that would have worked. The chart's own defaults set a memory request
+  but never a cpu one while `scaling.enabled` is true, so a release taking the defaults got an
+  HPA that was inert from creation. On eha-dev, 36 of 75 HPAs were in this state, surfacing as
+  either `FailedGetResourceMetric: missing request for cpu` or `No recommendation`. If neither
+  request is set the template now fails with an actionable message rather than rendering an HPA
+  with no metrics, which would silently fall back to the API default of 80% cpu.
+
 ### 0.5.8 (2026-10-06)
 - add `podAnnotations` (default `{}`), rendered onto the pod template of both the Deployment
   and the StatefulSet. Previously the pod template carried labels only, so pod-level scheduler
