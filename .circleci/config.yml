@@ -5,7 +5,7 @@ jobs:
     docker:
       # cimg/deploy ships helm and a normal shell; alpine/helm sets helm as the
       # entrypoint, which CircleCI steps cannot run commands through.
-      - image: cimg/deploy:2026.01
+      - image: cimg/deploy:2026.10
     steps:
       - checkout
       - run:
