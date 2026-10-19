@@ -1,4 +1,10 @@
 {{ if and (.Values.app.scaling.enabled) (ne .Values.resourceType "cronjob") }}
+{{- $req := .Values.app.resources.requests | default dict }}
+{{- $cpu := and $req.cpu .Values.app.scaling.utilization.cpu }}
+{{- $mem := and $req.memory .Values.app.scaling.utilization.memory }}
+{{- if not (or $cpu $mem) }}
+{{- fail "app.scaling.enabled is true but no HPA metric can be computed: set app.resources.requests.cpu or .memory, or set app.scaling.enabled=false" }}
+{{- end }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -16,16 +22,22 @@ spec:
   minReplicas: {{ .Values.app.scaling.min }}
   maxReplicas: {{ .Values.app.scaling.max }}
   metrics:
+    {{- /* A Resource metric whose request is unset is uncomputable, and one bad
+           metric stops the HPA acting on the others. Emit only what can compute. */}}
+    {{- if $cpu }}
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
           averageUtilization: {{ .Values.app.scaling.utilization.cpu }}
+    {{- end }}
+    {{- if $mem }}
     - type: Resource
       resource:
         name: memory
         target:
           type: Utilization
           averageUtilization: {{ .Values.app.scaling.utilization.memory }}
+    {{- end }}
 {{ end }}
