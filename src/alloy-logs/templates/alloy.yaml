@@ -1,8 +1,5 @@
-# IMPORTANT: this CR's name ("alloy-logs") must NOT equal the Helm release name that
-# deploys this chart. grafana/alloy-operator is a helm-based operator: for an Alloy CR it
-# creates its OWN Helm release named after the CR to build the DaemonSet. If the wrapper
-# release is also "alloy-logs" the operator errors "duplicate release name" and can never
-# build the DaemonSet. Hence the pipelines deploy this chart as release "alloy-logs-cr". DEVOPS-180.
+# The CR name must differ from the release name: alloy-operator creates its own release
+# named after the CR, and a collision blocks the DaemonSet. Deploy as "alloy-logs-cr".
 apiVersion: collectors.grafana.com/v1alpha1
 kind: Alloy
 metadata:
@@ -53,11 +50,8 @@ spec:
             source_labels = ["__meta_kubernetes_pod_container_name"]
             target_label  = "container"
           }
-          // `app` must fall back the way the stock grafana/promtail chart did:
-          // app.kubernetes.io/name -> app -> controller name -> pod name. EHA's
-          // generic/generic3 charts set only the PLAIN `app` label, so sourcing
-          // app.kubernetes.io/name alone leaves every EHA workload with no `app`
-          // at all - only third-party charts kept one. DEVOPS-245.
+          // `app` falls back app.kubernetes.io/name -> app -> controller -> pod, as stock
+          // promtail did: EHA charts set only plain `app`. DEVOPS-245.
           rule {
             source_labels = ["__meta_kubernetes_pod_controller_name"]
             regex         = "([0-9a-z-.]+?)(-[0-9a-f]{8,10})?"
@@ -103,8 +97,7 @@ spec:
         }
         loki.process "parse" {
           stage.cri { }
-          // Never ship Loki's own store failures back to Loki: a full disk makes it log one error
-          // per failed chunk flush, Alloy returns them, and the retry backlog compounds.
+          // Never ship Loki's own store failures back to Loki - the retry backlog compounds.
           // clinics-prod 2026-09-06: 79 GiB of stderr in one day.
           stage.match {
             selector = "{job=\"monitoring/loki\"}"

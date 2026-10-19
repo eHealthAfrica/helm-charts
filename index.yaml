@@ -16,7 +16,7 @@ entries:
     created: "2026-10-16T17:35:51.030838+01:00"
     description: Renders the Grafana Alloy CR (file-based log collector) for the Alloy
       Operator (DEVOPS-180)
-    digest: 93815bd776dd152594954817066e5680a5d4af14def65a43770908ee0c6c3c23
+    digest: 4f2c43fa96f89a41b374bdbdf65ba299dc1ad5433bac792c9bd872f8e556f55d
     name: alloy-logs
     type: application
     urls:
