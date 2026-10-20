@@ -1,0 +1,5 @@
+# Lint values. backup.kms is unset in the chart defaults, so templates/job.yaml
+# dereferences nil and `helm lint` cannot render the chart bare.
+backup:
+  kms:
+    enabled: false

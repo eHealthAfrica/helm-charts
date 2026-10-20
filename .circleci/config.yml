@@ -1,0 +1,33 @@
+version: 2.1
+
+jobs:
+  lint:
+    docker:
+      # cimg/deploy ships helm and a normal shell; alpine/helm sets helm as the
+      # entrypoint, which CircleCI steps cannot run commands through.
+      - image: cimg/deploy:2026.10
+    steps:
+      - checkout
+      - run:
+          name: helm version
+          command: helm version --short
+      - run:
+          name: lint every chart in src/
+          command: |
+            set -u
+            rc=0
+            for chart in src/*/; do
+              name=$(basename "$chart")
+              echo "----- $name -----"
+              if [ -f "${chart}ci/values.yaml" ]; then
+                helm lint -f "${chart}ci/values.yaml" "$chart" || rc=1
+              else
+                helm lint "$chart" || rc=1
+              fi
+            done
+            exit $rc
+
+workflows:
+  lint:
+    jobs:
+      - lint
