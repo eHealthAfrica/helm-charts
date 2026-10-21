@@ -13,6 +13,17 @@ entries:
   alloy-logs:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2026-10-21T22:45:55.818318+01:00"
+    description: Renders the Grafana Alloy CR (file-based log collector) for the Alloy
+      Operator (DEVOPS-180)
+    digest: 5c4a30b6d1c0da8e91b70fe2c7fe0c4781daf45c229bd46ed23c4fceab2fba39
+    name: alloy-logs
+    type: application
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/alloy-logs-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2026-10-16T17:35:51.030838+01:00"
     description: Renders the Grafana Alloy CR (file-based log collector) for the Alloy
       Operator (DEVOPS-180)
@@ -1103,4 +1114,4 @@ entries:
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/opendistro-es-1.0.0.tgz
     version: 1.0.0
-generated: "2026-10-20T10:42:37.290381+01:00"
+generated: "2026-10-21T22:45:55.818318+01:00"

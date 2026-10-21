@@ -3,3 +3,11 @@ namespace: monitoring
 clusterName: ""     # e.g. eha-dev | ehealth-africa-prod | clinics-dev | clinics-prod
 lokiUrl: ""         # Phase 1: local loki push URL. Phase 2: hub gateway.
 lokiTenant: ""      # Phase 2 only (per-project X-Scope-OrgID); empty = single-tenant
+
+# Scrape the Alloy DaemonSet the operator builds from this CR. Off by default so
+# the chart stays usable on clusters without the Prometheus operator.
+serviceMonitor:
+  enabled: false
+  # Must match the Prometheus instance's ruleSelector/serviceMonitorSelector.
+  releaseLabel: kube-prometheus-stack
+  interval: 30s

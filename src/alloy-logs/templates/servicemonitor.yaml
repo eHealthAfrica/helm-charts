@@ -1,0 +1,23 @@
+{{- if and (.Capabilities.APIVersions.Has "monitoring.coreos.com/v1/ServiceMonitor") .Values.serviceMonitor.enabled }}
+# The operator creates the Alloy Service, not this chart, so the selector matches
+# the labels it sets rather than anything rendered here. DEVOPS-358.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: alloy-logs
+  namespace: {{ .Values.namespace }}
+  labels:
+    release: {{ .Values.serviceMonitor.releaseLabel }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ .Values.namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: alloy
+      app.kubernetes.io/instance: alloy-logs
+  endpoints:
+    - port: http-metrics
+      path: /metrics
+      interval: {{ .Values.serviceMonitor.interval }}
+{{- end }}
