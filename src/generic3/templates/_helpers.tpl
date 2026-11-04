@@ -60,3 +60,33 @@ Usage: include "generic.allContainersRequest" (list . "cpu")
 {{- end -}}
 {{- if $ok -}}true{{- end -}}
 {{- end -}}
+
+{{/*
+"true" when the chart renders a HorizontalPodAutoscaler for this workload.
+*/}}
+{{- define "generic.hpaRendered" -}}
+{{- $v := .Values -}}
+{{- if and $v.app.scaling.enabled (ne $v.resourceType "cronjob") -}}
+{{- $cpu := and (include "generic.allContainersRequest" (list . "cpu")) $v.app.scaling.utilization.cpu -}}
+{{- $mem := and (include "generic.allContainersRequest" (list . "memory")) $v.app.scaling.utilization.memory -}}
+{{- if or $cpu $mem -}}true{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+spec.replicas for a Deployment or StatefulSet. With an HPA it carries the live
+count, so a deploy neither resets the HPA's choice nor drops the field (which
+the API defaults to 1). On first install it starts at the HPA minimum.
+Usage: include "generic.replicas" (list . "Deployment")
+*/}}
+{{- define "generic.replicas" -}}
+{{- $root := index . 0 -}}
+{{- $kind := index . 1 -}}
+{{- if eq (include "generic.hpaRendered" $root) "true" -}}
+{{- $live := lookup "apps/v1" $kind $root.Release.Namespace (include "generic.fullname" $root) -}}
+{{- $n := dig "spec" "replicas" nil ($live | default dict) -}}
+{{- if kindIs "invalid" $n }}{{ $root.Values.app.scaling.min }}{{ else }}{{ $n }}{{ end -}}
+{{- else -}}
+{{- $root.Values.replicaCount -}}
+{{- end -}}
+{{- end -}}

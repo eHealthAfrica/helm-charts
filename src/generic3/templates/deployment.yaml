@@ -9,7 +9,7 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ include "generic.replicas" (list . "Deployment") }}
   selector:
     matchLabels:
       app: {{ template "generic.name" . }}

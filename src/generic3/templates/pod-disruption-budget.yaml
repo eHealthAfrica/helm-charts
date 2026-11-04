@@ -1,4 +1,4 @@
-{{- if gt .Values.replicaCount 1.0 -}}
+{{- if gt (float64 .Values.replicaCount) 1.0 -}}
 {{- if .Values.app.minAvailable -}}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
