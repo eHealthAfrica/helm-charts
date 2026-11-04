@@ -5,6 +5,16 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.5.10 (2026-11-04)
+- horizontal-pod-autoscaler: a Resource metric is emitted only when **every** container the
+  workload renders requests that resource: app, `sidecar`, `cloudsql-proxy`, nginx and each
+  `extraContainers` item. Utilization is summed across all containers, so 0.5.9's check of
+  the app container alone still let a request-less sidecar break the HPA
+  (`FailedGetResourceMetric`, stuck at its current replicas). DEVOPS-447.
+- If no metric is computable for all containers, the HPA is not rendered and the workload
+  keeps `replicaCount`, instead of failing the deploy. The 0.5.9 hard fail (app container has
+  neither request) is unchanged.
+
 ### 0.5.9 (2026-10-19)
 - horizontal-pod-autoscaler: emit a Resource metric only when the matching request is set on
   the app container. An HPA computes `Utilization` as `usage / request`, so a metric whose

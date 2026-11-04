@@ -1,10 +1,13 @@
 {{ if and (.Values.app.scaling.enabled) (ne .Values.resourceType "cronjob") }}
-{{- $req := .Values.app.resources.requests | default dict }}
-{{- $cpu := and $req.cpu .Values.app.scaling.utilization.cpu }}
-{{- $mem := and $req.memory .Values.app.scaling.utilization.memory }}
-{{- if not (or $cpu $mem) }}
+{{- $app := .Values.app.resources.requests | default dict }}
+{{- if not (or (and $app.cpu .Values.app.scaling.utilization.cpu) (and $app.memory .Values.app.scaling.utilization.memory)) }}
 {{- fail "app.scaling.enabled is true but no HPA metric can be computed: set app.resources.requests.cpu or .memory, or set app.scaling.enabled=false" }}
 {{- end }}
+{{- /* Utilization is summed over every container, so a metric needs its request on
+       all of them. With none computable, skip the HPA: the workload keeps replicaCount. */}}
+{{- $cpu := and (include "generic.allContainersRequest" (list . "cpu")) .Values.app.scaling.utilization.cpu }}
+{{- $mem := and (include "generic.allContainersRequest" (list . "memory")) .Values.app.scaling.utilization.memory }}
+{{- if or $cpu $mem }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -40,4 +43,5 @@ spec:
           type: Utilization
           averageUtilization: {{ .Values.app.scaling.utilization.memory }}
     {{- end }}
+{{- end }}
 {{ end }}
