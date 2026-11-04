@@ -7,7 +7,7 @@
        all of them. With none computable, skip the HPA: the workload keeps replicaCount. */}}
 {{- $cpu := and (include "generic.allContainersRequest" (list . "cpu")) .Values.app.scaling.utilization.cpu }}
 {{- $mem := and (include "generic.allContainersRequest" (list . "memory")) .Values.app.scaling.utilization.memory }}
-{{- if or $cpu $mem }}
+{{- if eq (include "generic.hpaRendered" .) "true" }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:

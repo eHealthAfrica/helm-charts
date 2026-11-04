@@ -5,6 +5,17 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.5.11 (2026-11-05)
+- deployment / statefulset: with an HPA rendered, `spec.replicas` carries the **live** count
+  (Helm `lookup`), or `app.scaling.min` on first install, instead of `replicaCount`. Writing
+  `replicaCount` let every deploy reset the HPA's choice: server-side apply (eha-workflow,
+  Helm 4) re-asserts it or conflicts with the HPA's field ownership. Dropping the field instead
+  would make the API default it to 1 on the next client-side upgrade. DEVOPS-447.
+- `generic.hpaRendered` helper: one definition of "an HPA is rendered", shared by the HPA and
+  the workload templates.
+- pod-disruption-budget: `gt (float64 .Values.replicaCount) 1.0`. An integer from
+  `--set replicaCount=N` previously failed with "incompatible types for comparison".
+
 ### 0.5.10 (2026-11-04)
 - horizontal-pod-autoscaler: a Resource metric is emitted only when **every** container the
   workload renders requests that resource: app, `sidecar`, `cloudsql-proxy`, nginx and each
