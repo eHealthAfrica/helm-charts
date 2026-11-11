@@ -19,6 +19,52 @@ podAntiAffinity:
 # to stop Karpenter evicting a single-replica workload during consolidation.
 podAnnotations: {}
 
+# One-off migration Job (templates/migration-job.yaml), run as a Helm hook once
+# per deploy, before the workload rolls out. Use it for work that changes SHARED
+# state and must happen once - database migrations, seeding, settings - instead
+# of an init container or a `start` command, which every replica re-runs on
+# every restart. Helm waits for it up to --timeout; a failure fails the deploy
+# and leaves the running pods alone.
+#
+# Per-pod setup (files in a pod's own emptyDir, permissions) still belongs in
+# extraInitContainers: a Job cannot write into other pods' volumes.
+#
+# The Job pod reuses this release's image and tag, env_secrets, extra_env_vars,
+# extra_env_vars_secretKeyRef, the PG* variables from app.db, app.config, and -
+# with inheritVolumeMounts - app.extraVolumeMounts and extraVolumes. With
+# app.db.enabled and gcp it gets its own cloudsql-proxy, so most services set:
+#
+#   migrationJob:
+#     enabled: true
+#     args: ["init"]          # passed to the image's ENTRYPOINT
+migrationJob:
+  enabled: false
+  # Overrides the image ENTRYPOINT; leave empty to keep it.
+  command: []
+  args: []
+  # post-install, not pre-install: on a first install the Vault-synced secrets
+  # the Job reads do not exist until the release's own resources are created.
+  hooks: "post-install,pre-upgrade"
+  hookWeight: 0
+  # One attempt. A failing migration must not retry in a loop against the DB.
+  backoffLimit: 0
+  # Stops a hung migration. Keep it below the deploy's helm timeout.
+  activeDeadlineSeconds: 3600
+  # Defaults to app.resources.
+  resources: {}
+  # Mount app.extraVolumeMounts / extraVolumes in the Job too. Turn off if
+  # extraVolumes holds a ReadWriteOnce claim the app pods already use - every
+  # volume in a pod spec is attached, mounted or not.
+  inheritVolumeMounts: true
+  # Templated strings, like extraInitContainers.
+  extraEnv: |
+  extraVolumeMounts: |
+  extraVolumes: |
+  # Extra containers the migration needs, e.g. a second database's proxy. They
+  # MUST be native sidecars (`restartPolicy: Always`): a plain container never
+  # exits, so the Job would never complete.
+  extraInitContainers: |
+
 # Additional init containers, e. g. for a database proxy, such as Google's cloudsql-proxy
 extraInitContainers: |
 

@@ -1,0 +1,168 @@
+{{- /*
+One-off migration Job, run as a Helm hook: once per `helm upgrade`, before the
+workload rolls out (and right after a first install). Unlike an init container
+it is not part of the pod template, so replicas, restarts, rescheduling and
+scaling never re-run it. Helm waits for the Job up to --timeout; if it fails the
+upgrade fails and the running pods are left untouched.
+
+The pod reuses the release's own settings - image and tag, env_secrets,
+extra_env_vars, the PG* variables from app.db, app.extraVolumeMounts and
+extraVolumes - so a service usually sets only `enabled` and `args`.
+*/ -}}
+{{- if .Values.migrationJob.enabled }}
+{{- $job := .Values.migrationJob }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ template "generic.fullname" . }}-migrate
+  labels:
+    # Not `app: <name>`: the Service and the PDB select on app + release, and
+    # must never pick up the migration pod.
+    app: {{ template "generic.name" . }}-migrate
+    chart: {{ template "generic.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": {{ $job.hooks | quote }}
+    "helm.sh/hook-weight": {{ $job.hookWeight | quote }}
+    # A succeeded Job is removed; a failed one is kept for its logs until the
+    # next deploy replaces it.
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ $job.backoffLimit }}
+  {{- with $job.activeDeadlineSeconds }}
+  activeDeadlineSeconds: {{ . }}
+  {{- end }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app: {{ template "generic.name" . }}-migrate
+        release: {{ .Release.Name }}
+    spec:
+      restartPolicy: Never
+      {{- if .Values.imagePullSecrets.enabled }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets.name }}
+      {{- end }}
+      {{- if or (and .Values.app.db.enabled .Values.gcp) $job.extraInitContainers }}
+      initContainers:
+      {{- if and .Values.app.db.enabled .Values.gcp }}
+      # Native sidecar (restartPolicy: Always): starts before the migration,
+      # and is stopped once it exits, so the Job can complete. The startup
+      # probe holds the migration back until the proxy accepts connections.
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.33.9
+        restartPolicy: Always
+        command: ["/cloud_sql_proxy",
+                  "-instances={{ .Values.database.instance }}=tcp:{{ .Values.app.db.port }}",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        startupProbe:
+          tcpSocket:
+            port: {{ .Values.app.db.port }}
+          periodSeconds: 2
+          failureThreshold: 30
+        resources:
+          {{- toYaml .Values.sidecar.resources | nindent 10 }}
+        volumeMounts:
+        - name: cloudsql-instance-credentials
+          mountPath: /secrets/cloudsql
+          readOnly: true
+      {{- end }}
+      {{- with $job.extraInitContainers }}
+{{ tpl . $ | indent 6 }}
+      {{- end }}
+      {{- end }}
+      containers:
+      - name: migrate
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        {{- with $job.command }}
+        command:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with $job.args }}
+        args:
+          {{- range . }}
+          - {{ . | quote }}
+          {{- end }}
+        {{- end }}
+        resources:
+          {{- toYaml (default .Values.app.resources $job.resources) | nindent 10 }}
+        {{- if .Values.env_secrets.enabled }}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.env_secrets.name }}
+        {{- end }}
+        env:
+        {{- range $key, $value := .Values.extra_env_vars }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- with .Values.extra_env_vars_secretKeyRef }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if and .Values.app.db.enabled (eq .Values.app.db.type "postgres") (not .Values.app.db.omitconfig) }}
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.app.secret }}
+              key: database-password
+        - name: PGUSER
+          value: {{ .Values.app.db.user }}
+        - name: PGPORT
+          value: {{ .Values.app.db.port | default 5432 | quote }}
+        - name: PGHOST
+          value: {{ .Values.app.db.host }}
+        - name: DB_NAME
+          value: {{ .Values.app.db.name }}
+        {{- end }}
+        {{- with $job.extraEnv }}
+{{ tpl . $ | indent 8 }}
+        {{- end }}
+        volumeMounts:
+        {{- if .Values.app.config.enabled }}
+        - mountPath: {{ .Values.app.config.path }}
+          name: {{ template "generic.fullname" . }}-config
+        {{- end }}
+        {{- if and .Values.app.db.enabled .Values.app.db.ssl.enabled }}
+        - name: postgres-ssl
+          mountPath: {{ .Values.app.db.ssl.certPath }}
+          readOnly: true
+        {{- end }}
+        {{- if $job.inheritVolumeMounts }}
+        {{- with .Values.app.extraVolumeMounts }}
+{{ tpl . $ | indent 8 }}
+        {{- end }}
+        {{- end }}
+        {{- with $job.extraVolumeMounts }}
+{{ tpl . $ | indent 8 }}
+        {{- end }}
+      volumes:
+      {{- if .Values.app.config.enabled }}
+      - name: {{ template "generic.fullname" . }}-config
+        configMap:
+          name: {{ template "generic.fullname" . }}-config
+      {{- end }}
+      {{- if and .Values.app.db.enabled .Values.app.db.ssl.enabled }}
+      - name: postgres-ssl
+        secret:
+          secretName: postgres-ssl-certificate
+      {{- end }}
+      {{- if and .Values.app.db.enabled .Values.gcp }}
+      - name: cloudsql-instance-credentials
+        secret:
+          secretName: cloudsql-instance-credentials
+      {{- end }}
+      {{- if $job.inheritVolumeMounts }}
+      {{- with .Values.extraVolumes }}
+{{ tpl . $ | indent 6 }}
+      {{- end }}
+      {{- end }}
+      {{- with $job.extraVolumes }}
+{{ tpl . $ | indent 6 }}
+      {{- end }}
+{{- end }}

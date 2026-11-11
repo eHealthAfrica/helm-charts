@@ -5,6 +5,24 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.5.12 (2026-11-11)
+- add `migrationJob` (default off): a one-off Job, run as a Helm hook
+  (`post-install,pre-upgrade`), for work that must happen once per deploy - database
+  migrations, seeding, settings. An init container or a `start` command runs it in every
+  replica, on every restart: lomis-com-watch prod re-checked ~1,460 tenants for 10-12 min
+  per pod, holding the migration lock while the rollout waited. Helm waits for the Job up to
+  `--timeout`; a failure fails the deploy and leaves the running pods untouched.
+- The Job reuses the release's image and tag, `env_secrets`, `extra_env_vars`,
+  `extra_env_vars_secretKeyRef`, the `PG*` variables from `app.db`, `app.config` and (with
+  `inheritVolumeMounts`, default on) `app.extraVolumeMounts` / `extraVolumes`. With
+  `app.db.enabled` and `gcp` it runs its own cloudsql-proxy as a native sidecar with a
+  startup probe, so the migration waits for the proxy and the Job completes when it exits.
+  Native sidecars need Kubernetes 1.29+.
+- Its pod is labelled `app: <name>-migrate`, so the Service and the PDB never select it.
+- `command`, `extraEnv`, `extraVolumeMounts`, `extraVolumes`, `extraInitContainers` (native
+  sidecars only), `resources`, `backoffLimit` (0), `activeDeadlineSeconds` (3600), `hooks`
+  and `hookWeight` are configurable.
+
 ### 0.5.11 (2026-11-05)
 - deployment / statefulset: with an HPA rendered, `spec.replicas` carries the **live** count
   (Helm `lookup`), or `app.scaling.min` on first install, instead of `replicaCount`. Writing
