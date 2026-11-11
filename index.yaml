@@ -269,6 +269,20 @@ entries:
     version: 0.1.0
   generic3:
   - apiVersion: v1
+    appVersion: "1.0"
+    created: "2026-11-11T09:52:43.179466+01:00"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: ~10.6.12
+    description: A Generic Helm chart for Kubernetes
+    digest: d4687478867572e63eb6bc758cb9bd54619e19fb9080f4730a32fd82b6cccb43
+    name: generic3
+    urls:
+    - https://ehealthafrica.github.io/helm-charts/charts/generic3-0.5.12.tgz
+    version: 0.5.12
+  - apiVersion: v1
     appVersion: '1.0'
     created: '2026-11-04T22:51:06.542257+01:00'
     dependencies:
@@ -1142,4 +1156,4 @@ entries:
     urls:
     - https://ehealthafrica.github.io/helm-charts/charts/opendistro-es-1.0.0.tgz
     version: 1.0.0
-generated: "2026-11-04T22:51:06.590851+01:00"
+generated: "2026-11-11T09:52:43.176291+01:00"
