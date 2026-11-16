@@ -214,6 +214,11 @@ image:
 
 nginx:
   enabled: false
+  # pinned: a floating tag re-pulls whatever is newest on every fresh node
+  image:
+    repository: nginx
+    tag: "1.30.6-alpine3.24@sha256:901e593c95dc85f5a729f5765516321366ef4ac401821431d408897e95287d0a"
+    pullPolicy: IfNotPresent
   healthCheckPath: ""
   resources:
     limits:
