@@ -322,7 +322,8 @@ spec:
         {{ end }}
       {{ if .Values.nginx.enabled }}
       - name: nginx
-        image: nginx:stable-alpine
+        image: "{{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}"
+        imagePullPolicy: {{ .Values.nginx.image.pullPolicy }}
         resources:
 {{ toYaml .Values.nginx.resources  | indent 12 }}
         ports:

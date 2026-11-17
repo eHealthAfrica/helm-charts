@@ -5,6 +5,12 @@ Change Summary for this chart.
 Newer versions are all backward-compatible.
 
 
+### 0.5.13 (2026-11-17)
+- nginx sidecar image is now `nginx.image.{repository,tag,pullPolicy}` instead of a
+  hardcoded `nginx:stable-alpine`. Default is pinned by digest to the image the floating
+  tag served on 2026-11-17 (1.30.6-alpine3.24), `IfNotPresent`. Fresh nodes from the
+  off-hours wake no longer pull whatever `stable-alpine` points to that morning.
+
 ### 0.5.12 (2026-11-11)
 - add `migrationJob` (default off): a one-off Job, run as a Helm hook
   (`post-install,pre-upgrade`), for work that must happen once per deploy - database
